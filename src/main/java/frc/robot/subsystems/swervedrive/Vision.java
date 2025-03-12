@@ -17,7 +17,7 @@ public class Vision {
 
     public Vision() {
         // Switch to pipeline 0
-        LimelightHelpers.setPipelineIndex("limelight", 0);
+        LimelightHelpers.setPipelineIndex("limelight-front", 0);
     }
     public double limelight_aim_proportional()
     {    
@@ -30,15 +30,16 @@ public class Vision {
 
         // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
         // your limelight 3 feed, tx should return roughly 31 degrees.
-        double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
-        System.out.println(tx);
-        System.out.println(LimelightHelpers.getTX("limelight"));
+        double targetingAngularVelocity = LimelightHelpers.getTX("limelight-front") * kP;
+        // System.out.println(tx);
+        System.out.println("TX");
+        System.out.println(LimelightHelpers.getTX("limelight-front"));
 
         // convert to radians per second for our drive method
-        targetingAngularVelocity *= 0.1;
+        targetingAngularVelocity *= 0.5;
 
         //invert since tx is positive when the target is to the right of the crosshair
-        targetingAngularVelocity *= -0.1;
+        targetingAngularVelocity *= -1.0;
 
         return targetingAngularVelocity;
     }
@@ -50,9 +51,13 @@ public class Vision {
   {    
     double kP = .1;
     double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-    // 0.1 for now for testing
-    targetingForwardSpeed *= 0.1;
-    targetingForwardSpeed *= 0.1;
+    System.out.println("TY");
+    System.out.println(LimelightHelpers.getTY("limelight-front"));
+    
+    // was 0.1 for now for testing
+    targetingForwardSpeed *= 0.5;
+    targetingForwardSpeed *= -1.0;
+
     return targetingForwardSpeed;
   }
 }

@@ -13,9 +13,11 @@ public class Vision {
     private double txnc = LimelightHelpers.getTXNC("");  // Horizontal offset from principal pixel/point to target in degrees
     private double tync = LimelightHelpers.getTYNC("");  // Vertical  offset from principal pixel/point to target in degrees
 
+    
+
     public Vision() {
         // Switch to pipeline 0
-        LimelightHelpers.setPipelineIndex("", 0);
+        LimelightHelpers.setPipelineIndex("limelight", 0);
     }
     public double limelight_aim_proportional()
     {    
@@ -29,6 +31,8 @@ public class Vision {
         // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
         // your limelight 3 feed, tx should return roughly 31 degrees.
         double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
+        System.out.println(tx);
+        System.out.println(LimelightHelpers.getTX("limelight"));
 
         // convert to radians per second for our drive method
         targetingAngularVelocity *= 0.1;

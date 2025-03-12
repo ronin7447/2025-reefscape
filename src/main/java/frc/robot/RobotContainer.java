@@ -24,7 +24,8 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-
+import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
+import frc.robot.subsystems.swervedrive.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -46,6 +47,9 @@ public class RobotContainer {
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  private final Vision visionSubsystem = new Vision();
+  
+
 
   // the current mode for debug message, 0 is field centric, 1 is robot centric
   private int currentMode = 0; 
@@ -196,6 +200,14 @@ public class RobotContainer {
         }
       })));
 
+      // auto align command
+      driverXbox.start().whileTrue((Commands.runOnce(() -> {
+        System.out.println("Auto align start");
+         AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, 0, 0, 0, 0);
+         autoAlignCommand.execute();
+      })));
+      
+
       // Elevator Go to L1
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
@@ -301,7 +313,7 @@ public class RobotContainer {
         System.out.println("GYRO HAS BEEN RESET!");
       })));
 
-      driverXbox.start().whileTrue(Commands.none());
+      // driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
     }
 

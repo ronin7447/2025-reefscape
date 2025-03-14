@@ -1,5 +1,6 @@
 package frc.robot.subsystems.swervedrive;
 
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 
 
@@ -26,14 +27,14 @@ public class Vision {
         // if it is too high, the robot will oscillate around.
         // if it is too low, the robot will never reach its target
         // if the robot never turns in the correct direction, kP should be inverted.
-        double kP = .035;
+        double kP = 0.1;
 
         // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
         // your limelight 3 feed, tx should return roughly 31 degrees.
         double targetingAngularVelocity = LimelightHelpers.getTX("limelight-front") * kP;
         // System.out.println(tx);
-        System.out.println("TX");
-        System.out.println(LimelightHelpers.getTX("limelight-front"));
+        // System.out.println("TX");
+        // System.out.println(LimelightHelpers.getTX("limelight-front"));
 
         // convert to radians per second for our drive method
         targetingAngularVelocity *= 0.5;
@@ -47,17 +48,58 @@ public class Vision {
   // simple proportional ranging control with Limelight's "ty" value
   // this works best if your Limelight's mount height and target mount height are different.
   // if your limelight and target are mounted at the same or similar heights, use "ta" (area) for target ranging rather than "ty"
-  public double limelight_range_proportional()
+  public double[] limelight_range_proportional()
   {    
-    double kP = .1;
-    double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-    System.out.println("TY");
-    System.out.println(LimelightHelpers.getTY("limelight-front"));
-    
-    // was 0.1 for now for testing
-    targetingForwardSpeed *= 0.5;
-    targetingForwardSpeed *= -1.0;
+    // VERSION 1
 
-    return targetingForwardSpeed;
+    // double kP = .5;
+    // double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
+    // System.out.println("TY");
+    // System.out.println(LimelightHelpers.getTY("limelight-front"));
+    
+    // // was 0.1 for now for testing
+    // targetingForwardSpeed *= 0.5;
+    // targetingForwardSpeed *= -1.0;
+    // System.out.println("Kaden says that the tfs is" + targetingForwardSpeed);
+
+    // return targetingForwardSpeed;
+
+    // VERSION 2
+
+    // double txncVal = LimelightHelpers.getTXNC("limelight-front");
+    // double tyncVal = LimelightHelpers.getTYNC("limelight-front");
+    // System.out.println("Kaden says the TXNC and TYNC is: " + txncVal + ", " + tyncVal);
+
+    // double kP = 2.0;
+    // double elevationAngle = LimelightHelpers.getTY("limelight") * kP;
+    // System.out.println("Jun says the TY is " + LimelightHelpers.getTY("limelight-front"));
+
+    // double targetingForwardSpeed = Constants.VisionConstants.TAG_TO_CAMERA_DIFF / Math.tan(elevationAngle);
+
+    // targetingForwardSpeed *= 0.075;
+
+    // System.out.println("Daniel says that the tfs is" + targetingForwardSpeed);
+
+    // System.out.println();
+
+    // return targetingForwardSpeed;
+
+    // VERSION 3
+
+    double forwardSpeed = 1.0;
+
+    double targetingAngle = LimelightHelpers.getTX("limelight-front");
+    int targetingAngle_int = (int) targetingAngle;
+
+    double[] translations = new double[2];
+
+    translations[0] = forwardSpeed * Math.cos(targetingAngle_int);
+    translations[1] = forwardSpeed * Math.sin(targetingAngle_int);
+
+    translations[0] *= 0.5;
+    translations[1] *= 0.5;
+
+    return translations;
+
   }
 }

@@ -205,7 +205,7 @@ public class RobotContainer {
         System.out.println("Auto align start");
          AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, 0, 0, 0, 0);
          autoAlignCommand.execute();
-      })));
+      })).repeatedly());
       
 
       // Elevator Go to L1

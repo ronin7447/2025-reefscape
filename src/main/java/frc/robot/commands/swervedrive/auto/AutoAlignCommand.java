@@ -30,14 +30,16 @@ public class AutoAlignCommand extends Command {
     public void execute()
     {
         var rotLimelight = vision.limelight_aim_proportional();
+        //var forwardLimelight = vision.limelight_range_proportional();
         var forwardLimelight = vision.limelight_range_proportional();
-        System.out.println(rotLimelight);
-        System.out.println(forwardLimelight);
+        System.out.println("rotational Limelight: " + rotLimelight);
+        System.out.println("forward limelight: " + forwardLimelight[0] + "       " + forwardLimelight[1] + "\n");
         
         //var targetSpeed = swerveSubsystem.getTargetSpeeds(forwardLimelight, vY, headingHorizontal, headingVertical);
 
         //swerveSubsystem.drive(targetSpeed, rotLimelight);
-        Translation2d translation = new Translation2d(forwardLimelight, vY);
+        // Translation2d translation = new Translation2d(forwardLimelight, vY);
+        Translation2d translation = new Translation2d(forwardLimelight[0], forwardLimelight[1]);
 
 
         swerveSubsystem.drive(translation, rotLimelight, false);

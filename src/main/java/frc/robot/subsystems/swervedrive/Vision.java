@@ -57,12 +57,17 @@ public class Vision {
     // System.out.println("TY");
     // System.out.println(LimelightHelpers.getTY("limelight-front"));
     
-    // // was 0.1 for now for testing
+    // was 0.1 for now for testing
     // targetingForwardSpeed *= 0.5;
     // targetingForwardSpeed *= -1.0;
     // System.out.println("Kaden says that the tfs is" + targetingForwardSpeed);
 
-    // return targetingForwardSpeed;
+    // double[] speed = new double[2];
+
+    // speed[0] = targetingForwardSpeed;
+    // speed[1] = targetingForwardSpeed;
+
+    // return speed;
 
     // VERSION 2
 
@@ -86,20 +91,39 @@ public class Vision {
 
     // VERSION 3
 
+    // double forwardSpeed = 1.0;
+
+    // double targetingAngle = LimelightHelpers.getTX("limelight-front");
+    // int targetingAngle_int = (int) targetingAngle;
+
+    // double[] translations = new double[2];
+
+    // translations[0] = forwardSpeed * Math.cos(targetingAngle_int);
+    // translations[1] = forwardSpeed * Math.sin(targetingAngle_int);
+
+    // translations[0] *= 0.5;
+    // translations[1] *= 0.5;
+
+    // return translations;
+
+    //GPT VERSION 4
+
     double forwardSpeed = 1.0;
 
-    double targetingAngle = LimelightHelpers.getTX("limelight-front");
-    int targetingAngle_int = (int) targetingAngle;
+    double targetingAngle = LimelightHelpers.getTX("limelight-front"); // in degrees
+    double targetingAngleRad = Math.toRadians(targetingAngle); // convert to radians
 
     double[] translations = new double[2];
 
-    translations[0] = forwardSpeed * Math.cos(targetingAngle_int);
-    translations[1] = forwardSpeed * Math.sin(targetingAngle_int);
+    translations[0] = forwardSpeed * Math.cos(targetingAngleRad);
+    translations[1] = forwardSpeed * Math.sin(targetingAngleRad);
 
+// Optional scaling, if needed
     translations[0] *= 0.5;
     translations[1] *= 0.5;
 
     return translations;
+
 
   }
 }

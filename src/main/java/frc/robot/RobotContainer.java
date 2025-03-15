@@ -272,7 +272,7 @@ public class RobotContainer {
       // SHOULD NOT USE IT UNLESS HAVE TO.
       driverXbox.povUp().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setMotorLimit(1000, 0);
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
       })));
 
       driverXbox.povUp().onFalse((Commands.runOnce(() -> {
@@ -281,7 +281,7 @@ public class RobotContainer {
 
       driverXbox.povDown().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setMotorLimit(1000, -1000);
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 4);
       })));
 
       driverXbox.povDown().onFalse((Commands.runOnce(() -> {

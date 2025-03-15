@@ -50,86 +50,49 @@ public class Vision {
   // if your limelight and target are mounted at the same or similar heights, use "ta" (area) for target ranging rather than "ty"
   public double[] limelight_range_proportional()
   {    
-    // VERSION 1
-
-    // double kP = .5;
-    // double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-    // System.out.println("TY");
-    // System.out.println(LimelightHelpers.getTY("limelight-front"));
-    
-    // was 0.1 for now for testing
-    // targetingForwardSpeed *= 0.5;
-    // targetingForwardSpeed *= -1.0;
-    // System.out.println("Kaden says that the tfs is" + targetingForwardSpeed);
-
-    // double[] speed = new double[2];
-
-    // speed[0] = targetingForwardSpeed;
-    // speed[1] = targetingForwardSpeed;
-
-    // return speed;
-
-    // VERSION 2
-
-    double txncVal = LimelightHelpers.getTXNC("limelight-front");
-    double tyncVal = LimelightHelpers.getTYNC("limelight-front");
-    System.out.println("Kaden says the TXNC and TYNC is: " + txncVal + ", " + tyncVal);
-
-    // double kP = 2.0;
-    // double elevationAngle = LimelightHelpers.getTY("limelight") * kP;
-    // System.out.println("Jun says the TY is " + LimelightHelpers.getTY("limelight-front"));
-
-    // double targetingForwardSpeed = Constants.VisionConstants.TAG_TO_CAMERA_DIFF / Math.tan(elevationAngle);
-
-    // targetingForwardSpeed *= 0.075;
-
-    // System.out.println("Daniel says that the tfs is" + targetingForwardSpeed);
-
-    // System.out.println();
-
-    // return targetingForwardSpeed;
-
-    // VERSION 3
-
-    // double forwardSpeed = 1.0;
-
-    // double targetingAngle = LimelightHelpers.getTX("limelight-front");
-    // int targetingAngle_int = (int) targetingAngle;
-
-    // double[] translations = new double[2];
-
-    // translations[0] = forwardSpeed * Math.cos(targetingAngle_int);
-    // translations[1] = forwardSpeed * Math.sin(targetingAngle_int);
-
-    // translations[0] *= 0.5;
-    // translations[1] *= 0.5;
-
-    // return translations;
-
-    //GPT VERSION 4
-
-    double forwardSpeed = 1.0;
+ 
 
     double targetingAngle = LimelightHelpers.getTX("limelight-front"); // in degrees
 
-    double ta = LimelightHelpers.getTA("limelight-front");
-    System.out.println(ta);
+    double txnc = LimelightHelpers.getTXNC("limelight-front");
 
-    // test using TA (area of the apriltag to stop)
-    if (ta >= 30) {
-      double[] translations = new double[2];
-      translations[0] = 0;
-      translations[1] = 0;
-      return translations;
+  
+    double theta = targetingAngle + txnc;
+
+    double txRad = Math.toRadians(tx);
+    double txncRad = Math.toRadians(txnc);
+    double thetaRad = Math.toRadians(theta);
+    
+
+    double lateralTranslation;
+
+    if (Math.abs(txRad) > 1e-6) {
+        lateralTranslation = 10 * Math.sin(txncRad) / Math.sin(txRad);
+    } else {
+        // If tx is nearly zero, we assume no lateral translation is needed.
+        lateralTranslation = 0.0;
     }
+
+
+    // double ta = LimelightHelpers.getTA("limelight-front");
+    // System.out.println(ta);
+
+    // // test using TA (area of the apriltag to stop)
+    // if (ta >= 30) {
+    //   double[] translations = new double[2];
+    //   translations[0] = 0;
+    //   translations[1] = 0;
+    //   return translations;
+    // }
 
 
     double targetingAngleRad = Math.toRadians(targetingAngle); // convert to radians
 
     double[] translations = new double[2];
 
-    translations[0] = forwardSpeed * Math.cos(targetingAngleRad);
-    translations[1] = forwardSpeed * Math.sin(targetingAngleRad);
+
+    translations[0] = lateralTranslation * Math.sin(thetaRad);
+    translations[1] = lateralTranslation * Math.cos(thetaRad);
 
     // Optional scaling, if needed
     translations[0] *= 0.25;

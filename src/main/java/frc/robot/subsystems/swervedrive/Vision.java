@@ -71,9 +71,9 @@ public class Vision {
 
     // VERSION 2
 
-    // double txncVal = LimelightHelpers.getTXNC("limelight-front");
-    // double tyncVal = LimelightHelpers.getTYNC("limelight-front");
-    // System.out.println("Kaden says the TXNC and TYNC is: " + txncVal + ", " + tyncVal);
+    double txncVal = LimelightHelpers.getTXNC("limelight-front");
+    double tyncVal = LimelightHelpers.getTYNC("limelight-front");
+    System.out.println("Kaden says the TXNC and TYNC is: " + txncVal + ", " + tyncVal);
 
     // double kP = 2.0;
     // double elevationAngle = LimelightHelpers.getTY("limelight") * kP;
@@ -111,6 +111,19 @@ public class Vision {
     double forwardSpeed = 1.0;
 
     double targetingAngle = LimelightHelpers.getTX("limelight-front"); // in degrees
+
+    double ta = LimelightHelpers.getTA("limelight-front");
+    System.out.println(ta);
+
+    // test using TA (area of the apriltag to stop)
+    if (ta >= 30) {
+      double[] translations = new double[2];
+      translations[0] = 0;
+      translations[1] = 0;
+      return translations;
+    }
+
+
     double targetingAngleRad = Math.toRadians(targetingAngle); // convert to radians
 
     double[] translations = new double[2];

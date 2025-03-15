@@ -39,7 +39,7 @@ public class AutoAlignCommand extends Command {
 
         //swerveSubsystem.drive(targetSpeed, rotLimelight);
         // Translation2d translation = new Translation2d(forwardLimelight, vY);
-        Translation2d translation = new Translation2d(forwardLimelight[0] - 2, forwardLimelight[1]);
+        Translation2d translation = new Translation2d(forwardLimelight[0], forwardLimelight[1]);
 
 
         swerveSubsystem.drive(translation, rotLimelight, false);

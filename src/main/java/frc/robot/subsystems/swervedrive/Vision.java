@@ -27,7 +27,7 @@ public class Vision {
         // if it is too high, the robot will oscillate around.
         // if it is too low, the robot will never reach its target
         // if the robot never turns in the correct direction, kP should be inverted.
-        double kP = 0.1;
+        double kP = 0.3;
 
         // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
         // your limelight 3 feed, tx should return roughly 31 degrees.
@@ -37,7 +37,7 @@ public class Vision {
         // System.out.println(LimelightHelpers.getTX("limelight-front"));
 
         // convert to radians per second for our drive method
-        targetingAngularVelocity *= 0.5;
+        targetingAngularVelocity *= 0.25;
 
         //invert since tx is positive when the target is to the right of the crosshair
         targetingAngularVelocity *= -1.0;
@@ -118,9 +118,9 @@ public class Vision {
     translations[0] = forwardSpeed * Math.cos(targetingAngleRad);
     translations[1] = forwardSpeed * Math.sin(targetingAngleRad);
 
-// Optional scaling, if needed
-    translations[0] *= 0.5;
-    translations[1] *= 0.5;
+    // Optional scaling, if needed
+    translations[0] *= 0.25;
+    translations[1] *= 0.25;
 
     return translations;
 

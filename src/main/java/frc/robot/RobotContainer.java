@@ -9,10 +9,12 @@ package frc.robot;
 
 import java.io.File;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.None;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,6 +28,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.subsystems.swervedrive.Vision;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -38,8 +41,12 @@ import frc.robot.subsystems.swervedrive.Vision;
 
 public class RobotContainer {
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // Primary Operator Controller
   final CommandXboxController driverXbox = new CommandXboxController(0);
+
+  // Secondary Operator Controller
+  final Joystick driverPXN = new Joystick(1);
+
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
@@ -174,31 +181,32 @@ public class RobotContainer {
       driverXbox.leftBumper().onTrue(Commands.none());
       driverXbox.rightBumper().onTrue(Commands.none());
     } else {
-      // Main robot controls
 
-      // Toggles between field centric and robot centric
-      driverXbox.a().toggleOnTrue((Commands.runOnce(drivebase::zeroGyro)).repeatedly());
-      driverXbox.a().onTrue((Commands.runOnce(() -> {
-        // debug message
-         System.out.println();
-         if (currentMode == 0) {
-           currentMode = 1;
-           System.out.println("the mode is now: ROBOT CENTRIC");
-         } else {
-           currentMode = 0;
-           System.out.println("the mode is now: FIELD CENTRIC");
-         }
-         System.out.println();
-       })));
+      // Main Xbox driver controls
+
+      // // Toggles between field centric and robot centric
+      // driverXbox.a().toggleOnTrue((Commands.runOnce(drivebase::zeroGyro)).repeatedly());
+      // driverXbox.a().onTrue((Commands.runOnce(() -> {
+      //   // debug message
+      //    System.out.println();
+      //    if (currentMode == 0) {
+      //      currentMode = 1;
+      //      System.out.println("the mode is now: ROBOT CENTRIC");
+      //    } else {
+      //      currentMode = 0;
+      //      System.out.println("the mode is now: FIELD CENTRIC");
+      //    }
+      //    System.out.println();
+      //  })));
 
       
-      driverXbox.a().onTrue((Commands.runOnce(() -> {
-        if (decrease_held == false) {
-          decrease_held = true;
-        } else {
-          decrease_held = false;
-        }
-      })));
+      // driverXbox.a().onTrue((Commands.runOnce(() -> {
+      //   if (decrease_held == false) {
+      //     decrease_held = true;
+      //   } else {
+      //     decrease_held = false;
+      //   }
+      // })));
 
       // auto align command
       driverXbox.start().whileTrue((Commands.runOnce(() -> {
@@ -234,9 +242,6 @@ public class RobotContainer {
           shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_LOW);
         }
       })));
-
-      
-
       driverXbox.rightTrigger().onFalse((Commands.runOnce(() -> {
         shooterSubsystem.stopShooterMotor();
       })));
@@ -251,7 +256,7 @@ public class RobotContainer {
         shooterSubsystem.stopShooterMotor();
       })));
       
-      // THIS IS FOR ELEVATOR POSITION RESET, [!IMPORTANT]
+      // THIS IS FOR ELEVATOR POSITION RESET, [!IMPORTANT!]
       // WHEN PRESSING BOTH BACK AND START BTNSs
       driverXbox.back()
       .and(driverXbox.start()).onTrue((Commands.runOnce(() -> {
@@ -313,10 +318,11 @@ public class RobotContainer {
         System.out.println("GYRO HAS BEEN RESET!");
       })));
 
-      // driverXbox.start().whileTrue(Commands.none());
-      driverXbox.back().whileTrue(Commands.none());
+      
+      // Main PXN driver controls
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1)
+      //   .onTrue();
     }
-
   }
 
   /**

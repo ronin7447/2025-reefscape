@@ -45,10 +45,21 @@ public final class Constants
   {
 
     // Joystick Deadband
-    public static final double DEADBAND        = 0.3;   // RL modify from 0.1 to 0.3
-    public static final double LEFT_Y_DEADBAND = 0.3;    // RL modify from 0.1 to 0.3
+    public static final double DEADBAND         = 0.3;   // RL modify from 0.1 to 0.3
+    public static final double LEFT_Y_DEADBAND  = 0.3;    // RL modify from 0.1 to 0.3
     public static final double RIGHT_X_DEADBAND = 0.3;   // RL modify from 0.1 to 0.3
     public static final double TURN_CONSTANT    = 6;
+    
+    // Secondary Operator Joystick
+    
+
+    // Secondary Operator Buttons
+    public static final int BUTTON1 = 1;
+    public static final int BUTTON2 = 2;
+    public static final int BUTTON3 = 3;
+    public static final int BUTTON4 = 4;
+    public static final int BUTTON5 = 5;
+    public static final int BUTTON6 = 6;
   }
 
   public static final class ElevatorConstants {

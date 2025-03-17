@@ -370,8 +370,12 @@ public class RobotContainer {
 
       
       // Main PXN driver controls
-      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1)
-      //   .onTrue();
+      
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1)
+        .onTrue((Commands.runOnce(() -> {
+          shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
+        }))); // IDK IF THIS WORKS JUN CAN U TeST IT WHEN U TEST THE ROBOT -KADEN 3/17/2025
     }
   }
 

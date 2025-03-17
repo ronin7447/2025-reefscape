@@ -99,16 +99,17 @@ public class Vision {
     translations[1] *= 0.25;
 
     return translations;
-
-
+    
   }
 
   public double getTX() {
     return LimelightHelpers.getTX("limelight-front");
   }
+
   public double getTA() {
     return LimelightHelpers.getTA("limelight-front");
   }
+
   public double[] getTranslation() {
     double tx = LimelightHelpers.getTX("limelight-front");
     double txRad = Math.toRadians(tx);

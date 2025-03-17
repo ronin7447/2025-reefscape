@@ -12,12 +12,19 @@ import java.io.File;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.None;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -28,6 +35,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.subsystems.swervedrive.Vision;
+import pabeles.concurrency.ConcurrencyOps.NewInstance;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -51,6 +59,11 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
 
+      PIDController aling = new PIDController(.1, 0, 0);
+      ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(1, 2));
+      ProfiledPIDController close = new ProfiledPIDController(.05, 0, 10, new Constraints(1, 2));
+      ProfiledPIDController translationalign = new ProfiledPIDController(5, 0, 0, new Constraints(0.8, 2));
+
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
@@ -70,6 +83,15 @@ public class RobotContainer {
         () -> -driverXbox.getLeftY(),
         () -> -driverXbox.getLeftX())
         .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
+        .deadband(OperatorConstants.DEADBAND)
+        .scaleTranslation(0.8)
+        .allianceRelativeControl(false);
+
+        SwerveInputStream autoAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+        () -> 0,
+        () -> 0
+        )
+        .withControllerRotationAxis(() -> -1 * aling.calculate(visionSubsystem.getTX(), 0)) // rotation is inverted so we inverted the input :)
         .deadband(OperatorConstants.DEADBAND)
         .scaleTranslation(0.8)
         .allianceRelativeControl(false);
@@ -161,6 +183,8 @@ public class RobotContainer {
     Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleSim);
 
+    Command driveAutoAngularVelocity = drivebase.driveFieldOriented(autoAngularVelocity);
+
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
     } else {
@@ -209,14 +233,41 @@ public class RobotContainer {
       // })));
 
       // auto align command
-      driverXbox.start().whileTrue((Commands.runOnce(() -> {
-        System.out.println("Auto align start");
-         AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, 0, 0, 0, 0);
-         autoAlignCommand.execute();
-      })).repeatedly());
-      
+      // driverXbox.start().whileTrue((Commands.runOnce(() -> {
+      //   System.out.println("Auto align start");
+      //   //  AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, 0, 0, 0, 0);
+      //   //  autoAlignCommand.execute();
+      //   System.out.println(visionSubsystem.getTA()); // FORWARD/BACKWARD
+      //   // System.out.println(visionSubsystem.getTranslation()[1]); // LEFT/RIGHT
+      //   // drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTranslation()[0], 0), translationalign.calculate(-visionSubsystem.getTranslation()[1], 0), close.calculate(visionSubsystem.getTX(), 0)));
+      //   new FunctionalCommand(()-> {}, ()-> {}, null, null, null)
+      //   drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 0.5), 0, 0));
+      //   // if (visionSubsystem.getTX() > 6 || visionSubsystem.getTX() < -6) {
+      //   //   drivebase.drive(new ChassisSpeeds(0, 0, close.calculate(visionSubsystem.getTX(), 0)));
+      //   // } else {
+      //   //   // drivebase.drive(new ChassisSpeeds(0, 0, 0));
+      //   //   System.out.println(translationalign.calculate(visionSubsystem.getTA(), 0.5));
+      //   //   drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 0.5), 0, close.calculate(visionSubsystem.getTX(), 0)));
+      //   // }
+      // })).repeatedly());
+      final Pose2d[] poseHolder = new Pose2d[1];
+      driverXbox.start().whileTrue((new FunctionalCommand(()-> {}, ()-> {
+        drivebase.drive(new ChassisSpeeds(0, 0, close.calculate(visionSubsystem.getTX(), 0)));
+      }, (bool)-> {
+        poseHolder[0] = drivebase.getPose();
+        System.out.println(poseHolder[0]);
+      }, ()-> visionSubsystem.getTX() < 6 && visionSubsystem.getTX() > -6, drivebase)));
 
-      // Elevator Go to L1
+      driverXbox.y().whileTrue((new FunctionalCommand(()-> {}, ()-> {
+        drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 0.5), 0, 0));
+      }, (bool)-> {
+        System.out.println("finished. moving back to pose");
+        System.out.println(poseHolder[0]);
+        System.out.println(drivebase.getPose());
+        drivebase.driveToPose(poseHolder[0]);
+      }, ()->visionSubsystem.getTA() > 0.5, drivebase)));
+
+      // Elevator Go to L1  
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
         elevatorSubsystem.goToL1();
@@ -268,9 +319,7 @@ public class RobotContainer {
       // })));
       
 
-      driverXbox.y().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.showPosition();
-      })));
+     
 
       // VERY IMPORTANT FOR BACKUP,
       // UNRESTRCITED MOVING THE ELEVATOR,

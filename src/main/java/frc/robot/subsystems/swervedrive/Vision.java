@@ -6,13 +6,13 @@ import frc.robot.LimelightHelpers;
 
 public class Vision {
     // Basic targeting data
-    private double tx = LimelightHelpers.getTX("");  // Horizontal offset from crosshair to target in degrees
-    private double ty = LimelightHelpers.getTY("");  // Vertical offset from crosshair to target in degrees
-    private double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
-    private boolean hasTarget = LimelightHelpers.getTV(""); // Do you have a valid target?
+    // private double tx = LimelightHelpers.getTX("");  // Horizontal offset from crosshair to target in degrees
+    // private double ty = LimelightHelpers.getTY("");  // Vertical offset from crosshair to target in degrees
+    // private double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
+    // private boolean hasTarget = LimelightHelpers.getTV(""); // Do you have a valid target?
 
-    private double txnc = LimelightHelpers.getTXNC("");  // Horizontal offset from principal pixel/point to target in degrees
-    private double tync = LimelightHelpers.getTYNC("");  // Vertical  offset from principal pixel/point to target in degrees
+    // private double txnc = LimelightHelpers.getTXNC("");  // Horizontal offset from principal pixel/point to target in degrees
+    // private double tync = LimelightHelpers.getTYNC("");  // Vertical  offset from principal pixel/point to target in degrees
 
     
 
@@ -59,19 +59,19 @@ public class Vision {
   
     double theta = targetingAngle + txnc;
 
-    double txRad = Math.toRadians(tx);
+    double txRad = Math.toRadians(targetingAngle);
     double txncRad = Math.toRadians(txnc);
     double thetaRad = Math.toRadians(theta);
     
 
-    double lateralTranslation;
+    // double lateralTranslation;
 
-    if (Math.abs(txRad) > 1e-6) {
-        lateralTranslation = 10 * Math.sin(txncRad) / Math.sin(txRad);
-    } else {
-        // If tx is nearly zero, we assume no lateral translation is needed.
-        lateralTranslation = 0.0;
-    }
+    // if (Math.abs(txRad) > 1e-6) {
+    //     lateralTranslation = 10 * Math.sin(txncRad) / Math.sin(txRad);
+    // } else {
+    //     // If tx is nearly zero, we assume no lateral translation is needed.
+    //     lateralTranslation = 0.0;
+    // }
 
 
     // double ta = LimelightHelpers.getTA("limelight-front");
@@ -86,20 +86,37 @@ public class Vision {
     // }
 
 
-    double targetingAngleRad = Math.toRadians(targetingAngle); // convert to radians
+    // double targetingAngleRad = Math.toRadians(targetingAngle); // convert to radians
 
     double[] translations = new double[2];
 
 
-    translations[0] = lateralTranslation * Math.sin(thetaRad);
-    translations[1] = lateralTranslation * Math.cos(thetaRad);
+    // translations[0] = lateralTranslation * Math.sin(thetaRad);
+    // translations[1] = lateralTranslation * Math.cos(thetaRad);
 
     // Optional scaling, if needed
-    translations[0] *= 0.25;
+    translations[0] *= 0.25;  
     translations[1] *= 0.25;
 
     return translations;
 
 
+  }
+
+  public double getTX() {
+    return LimelightHelpers.getTX("limelight-front");
+  }
+  public double getTA() {
+    return LimelightHelpers.getTA("limelight-front");
+  }
+  public double[] getTranslation() {
+    double tx = LimelightHelpers.getTX("limelight-front");
+    double txRad = Math.toRadians(tx);
+    double[] translation = new double[2];
+
+    translation[0] = Math.cos(txRad);
+    translation[1] = Math.sin(txRad);
+
+    return translation;
   }
 }

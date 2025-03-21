@@ -9,7 +9,6 @@ package frc.robot;
 
 import java.io.File;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.None;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -24,19 +23,16 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import swervelib.SwerveInputStream;
-import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.subsystems.swervedrive.Vision;
-import pabeles.concurrency.ConcurrencyOps.NewInstance;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import swervelib.SwerveInputStream;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -60,9 +56,9 @@ public class RobotContainer {
       "swerve/neo"));
 
       PIDController aling = new PIDController(.1, 0, 0);
-      ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(1, 2));
-      ProfiledPIDController close = new ProfiledPIDController(.05, 0, 10, new Constraints(1, 2));
-      ProfiledPIDController translationalign = new ProfiledPIDController(5, 0, 0, new Constraints(0.8, 2));
+      ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
+      ProfiledPIDController close = new ProfiledPIDController(.05, 0, 10, new Constraints(0.2, 2));
+      ProfiledPIDController translationalign = new ProfiledPIDController(0.3, 0, 0, new Constraints(0.2, 2));
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -259,13 +255,13 @@ public class RobotContainer {
       }, ()-> visionSubsystem.getTX() < 6 && visionSubsystem.getTX() > -6, drivebase)));
 
       driverXbox.y().whileTrue((new FunctionalCommand(()-> {}, ()-> {
-        drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 0.5), 0, 0));
+        drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 2.7), 0, 0));
       }, (bool)-> {
         System.out.println("finished. moving back to pose");
         System.out.println(poseHolder[0]);
         System.out.println(drivebase.getPose());
-        drivebase.driveToPose(poseHolder[0]);
-      }, ()->visionSubsystem.getTA() > 0.5, drivebase)));
+        // drivebase.driveToPose(poseHolder[0]);
+      }, ()->visionSubsystem.getTA() > 2.7, drivebase)));
 
       // Elevator Go to L1  
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
@@ -386,7 +382,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("Test_Path_Complete");
+    return drivebase.getAutonomousCommand("TestMoveanDRotate");
   }
 
 

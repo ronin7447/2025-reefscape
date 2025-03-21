@@ -23,7 +23,7 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
-  public static final double MAX_SPEED  = Units.feetToMeters(14.5);  //RL modify speed from 14.5 to 7.0
+  public static final double MAX_SPEED  = Units.feetToMeters(7);  //RL modify speed from 14.5 to 7.0
   public static final double DECREASED_SPEED  = Units.feetToMeters(7.25);
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
@@ -65,11 +65,11 @@ public final class Constants
   public static final class ElevatorConstants {
 
     public static final int ELEVATOR_MOTORID = 25;
-    public static final double ELEVATOR_UP_SPEED = 0.75; // Testing speed is 0.3 / -0.3
-    public static final double ELEVATOR_DOWN_SPEED = -0.75;
+    public static final double ELEVATOR_UP_SPEED = 0.3; // Testing speed is 0.3 / -0.3
+    public static final double ELEVATOR_DOWN_SPEED = -0.3;
 
     //public static final int TRUE_BOTTOM = 0;
-    public static final int L1_HEIGHT = 45; //change 0 to true bottom
+    public static final int L1_HEIGHT = 43; //change 0 to true bottom
     public static final int L2_HEIGHT = 86;
     public static final int L3_HEIGHT = 147;
     public static final double TOLERANCE = 0.1;

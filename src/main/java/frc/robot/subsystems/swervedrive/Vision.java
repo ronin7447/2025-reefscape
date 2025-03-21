@@ -2,6 +2,7 @@ package frc.robot.subsystems.swervedrive;
 
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.RawFiducial;
 
 
 public class Vision {
@@ -53,6 +54,7 @@ public class Vision {
  
 
     double targetingAngle = LimelightHelpers.getTX("limelight-front"); // in degrees
+    RawFiducial[] fiducialsOfMyRawPrayers = LimelightHelpers.getRawFiducials("limelight-front"); // we PRAY THIS WORKS -kaden3/18/25
 
     double txnc = LimelightHelpers.getTXNC("limelight-front");
 
@@ -90,6 +92,7 @@ public class Vision {
 
     double[] translations = new double[2];
 
+    System.out.println("Kaden's prayers say that the robot is " + fiducialsOfMyRawPrayers[4] + "units away from the cam (maybe we should set robot values relative to cam later lol -steven).");
 
     // translations[0] = lateralTranslation * Math.sin(thetaRad);
     // translations[1] = lateralTranslation * Math.cos(thetaRad);
@@ -99,8 +102,10 @@ public class Vision {
     translations[1] *= 0.25;
 
     return translations;
-    
+
   }
+
+  
 
   public double getTX() {
     return LimelightHelpers.getTX("limelight-front");
@@ -110,14 +115,18 @@ public class Vision {
     return LimelightHelpers.getTA("limelight-front");
   }
 
-  public double[] getTranslation() {
-    double tx = LimelightHelpers.getTX("limelight-front");
-    double txRad = Math.toRadians(tx);
-    double[] translation = new double[2];
+  // public double[] getTranslation() {
+  //   double tx = LimelightHelpers.getTX("limelight-front");
+  //   double txRad = Math.toRadians(tx);
+  //   double[] translation = new double[2];
 
-    translation[0] = Math.cos(txRad);
-    translation[1] = Math.sin(txRad);
+  //   translation[0] = Math.cos(txRad);
+  //   translation[1] = Math.sin(txRad);
 
-    return translation;
-  }
+
+
+
+
+
+  
 }

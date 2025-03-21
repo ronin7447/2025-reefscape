@@ -158,4 +158,22 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
+    // Get Elevator Speed
+    // get speed by using a function to slow down when near the target
+    public double getElevatorSpeed(double current, double start, double goal) {
+        double speed = 0.0;
+
+        if (current >= goal) {
+            return 0;
+        }
+
+        double t = (start + goal) / 2;
+        double w = 2.0;
+        double h = 0.7;
+        speed = h * Math.pow(w, -((Math.pow(current-t, 2)) / 2)) + 0.1;
+
+
+        return speed;
+    }
+
 }

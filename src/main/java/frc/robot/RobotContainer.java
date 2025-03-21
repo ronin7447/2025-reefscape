@@ -25,8 +25,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -63,6 +65,7 @@ public class RobotContainer {
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   private final Vision visionSubsystem = new Vision();
   
 
@@ -118,13 +121,15 @@ public class RobotContainer {
           driverXbox::getRightY)
       .headingWhile(true);
 
-  SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
-      () -> driverXbox.getLeftY(),
-      () -> driverXbox.getLeftX())
-      .withControllerRotationAxis(() -> driverXbox.getRawAxis(2))
+
+    SwerveInputStream driveAngularVelocitySim = SwerveInputStream.of(drivebase.getSwerveDrive(),
+      () -> -driverXbox.getLeftY(),
+      () -> -driverXbox.getLeftX())
+      .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
       .deadband(OperatorConstants.DEADBAND)
       .scaleTranslation(0.8)
-      .allianceRelativeControl(true);
+      .allianceRelativeControl(false);
+
   // Derive the heading axis with math!
   SwerveInputStream driveDirectAngleSim = driveAngularVelocitySim.copy()
       .withControllerHeadingAxis(() -> Math.sin(
@@ -367,11 +372,64 @@ public class RobotContainer {
       
       // Main PXN driver controls
       
-
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1)
+      // TEST BUTTON remove later pls! -kaden 3/20/2025
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1) // THE PURPLE ONE
         .onTrue((Commands.runOnce(() -> {
           shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
-        }))); // IDK IF THIS WORKS JUN CAN U TeST IT WHEN U TEST THE ROBOT -KADEN 3/17/2025
+        })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1)
+        .onFalse((Commands.runOnce(() -> {
+          shooterSubsystem.stopShooterMotor();
+      })));
+
+      // Algae button forward
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON2) // THE RED ONE IS FORWARD I THINK -kaden 3/20/2025
+        .onTrue((Commands.runOnce(() -> {
+          algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+        })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON2)
+        .onFalse((Commands.runOnce(() -> {
+          algaeSubsystem.stopAlgaeMotor();
+      })));
+
+      // Algae button backward
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON4) // THE BLUE ONE IS BACKWARD I THINK -kaden 3/20/2025
+        .onTrue((Commands.runOnce(() -> {
+          algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+        })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON4)
+        .onFalse((Commands.runOnce(() -> {
+          algaeSubsystem.stopAlgaeMotor();
+      })));
+      
+
+      // Set offsets for Limelight alignment
+      /*
+       * left (270 degrees)
+       * normal/reset (0 degrees)
+       * right (90 degrees)
+       * 
+       * I HAVE NOT TESTED THIS PLS TEST -KADEN 3/20/25
+       */
+
+      new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_LEFT)
+        .onTrue((Commands.runOnce(() -> {
+          LimelightHelpers.setFiducial3DOffset("limelight-front", -0.16, 0, 0); // 0.16m is about the length from the center of april tag to left/right reef sticks
+      })));
+
+      new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_UP)
+        .onTrue((Commands.runOnce(() -> {
+          LimelightHelpers.setFiducial3DOffset("limelight-front", 0, 0, 0);
+      })));
+      
+      new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_RIGHT)
+        .onTrue((Commands.runOnce(() -> {
+          LimelightHelpers.setFiducial3DOffset("limelight-front", 0.16, 0, 0);
+      })));
+      
     }
   }
 

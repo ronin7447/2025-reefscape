@@ -2,6 +2,7 @@ package frc.robot.commands.swervedrive.auto;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.Vision;
 
@@ -36,6 +37,8 @@ public class AutoAlignCommand extends Command {
         System.out.println("forward limelight: " + forwardLimelight[0] + "       " + forwardLimelight[1] + "\n");
         
         //var targetSpeed = swerveSubsystem.getTargetSpeeds(forwardLimelight, vY, headingHorizontal, headingVertical);
+
+        
 
         //swerveSubsystem.drive(targetSpeed, rotLimelight);
         // Translation2d translation = new Translation2d(forwardLimelight, vY);

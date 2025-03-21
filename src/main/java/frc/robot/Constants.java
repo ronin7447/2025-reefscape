@@ -41,6 +41,12 @@ public final class Constants
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
+  public static final class LimelightConstants {
+
+    public static final String FRONTLL = "limelight-front";
+    public static final String BACKLL = "limelight-back";
+  }
+
   public static class OperatorConstants
   {
 
@@ -51,7 +57,10 @@ public final class Constants
     public static final double TURN_CONSTANT    = 6;
     
     // Secondary Operator Joystick
-    
+    public static final int JOYSTICK_UP = 0;
+    public static final int JOYSTICK_RIGHT = 90;
+    public static final int JOYSTICK_DOWN = 180;
+    public static final int JOYSTICK_LEFT = 270;
 
     // Secondary Operator Buttons
     public static final int BUTTON1 = 1;
@@ -60,6 +69,7 @@ public final class Constants
     public static final int BUTTON4 = 4;
     public static final int BUTTON5 = 5;
     public static final int BUTTON6 = 6;
+    
   }
 
   public static final class ElevatorConstants {
@@ -80,7 +90,7 @@ public final class Constants
     public static final int SHOOTER_MOTORID = 60;
     public static final double SHOOTER_SPEED_HIGH = 0.25;
     public static final double SHOOTER_SPEED_LOW = 0.125;
-    public static final double SHOOTER_REVERSE_SPEED = -0.1;
+    public static final double SHOOTER_REVERSE_SPEED = -0.1; // NOW USED FOR ALGAE REMOVAL
 
   }
 
@@ -96,6 +106,13 @@ public final class Constants
 
    public static final double TAG_TO_CAMERA_DIFF = 10.00;
 
+  }
+
+  public static final class AlgaeConstants {
+    
+    public static final int ALGAE_MOTORID = 16;
+    public static final double ALGAE_SPEED = -0.6;
+    public static final double ALGAE_REVERSE_SPEED = 0.6;
   }
 
 }

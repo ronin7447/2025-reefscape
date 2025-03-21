@@ -36,6 +36,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.swervedrive.Vision;
 import swervelib.SwerveInputStream;
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very
@@ -270,6 +271,7 @@ public class RobotContainer {
 
       // Elevator Go to L1  
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
+        elevatorSubsystem.setInitPos();
         elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
         elevatorSubsystem.goToL1();
       })));

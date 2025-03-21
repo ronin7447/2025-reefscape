@@ -12,6 +12,9 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,6 +24,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final SparkMax ElevatorMotor;
     private final SparkMaxConfig ElevatorMotorConfig;
     private RelativeEncoder ElevatorEncoder;
+
+    private final DigitalInput L1_DIOInput = new DigitalInput(7);
+    private final DigitalInput L2_DIOInput = new DigitalInput(8);
+    private final DigitalInput L3_DIOInput = new DigitalInput(9);
+    private double initPos;
+
+    private boolean L1bool = false; // Probably starts at false kaden3/21/25
 
     public ElevatorSubsystem() {
 
@@ -81,17 +91,26 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
+    // public void goToL1() {
+    //     if (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
+    //         while (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+    //         }
+    //     } else {
+    //         while (getElevatorPosition() < Constants.ElevatorConstants.L1_HEIGHT) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+    //         }
+    //     }
+    //     stopElevatorMotor();
+    // }
+    public void setInitPos() {
+        initPos = getElevatorPosition();
+    }
+
     public void goToL1() {
-        if (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
-            while (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
-            }
-        } else {
-            while (getElevatorPosition() < Constants.ElevatorConstants.L1_HEIGHT) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-            }
+        if (L1bool == false) {
+            runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L1_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
         }
-        stopElevatorMotor();
     }
 
     public void goToL2() {
@@ -160,7 +179,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // Get Elevator Speed
     // get speed by using a function to slow down when near the target
-    public double getElevatorSpeed(double current, double start, double goal) {
+    public double getElevatorSpeed(double current, double start, double goal, double baseSpeed) {
         double speed = 0.0;
 
         if (current >= goal) {
@@ -170,7 +189,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         double t = (start + goal) / 2;
         double w = 2.0;
         double h = 0.7;
-        speed = h * Math.pow(w, -((Math.pow(current-t, 2)) / 2)) + 0.1;
+        speed = h * Math.pow(w, -((Math.pow(current-t, 2)) / 2)) + baseSpeed;
 
 
         return speed;

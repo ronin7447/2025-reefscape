@@ -74,6 +74,8 @@ public final class Constants
 
   public static final class ElevatorConstants {
 
+    public static final double BASE_SPEED = 0.05; // For elevator new function 3/21/25
+
     public static final int ELEVATOR_MOTORID = 25;
     public static final double ELEVATOR_UP_SPEED = 0.3; // Testing speed is 0.3 / -0.3
     public static final double ELEVATOR_DOWN_SPEED = -0.3;

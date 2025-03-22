@@ -276,17 +276,14 @@ public class RobotContainer {
       }, ()->visionSubsystem.getTA() > 2.7, drivebase)));
 
       // Elevator Go to L1
-
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setInitPos();
-  
         elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
 
-        while (L1_DIOInput.get()) {
+        while (!L1_DIOInput.get()) {
           elevatorSubsystem.goToL1();
         }
-        
-        
+        elevatorSubsystem.stopElevatorMotor();
       })));
 
     

@@ -109,29 +109,31 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void goToL2() {
-        if (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT) {
-            while (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT - 3) {
-              runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-            }
-        } else {
-            while (getElevatorPosition() > Constants.ElevatorConstants.L2_HEIGHT + 3) {
-              runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
-            }
-        }        
-        stopElevatorMotor();
+        // if (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT) {
+        //     while (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT - 3) {
+        //       runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+        //     }
+        // } else {
+        //     while (getElevatorPosition() > Constants.ElevatorConstants.L2_HEIGHT + 3) {
+        //       runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+        //     }
+        // }        
+        // stopElevatorMotor();
+        runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L2_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
     }
 
     public void goToL3() {
-        if (getElevatorPosition() < Constants.ElevatorConstants.L3_HEIGHT) {
-            while (getElevatorPosition() < Constants.ElevatorConstants.L3_HEIGHT) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-            }
-        } else {
-            while (getElevatorPosition() > Constants.ElevatorConstants.L3_HEIGHT) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
-            }
-        }
-        stopElevatorMotor();
+        // if (getElevatorPosition() < Constants.ElevatorConstants.L3_HEIGHT) {
+        //     while (getElevatorPosition() < Constants.ElevatorConstants.L3_HEIGHT) {
+        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+        //     }
+        // } else {
+        //     while (getElevatorPosition() > Constants.ElevatorConstants.L3_HEIGHT) {
+        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+        //     }
+        // }
+        // stopElevatorMotor();
+        runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
     }
     // public void goToTrueZero() {
     //     // while (getElevatorPosition() > Constants.ElevatorConstants.TRUE_BOTTOM + 40) {
@@ -177,15 +179,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double getElevatorSpeed(double current, double start, double goal, double baseSpeed) {
         double speed = 0.0;
 
-        if (current >= goal) {
-            return 0;
+        if ((start < goal && current >= goal) || (start > goal && current <= goal)) {
+            return 0.0;
         }
 
         double t = (start + goal) / 2;
         double w = 2.0;
         double h = 0.7;
-        speed = h * Math.pow(w, -((Math.pow(current-t, 2)) / 2)) + baseSpeed;
+        //speed = h * Math.pow(w, -((Math.pow(current-t, 2)) / 2)) + baseSpeed;
 
+        speed = (h - baseSpeed) * Math.pow(w, Math.pow((-4 * (current - t)) / w, 4)) + baseSpeed;
+
+        if (start > goal) {
+            speed *= -1;
+        }
 
         return speed;
     }

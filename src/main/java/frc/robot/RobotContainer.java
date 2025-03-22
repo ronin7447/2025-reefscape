@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -416,22 +417,26 @@ public class RobotContainer {
        * 
        * I HAVE NOT TESTED THIS PLS TEST -KADEN 3/20/25
        */
+      //CASE 1 - ALIGN WITH REEF BEFORE GOING IN
+      // new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_LEFT)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     LimelightHelpers.setFiducial3DOffset("limelight-front", -0.16, 0, 0); // 0.16m is about the length from the center of april tag to left/right reef sticks
+      // })));
 
-      new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_LEFT)
-        .onTrue((Commands.runOnce(() -> {
-          LimelightHelpers.setFiducial3DOffset("limelight-front", -0.16, 0, 0); // 0.16m is about the length from the center of april tag to left/right reef sticks
-      })));
+      // new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_UP)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     LimelightHelpers.setFiducial3DOffset("limelight-front", 0, 0, 0);
+      // })));
+      
+      // new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_RIGHT)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     LimelightHelpers.setFiducial3DOffset("limelight-front", 0.16, 0, 0);
+      // })));
+    
+      //CASE 2 - SLOW MOVEMENT
+      Trigger povTrigger = new Trigger(() -> driverPXN.getPOV() != -1);
 
-      new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_UP)
-        .onTrue((Commands.runOnce(() -> {
-          LimelightHelpers.setFiducial3DOffset("limelight-front", 0, 0, 0);
-      })));
-      
-      new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_RIGHT)
-        .onTrue((Commands.runOnce(() -> {
-          LimelightHelpers.setFiducial3DOffset("limelight-front", 0.16, 0, 0);
-      })));
-      
+      povTrigger.whileTrue(new SlowDrive(drivebase, driverPXN));
     }
   }
 

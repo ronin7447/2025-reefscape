@@ -106,7 +106,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void setInitPos() {
         initPos = getElevatorPosition();
     }
-
+    
     public void goToL1() {
         if (L1bool == false) {
             runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L1_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));

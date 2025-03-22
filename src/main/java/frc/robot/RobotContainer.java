@@ -448,9 +448,13 @@ public class RobotContainer {
     
       //CASE 2 - SLOW MOVEMENT
 
-      Trigger povTrigger = new Trigger(() -> driverPXN.getPOV() != -1);
+      // Trigger povTrigger = new Trigger(() -> driverPXN.getPOV() != -1);
 
-      povTrigger.whileTrue(new SlowDrive(drivebase, driverPXN));
+      // povTrigger.whileTrue(new SlowDrive(drivebase, driverPXN));
+      // new POVButton(driverPXN, 90)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     drivebase.drive();
+      //   })));
 
     }
   }

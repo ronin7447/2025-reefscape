@@ -267,13 +267,15 @@ public class RobotContainer {
       }, ()-> visionSubsystem.getTX() < 6 && visionSubsystem.getTX() > -6, drivebase)));
 
       driverXbox.y().whileTrue((new FunctionalCommand(()-> {}, ()-> {
-        drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 2.7), 0, 0));
+        drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 20.0), 0, 0));
       }, (bool)-> {
+        System.out.println("TA");
+        System.out.println(visionSubsystem.getTA());
         System.out.println("finished. moving back to pose");
         System.out.println(poseHolder[0]);
         System.out.println(drivebase.getPose());
         // drivebase.driveToPose(poseHolder[0]);
-      }, ()->visionSubsystem.getTA() > 2.7, drivebase)));
+      }, ()->visionSubsystem.getTA() > 20.0, drivebase)));
 
       // Elevator Go to L1
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {

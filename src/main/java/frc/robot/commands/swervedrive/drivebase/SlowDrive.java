@@ -19,29 +19,29 @@ public class SlowDrive extends Command {
     @Override
     public void execute()
     {
-        // if (controller.getPOV() == 0) {
-        //     moveX = 0.2;
-        //     moveY = 0.0;
-        // }
+        if (controller.getPOV() == 0) {
+            moveX = 0.2;
+            moveY = 0.0;
+        }
 
-        // if (controller.getPOV() == 90) {
-        //     moveX = 0.0;
-        //     moveY = -0.2;
-        // }
+        if (controller.getPOV() == 90) {
+            moveX = 0.0;
+            moveY = -0.2;
+        }
 
-        // if (controller.getPOV() == 180) {
-        //     moveX = -0.2;
-        //     moveY = 0.0;
-        // }
+        if (controller.getPOV() == 180) {
+            moveX = -0.2;
+            moveY = 0.0;
+        }
 
-        // if (controller.getPOV() == 270) {
-        //     moveX = 0.0;
-        //     moveY = 0.2;
-        // }
+        if (controller.getPOV() == 270) {
+            moveX = 0.0;
+            moveY = 0.2;
+        }
 
         // Daniel says this works in trig so whatever
-        moveX = 0.2 * Math.cos(Math.toRadians(-controller.getPOV()));
-        moveY = 0.2 * Math.sin(Math.toRadians(-controller.getPOV()));
+        // moveX = 0.2 * Math.cos(Math.toRadians(-controller.getPOV()));
+        // moveY = 0.2 * Math.sin(Math.toRadians(-controller.getPOV()));
 
         swerveSubsystem.driveCommand(
             () -> moveX,

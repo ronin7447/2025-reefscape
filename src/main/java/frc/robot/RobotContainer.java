@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -456,8 +457,21 @@ public class RobotContainer {
       new POVButton(driverPXN, 90)
         .onTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
+
+          // drivebase.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(), scaledInputs.getY(),
+          //                                                             headingX.getAsDouble(),
+          //                                                             headingY.getAsDouble(),
+          //                                                             swerveDrive.getOdometryHeading().getRadians(),
+          //                                                             swerveDrive.getMaximumChassisVelocity()));
+         //});
+          drivebase.drive(new Translation2d(0.2, 0.0), 0.0, false);
+  
+
+
           System.out.println("THIS CODE IS RUNNINGKADEN");
       })));
+
+
 
     }
   }

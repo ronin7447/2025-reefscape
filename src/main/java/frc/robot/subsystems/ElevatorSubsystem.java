@@ -25,12 +25,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final SparkMaxConfig ElevatorMotorConfig;
     private RelativeEncoder ElevatorEncoder;
 
-    private final DigitalInput L1_DIOInput = new DigitalInput(7);
-    private final DigitalInput L2_DIOInput = new DigitalInput(8);
-    private final DigitalInput L3_DIOInput = new DigitalInput(9);
     private double initPos;
 
-    private boolean L1bool = false; // Probably starts at false kaden3/21/25
+    // private boolean L1bool = false; // Probably starts at false kaden3/21/25
 
     public ElevatorSubsystem() {
 
@@ -108,11 +105,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
     
     public void goToL1() {
-        if (L1bool == false) {
-            runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L1_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
-        } else {
-            stopElevatorMotor();
-        }
+        runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L1_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
     }
 
     public void goToL2() {

@@ -16,6 +16,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -54,6 +55,10 @@ public class RobotContainer {
 
   // Secondary Operator Controller
   final Joystick driverPXN = new Joystick(1);
+
+  DigitalInput L1_DIOInput = new DigitalInput(7);
+  DigitalInput L2_DIOInput = new DigitalInput(8);
+  DigitalInput L3_DIOInput = new DigitalInput(9);
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -270,12 +275,21 @@ public class RobotContainer {
         // drivebase.driveToPose(poseHolder[0]);
       }, ()->visionSubsystem.getTA() > 2.7, drivebase)));
 
-      // Elevator Go to L1  
+      // Elevator Go to L1
+
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setInitPos();
+  
         elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-        elevatorSubsystem.goToL1();
+
+        while (L1_DIOInput.get()) {
+          elevatorSubsystem.goToL1();
+        }
+        
+        
       })));
+
+    
 
       // Elevator Go to L3
       driverXbox.rightBumper().onTrue((Commands.runOnce(() -> {
@@ -434,7 +448,7 @@ public class RobotContainer {
       // })));
     
       //CASE 2 - SLOW MOVEMENT
-      
+
       Trigger povTrigger = new Trigger(() -> driverPXN.getPOV() != -1);
 
       povTrigger.whileTrue(new SlowDrive(drivebase, driverPXN));

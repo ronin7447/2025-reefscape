@@ -452,7 +452,12 @@ public class RobotContainer {
 
       // povTrigger.whileTrue(new SlowDrive(drivebase, driverPXN));
 
-      new POVButton(driverPXN, 90).onTrue(new SlowDrive(drivebase, driverPXN, 0.0, -0.2));
+
+      new POVButton(driverPXN, 90)
+        .onTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
+          System.out.println("THIS CODE IS RUNNINGKADEN");
+      })));
 
     }
   }

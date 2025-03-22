@@ -9,9 +9,11 @@ public class SlowDrive extends Command {
     private final Joystick controller;
     private double moveX, moveY;
 
-    public SlowDrive(SwerveSubsystem swerveSubsystem, Joystick controller) {
+    public SlowDrive(SwerveSubsystem swerveSubsystem, Joystick controller, double moveX, double moveY) {
         this.swerveSubsystem = swerveSubsystem;
         this.controller = controller;
+        this.moveX = moveX;
+        this.moveY = moveY;
 
         addRequirements(this.swerveSubsystem);
     }
@@ -19,25 +21,25 @@ public class SlowDrive extends Command {
     @Override
     public void execute()
     {
-        if (controller.getPOV() == 0) {
-            moveX = 0.2;
-            moveY = 0.0;
-        }
+        // if (controller.getPOV() == 0) {
+        //     moveX = 0.2;
+        //     moveY = 0.0;
+        // }
 
-        if (controller.getPOV() == 90) {
-            moveX = 0.0;
-            moveY = -0.2;
-        }
+        // if (controller.getPOV() == 90) {
+        //     moveX = 0.0;
+        //     moveY = -0.2;
+        // }
 
-        if (controller.getPOV() == 180) {
-            moveX = -0.2;
-            moveY = 0.0;
-        }
+        // if (controller.getPOV() == 180) {
+        //     moveX = -0.2;
+        //     moveY = 0.0;
+        // }
 
-        if (controller.getPOV() == 270) {
-            moveX = 0.0;
-            moveY = 0.2;
-        }
+        // if (controller.getPOV() == 270) {
+        //     moveX = 0.0;
+        //     moveY = 0.2;
+        // }
 
         // Daniel says this works in trig so whatever
         // moveX = 0.2 * Math.cos(Math.toRadians(-controller.getPOV()));

@@ -280,18 +280,21 @@ public class RobotContainer {
         // drivebase.driveToPose(poseHolder[0]);
       }, ()->visionSubsystem.getTA() > 12.0, drivebase)));
 
+      // Debug elevator code
+      driverXbox.a().onTrue((Commands.runOnce(() -> {
+        System.out.println(elevatorSubsystem.getElevatorPosition());
+      })));
+
       // Elevator Go to L1
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setInitPos();
         elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-
-        while (!L1_DIOInput.get()) {
-          elevatorSubsystem.goToL1();
-        }
+        elevatorSubsystem.goToL1();
+        // while (!L1_DIOInput.get()) {
+        //   elevatorSubsystem.goToL1();
+        // }
         elevatorSubsystem.stopElevatorMotor();
       })));
-
-    
 
       // Elevator Go to L3
       driverXbox.rightBumper().onTrue((Commands.runOnce(() -> {
@@ -376,6 +379,7 @@ public class RobotContainer {
       driverXbox.povRight().onTrue((Commands.runOnce(() -> {
         climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
       })));
+
 
       driverXbox.povRight().onFalse((Commands.runOnce(() -> {
         climbSubsystem.stopClimbMotor();

@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -67,7 +68,7 @@ public class RobotContainer {
       PIDController aling = new PIDController(.1, 0, 0);
       ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
       ProfiledPIDController close = new ProfiledPIDController(.05, 0, 10, new Constraints(0.2, 2));
-      ProfiledPIDController translationalign = new ProfiledPIDController(0.3, 0, 0.01, new Constraints(0.2, 2));
+      ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -267,7 +268,9 @@ public class RobotContainer {
       }, ()-> visionSubsystem.getTX() < 3 && visionSubsystem.getTX() > -3, drivebase)));
 
       driverXbox.y().whileTrue((new FunctionalCommand(()-> {}, ()-> {
-        drivebase.drive(new ChassisSpeeds(translationalign.calculate(-visionSubsystem.getTA(), 20.0), 0, 0));
+        if (visionSubsystem.getTA() < 12.0) {
+          drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 15.0), 0, 0));
+        }
       }, (bool)-> {
         System.out.println("TA");
         System.out.println(visionSubsystem.getTA());
@@ -275,7 +278,7 @@ public class RobotContainer {
         System.out.println(poseHolder[0]);
         System.out.println(drivebase.getPose());
         // drivebase.driveToPose(poseHolder[0]);
-      }, ()->visionSubsystem.getTA() > 15.0, drivebase)));
+      }, ()->visionSubsystem.getTA() > 12.0, drivebase)));
 
       // Elevator Go to L1
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
@@ -454,14 +457,18 @@ public class RobotContainer {
 
 
       new POVButton(driverPXN, 90)
-        .onTrue((Commands.runOnce(() -> {
-          drivebase.driveCommand(
-            () -> 0.0,
-            () -> 3.0,
-            () -> 0.0
-            ).repeatedly();
-          System.out.println("THIS CODE IS RUNNINGKADEN");
-      })));
+        .whileTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
+          drivebase.drive(new Translation2d(0.0, -0.5), 0.0, true);
+      })).repeatedly());
+
+      // new POVButton(driverPXN, -1)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
+      //     drivebase.drive(new Translation2d(0.0, 0.0), 0.0, true);
+      // })));
+
+
 
     }
   }

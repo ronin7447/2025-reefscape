@@ -471,6 +471,31 @@ public class RobotContainer {
         .whileTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, 270);
       })).repeatedly());
+
+      // CLIMB JOYSTICK MODE (everything +-90 degrees)
+      new Trigger(() -> driverPXN.getRawAxis(1) == 1)
+        .onTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, 270);
+      })).repeatedly());
+
+      new Trigger(() -> driverPXN.getRawAxis(0) == 1)
+        .onTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, 0);
+      })).repeatedly());
+
+      new Trigger(() -> driverPXN.getRawAxis(1) == -1)
+        .onTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, 90);
+      })).repeatedly());
+      
+      new Trigger(() -> driverPXN.getRawAxis(0) == -1)
+        .onTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, 180);
+      })).repeatedly());
+
+
+      
+
     }
   }
 

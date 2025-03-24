@@ -20,6 +20,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -80,7 +81,7 @@ public class RobotContainer {
 
   // the current mode for debug message, 0 is field centric, 1 is robot centric
   private int currentMode = 0; 
-  boolean decrease_held = false;
+
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -450,26 +451,26 @@ public class RobotContainer {
       // })));
     
       //CASE 2 - SLOW MOVEMENT
-
-      // Trigger povTrigger = new Trigger(() -> driverPXN.getPOV() != -1);
-
-      // povTrigger.whileTrue(new SlowDrive(drivebase, driverPXN));
-
+      // like this should work but if it doesn't just revert -kaden3/24/25
+      new POVButton(driverPXN, 0)
+        .whileTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, 0);
+      })).repeatedly());
 
       new POVButton(driverPXN, 90)
         .whileTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
-          drivebase.drive(new Translation2d(0.0, -0.5), 0.0, true);
+          new SlowDrive(drivebase, 90);
       })).repeatedly());
 
-      // new POVButton(driverPXN, -1)
-      //   .onTrue((Commands.runOnce(() -> {
-      //     new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
-      //     drivebase.drive(new Translation2d(0.0, 0.0), 0.0, true);
-      // })));
+      new POVButton(driverPXN, 180)
+        .whileTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, 180);
+      })).repeatedly());
 
-
-
+      new POVButton(driverPXN, 270)
+        .whileTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, 270);
+      })).repeatedly());
     }
   }
 

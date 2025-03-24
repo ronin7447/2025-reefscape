@@ -1,19 +1,21 @@
 package frc.robot.commands.swervedrive.drivebase;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.math.geometry.Translation2d;
+// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class SlowDrive extends Command {
     private final SwerveSubsystem swerveSubsystem;
-    private final Joystick controller;
+    // private final Joystick controller;
     private double moveX, moveY;
+    private int angle;
 
-    public SlowDrive(SwerveSubsystem swerveSubsystem, Joystick controller, double moveX, double moveY) {
+    public SlowDrive(SwerveSubsystem swerveSubsystem, int angle) {
         this.swerveSubsystem = swerveSubsystem;
-        this.controller = controller;
-        this.moveX = moveX;
-        this.moveY = moveY;
+        // this.controller = controller;
+        this.angle = angle;
 
         addRequirements(this.swerveSubsystem);
     }
@@ -21,35 +23,25 @@ public class SlowDrive extends Command {
     @Override
     public void execute()
     {
-        // if (controller.getPOV() == 0) {
-        //     moveX = 0.2;
-        //     moveY = 0.0;
-        // }
+        if (angle == 0) { // Forward
+            moveX = Constants.DECREASED_SPEED;
+            moveY = 0.0;
+        }
+        if (angle == 90) { // Rightward
+            moveX = 0.0;
+            moveY = Constants.DECREASED_SPEED * -1;
+        }
+        if (angle == 180) { // Backward
+            moveX = Constants.DECREASED_SPEED * -1;
+            moveY = 0.0;
+        }
+        if (angle == 270) { // Leftward
+            moveX = 0.0;
+            moveY = Constants.DECREASED_SPEED;
+        }
 
-        // if (controller.getPOV() == 90) {
-        //     moveX = 0.0;
-        //     moveY = -0.2;
-        // }
-
-        // if (controller.getPOV() == 180) {
-        //     moveX = -0.2;
-        //     moveY = 0.0;
-        // }
-
-        // if (controller.getPOV() == 270) {
-        //     moveX = 0.0;
-        //     moveY = 0.2;
-        // }
-
-        // Daniel says this works in trig so whatever
-        // moveX = 0.2 * Math.cos(Math.toRadians(-controller.getPOV()));
-        // moveY = 0.2 * Math.sin(Math.toRadians(-controller.getPOV()));
-
-        swerveSubsystem.driveCommand(
-            () -> moveX,
-            () -> moveY,
-            () -> 0.0
-        );
+        swerveSubsystem.drive(new Translation2d(moveX, moveY), 0.0, true);
+        
     }
 
     @Override

@@ -24,7 +24,7 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
   public static final double MAX_SPEED  = Units.feetToMeters(14.5);  //RL modify speed from 14.5 to 7.0
-  public static final double DECREASED_SPEED  = Units.feetToMeters(7.25);
+  public static final double DECREASED_SPEED  = 0.2; // Distance units
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
@@ -85,6 +85,7 @@ public final class Constants
     public static final int L2_HEIGHT = 94;
     public static final int L3_HEIGHT = 151;
     public static final double TOLERANCE = 0.1;
+
   }
 
   public static final class ShooterConstants {
@@ -115,6 +116,7 @@ public final class Constants
     public static final int ALGAE_MOTORID = 16;
     public static final double ALGAE_SPEED = -0.6;
     public static final double ALGAE_REVERSE_SPEED = 0.6;
+
   }
 
 }

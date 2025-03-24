@@ -57,9 +57,9 @@ public class RobotContainer {
   // Secondary Operator Controller
   final Joystick driverPXN = new Joystick(1);
 
-  DigitalInput L1_DIOInput = new DigitalInput(7);
-  DigitalInput L2_DIOInput = new DigitalInput(8);
-  DigitalInput L3_DIOInput = new DigitalInput(9);
+  // //DigitalInput L1_DIOInput = new DigitalInput(7);
+  // DigitalInput L2_DIOInput = new DigitalInput(8);
+  // DigitalInput L3_DIOInput = new DigitalInput(9);
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -259,6 +259,9 @@ public class RobotContainer {
       //   //   drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 0.5), 0, close.calculate(visionSubsystem.getTX(), 0)));
       //   // }
       // })).repeatedly());
+
+      // Limelight code
+
       final Pose2d[] poseHolder = new Pose2d[1];
       driverXbox.start().whileTrue((new FunctionalCommand(()-> {}, ()-> {
         drivebase.drive(new ChassisSpeeds(0, 0, close.calculate(visionSubsystem.getTX(), 0)));
@@ -283,28 +286,31 @@ public class RobotContainer {
       // Debug elevator code
       driverXbox.a().onTrue((Commands.runOnce(() -> {
         System.out.println(elevatorSubsystem.getElevatorPosition());
+        System.out.println(elevatorSubsystem.getLevel());
       })));
 
       // Elevator Go to L1
       driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setInitPos();
+        // elevatorSubsystem.setInitPos();
         elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
         elevatorSubsystem.goToL1();
         // while (!L1_DIOInput.get()) {
         //   elevatorSubsystem.goToL1();
         // }
         elevatorSubsystem.stopElevatorMotor();
+
       })));
 
       // Elevator Go to L3
       driverXbox.rightBumper().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
+        //elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
         elevatorSubsystem.goToL3();
       })));
 
       // Elevator Go to L2
       driverXbox.x().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
+        // elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
+        // elevatorSubsystem.goToL2();
         elevatorSubsystem.goToL2();
       })));
 
@@ -460,10 +466,28 @@ public class RobotContainer {
       // povTrigger.whileTrue(new SlowDrive(drivebase, driverPXN));
 
 
+      new POVButton(driverPXN, 0)
+        .whileTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
+          drivebase.drive(new Translation2d(0.4, 0.0), 0.0, true);
+      })).repeatedly());
+
       new POVButton(driverPXN, 90)
         .whileTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
-          drivebase.drive(new Translation2d(0.0, -0.5), 0.0, true);
+          drivebase.drive(new Translation2d(0.0, -0.4), 0.0, true);
+      })).repeatedly());
+
+      new POVButton(driverPXN, 180)
+        .whileTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
+          drivebase.drive(new Translation2d(-0.4, -0.0), 0.0, true);
+      })).repeatedly());
+
+      new POVButton(driverPXN, 270)
+        .whileTrue((Commands.runOnce(() -> {
+          new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
+          drivebase.drive(new Translation2d(0.0, 0.4), 0.0, true);
       })).repeatedly());
 
       // new POVButton(driverPXN, -1)

@@ -13,8 +13,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -25,7 +23,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final SparkMaxConfig ElevatorMotorConfig;
     private RelativeEncoder ElevatorEncoder;
 
+    //private DigitalInput L1_DIOInput;
+    private DigitalInput L2_DIOInput;
+    private DigitalInput L3_DIOInput;
+
     private double initPos;
+
+    private int currentLevel;
 
     // private boolean L1bool = false; // Probably starts at false kaden3/21/25
 
@@ -35,17 +39,29 @@ public class ElevatorSubsystem extends SubsystemBase {
         ElevatorMotorConfig = new SparkMaxConfig();
         ElevatorEncoder = ElevatorMotor.getEncoder();
 
+        //L1_DIOInput = new DigitalInput(7);
+        L2_DIOInput = new DigitalInput(8);
+        L3_DIOInput = new DigitalInput(9);
+
+        if (currentLevel > 100) { /*!L1_DIOInput.get()*/ // dummy code Daniel
+            currentLevel = 1;
+        } else if (!L2_DIOInput.get()) {
+            currentLevel = 2;
+        } else if (!L3_DIOInput.get()) {
+            currentLevel = 3;
+        } else {
+            currentLevel = 0;
+        }
+
         ElevatorMotorConfig.idleMode(IdleMode.kBrake);   
         ElevatorMotorConfig.softLimit
-        .forwardSoftLimit(Constants.ElevatorConstants.L3_HEIGHT)
+        .forwardSoftLimit(1000)
         .forwardSoftLimitEnabled(true)
-        .reverseSoftLimit(Constants.ElevatorConstants.L1_HEIGHT)
+        .reverseSoftLimit(-1000)
         .reverseSoftLimitEnabled(true);     
         
         ElevatorMotor.configure(ElevatorMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         // ElevatorEncoder.setPosition(0);
-        
-
     }
 
     public void setMotorLimit(int upperLimit, int lowerLimit){
@@ -88,38 +104,67 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    // public void goToL1() {
-    //     if (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
-    //         while (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
-    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
-    //         }
-    //     } else {
-    //         while (getElevatorPosition() < Constants.ElevatorConstants.L1_HEIGHT) {
-    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-    //         }
-    //     }
-    //     stopElevatorMotor();
-    // }
-    public void setInitPos() {
-        initPos = getElevatorPosition();
+    public void setLevel(int currentLevel) {
+
+        this.currentLevel = currentLevel;
+
     }
-    
+
+    public int getLevel() {
+
+        return currentLevel;
+
+    }
+
     public void goToL1() {
-        runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L1_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
+        if (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
+            while (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+            }
+        } else {
+            while (getElevatorPosition() < Constants.ElevatorConstants.L1_HEIGHT) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+            }
+        }
+        stopElevatorMotor();
     }
+    // public void setInitPos() {
+    //     initPos = getElevatorPosition();
+    // }
+    
+    // public void goToL1() {
+    //     runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L1_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
+    // }
 
     public void goToL2() {
         // if (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT) {
-        //     while (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT - 3) {
+        //     while (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT ) {
         //       runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
         //     }
         // } else {
-        //     while (getElevatorPosition() > Constants.ElevatorConstants.L2_HEIGHT + 3) {
+        //     while (getElevatorPosition() > Constants.ElevatorConstants.L2_HEIGHT) {
         //       runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
         //     }
         // }        
         // stopElevatorMotor();
-        runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L2_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
+
+        if (currentLevel == 0) {
+            // make sure to add L1.get()
+            while (L2_DIOInput.get() && L3_DIOInput.get()) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+            }
+        } else if (currentLevel > 2) {
+          while (L2_DIOInput.get()) {
+            runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
+          }
+        } else if (currentLevel < 2) {
+          while (L2_DIOInput.get()) {
+            runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+          }
+        }
+        stopElevatorMotor();
+        currentLevel = 2;
+
     }
 
     public void goToL3() {
@@ -133,7 +178,25 @@ public class ElevatorSubsystem extends SubsystemBase {
         //     }
         // }
         // stopElevatorMotor();
-        runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
+        // runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
+    
+        if (currentLevel == 0) {
+            // make sure to add L1.get()
+            while (L2_DIOInput.get() && L3_DIOInput.get()) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+            }
+        } else if (currentLevel > 3) {
+          while (L3_DIOInput.get()) {
+            runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
+          }
+        } else if (currentLevel < 3) {
+          while (L3_DIOInput.get()) {
+            runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+          }
+        }
+        stopElevatorMotor();
+        currentLevel = 3;
+    
     }
     // public void goToTrueZero() {
     //     // while (getElevatorPosition() > Constants.ElevatorConstants.TRUE_BOTTOM + 40) {

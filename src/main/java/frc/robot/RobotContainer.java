@@ -58,6 +58,8 @@ public class RobotContainer {
   // Secondary Operator Controller
   final Joystick driverPXN = new Joystick(1);
 
+
+  
   // //DigitalInput L1_DIOInput = new DigitalInput(7);
   // DigitalInput L2_DIOInput = new DigitalInput(8);
   // DigitalInput L3_DIOInput = new DigitalInput(9);
@@ -425,44 +427,19 @@ public class RobotContainer {
           algaeSubsystem.stopAlgaeMotor();
       })));
 
-      // Algae button backward
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_4) // THE BLUE ONE IS BACKWARD I THINK -kaden 3/20/2025
-        .onTrue((Commands.runOnce(() -> {
+      // Climb up/down
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5) // THE BLUE ONE IS BACKWARD I THINK -kaden 3/20/2025
+        .whileTrue((Commands.runOnce(() -> {
           algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
         })));
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_4)
-        .onFalse((Commands.runOnce(() -> {
-          algaeSubsystem.stopAlgaeMotor();
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)
+        .whileTrue((Commands.runOnce(() -> {
+          algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
       })));
-      
-
-      // Set offsets for Limelight alignment
-      /*
-       * left (270 degrees)
-       * normal/reset (0 degrees)
-       * right (90 degrees)
-       * 
-       * I HAVE NOT TESTED THIS PLS TEST -KADEN 3/20/25
-       */
-      //CASE 1 - ALIGN WITH REEF BEFORE GOING IN
-      // new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_LEFT)
-      //   .onTrue((Commands.runOnce(() -> {
-      //     LimelightHelpers.setFiducial3DOffset("limelight-front", -0.16, 0, 0); // 0.16m is about the length from the center of april tag to left/right reef sticks
-      // })));
-
-      // new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_UP)
-      //   .onTrue((Commands.runOnce(() -> {
-      //     LimelightHelpers.setFiducial3DOffset("limelight-front", 0, 0, 0);
-      // })));
-      
-      // new POVButton(driverPXN, Constants.OperatorConstants.JOYSTICK_RIGHT)
-      //   .onTrue((Commands.runOnce(() -> {
-      //     LimelightHelpers.setFiducial3DOffset("limelight-front", 0.16, 0, 0);
-      // })));
     
-      //CASE 2 - SLOW MOVEMENT
-      // like this should work but if it doesn't just revert -kaden3/24/25
+    
+      //SLOW MOVEMENT
       new POVButton(driverPXN, 0)
         .whileTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, 0);
@@ -504,24 +481,8 @@ public class RobotContainer {
           new SlowDrive(drivebase, 180);
       })).repeatedly());
 
-
-      
-      // new Trigger(() -> (!elevatorSubsystem.getL2SensorStatus() && elevatorSubsystem.getL3SensorStatus()))
-      //   .onTrue((Commands.runOnce(() -> {
-      //     // elevator is at L2
-      //     System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
-      //     elevatorSubsystem.setLevel(2);
-      // })));
-      // new Trigger(() -> (!elevatorSubsystem.getL3SensorStatus() && elevatorSubsystem.getL2SensorStatus()))
-      //   .onTrue((Commands.runOnce(() -> {
-      //     // elevator is at L2
-      //     System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
-      //     elevatorSubsystem.setLevel(3);
-      // })));
-      
       
 
-      
 
     }
   }

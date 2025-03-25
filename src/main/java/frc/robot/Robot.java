@@ -54,6 +54,8 @@ public class Robot extends TimedRobot
     PortForwarder.add(5801, "limelight-back.local", 5801);
     PortForwarder.add(5800, "limelight-back.local", 5800);
 
+    CameraServer.startAutomaticCapture("limelight-back", "http://172.28.0.1:5800/stream.mjpg");
+
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-back");
     NetworkTableEntry tx = table.getEntry("tx");
     double tx_val = tx.getDouble(0.0);

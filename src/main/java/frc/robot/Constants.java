@@ -57,18 +57,22 @@ public final class Constants
     public static final double TURN_CONSTANT    = 6;
     
     // Secondary Operator Joystick
-    public static final int JOYSTICK_UP = 0;
-    public static final int JOYSTICK_RIGHT = 90;
-    public static final int JOYSTICK_DOWN = 180;
-    public static final int JOYSTICK_LEFT = 270;
+    // public static final int JOYSTICK_UP = 0;
+    // public static final int JOYSTICK_RIGHT = 90;
+    // public static final int JOYSTICK_DOWN = 180;
+    // public static final int JOYSTICK_LEFT = 270;
+
+    public static final int AXIS_X = 0;
+    public static final int AXIS_Y = 1;
 
     // Secondary Operator Buttons
-    public static final int BUTTON1 = 1;
-    public static final int BUTTON2 = 2;
-    public static final int BUTTON3 = 3;
-    public static final int BUTTON4 = 4;
-    public static final int BUTTON5 = 5;
-    public static final int BUTTON6 = 6;
+    public static final int BUTTON_1 = 1;
+    public static final int BUTTON_2 = 2;
+    public static final int BUTTON_3 = 3;
+    public static final int BUTTON_4 = 4;
+    public static final int BUTTON_5 = 5;
+    public static final int BUTTON_6 = 6;
+    
     
   }
 

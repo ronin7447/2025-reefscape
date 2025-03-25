@@ -404,34 +404,34 @@ public class RobotContainer {
       // Main PXN driver controls
       
       // TEST BUTTON remove later pls! -kaden 3/20/2025
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1) // THE PURPLE ONE
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // THE PURPLE ONE
         .onTrue((Commands.runOnce(() -> {
           shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
         })));
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON1)
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
         .onFalse((Commands.runOnce(() -> {
           shooterSubsystem.stopShooterMotor();
       })));
 
       // Algae button forward
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON2) // THE RED ONE IS FORWARD I THINK -kaden 3/20/2025
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2) // THE RED ONE IS FORWARD I THINK -kaden 3/20/2025
         .onTrue((Commands.runOnce(() -> {
           algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
         })));
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON2)
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
         .onFalse((Commands.runOnce(() -> {
           algaeSubsystem.stopAlgaeMotor();
       })));
 
       // Algae button backward
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON4) // THE BLUE ONE IS BACKWARD I THINK -kaden 3/20/2025
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_4) // THE BLUE ONE IS BACKWARD I THINK -kaden 3/20/2025
         .onTrue((Commands.runOnce(() -> {
           algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
         })));
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON4)
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_4)
         .onFalse((Commands.runOnce(() -> {
           algaeSubsystem.stopAlgaeMotor();
       })));
@@ -484,22 +484,22 @@ public class RobotContainer {
       })).repeatedly());
 
       // CLIMB JOYSTICK MODE (everything +-90 degrees)
-      new Trigger(() -> driverPXN.getRawAxis(1) == 1)
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1)
         .onTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, 270);
       })).repeatedly());
 
-      new Trigger(() -> driverPXN.getRawAxis(0) == 1)
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == 1)
         .onTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, 0);
       })).repeatedly());
 
-      new Trigger(() -> driverPXN.getRawAxis(1) == -1)
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == -1)
         .onTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, 90);
       })).repeatedly());
       
-      new Trigger(() -> driverPXN.getRawAxis(0) == -1)
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == -1)
         .onTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, 180);
       })).repeatedly());

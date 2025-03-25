@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -98,6 +99,19 @@ public class ElevatorSubsystem extends SubsystemBase {
         
     }
 
+    public int getElevatorLevelFromEncoder() {
+        double position = this.getElevatorPosition();
+        if (position < Constants.ElevatorConstants.L1_HEIGHT) {
+            return 0;
+        } else if (position < Constants.ElevatorConstants.L2_HEIGHT) {
+            return 1;
+        } else if (position < Constants.ElevatorConstants.L3_HEIGHT) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+
     public void resetPosition() {
 
         ElevatorEncoder.setPosition(0);
@@ -147,7 +161,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         //     }
         // }        
         // stopElevatorMotor();
-
+        System.out.println("elevator is currently at (before)"+currentLevel);
+        currentLevel = getElevatorLevelFromEncoder();
+        System.out.println("elevator is currently at (from encoder update)"+currentLevel);
         if (currentLevel == 0) {
             // make sure to add L1.get()
             while (L2_DIOInput.get() && L3_DIOInput.get()) {
@@ -161,6 +177,7 @@ public class ElevatorSubsystem extends SubsystemBase {
           while (L2_DIOInput.get()) {
             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
           }
+          
         }
         stopElevatorMotor();
         currentLevel = 2;
@@ -179,7 +196,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         // }
         // stopElevatorMotor();
         // runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
-    
+        System.out.println("elevator is currently at (before)"+currentLevel);
+        currentLevel = getElevatorLevelFromEncoder();
+        System.out.println("elevator is currently at (from encoder update)"+currentLevel);
         if (currentLevel == 0) {
             // make sure to add L1.get()
             while (L2_DIOInput.get() && L3_DIOInput.get()) {
@@ -235,6 +254,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         return runOnce(() -> goToL3());
 
+    }
+
+    public boolean getL2SensorStatus() {
+        return L2_DIOInput.get();
+    }
+
+    public boolean getL3SensorStatus() {
+        return L3_DIOInput.get();
     }
 
     // Get Elevator Speed

@@ -312,6 +312,7 @@ public class RobotContainer {
       driverXbox.x().onTrue((Commands.runOnce(() -> {
         // elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
         // elevatorSubsystem.goToL2();
+        System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
         elevatorSubsystem.goToL2();
       })));
 
@@ -467,12 +468,6 @@ public class RobotContainer {
           new SlowDrive(drivebase, 0);
       })).repeatedly());
 
-      new POVButton(driverPXN, 0)
-        .whileTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, driverPXN, 0.0, -0.2);
-          drivebase.drive(new Translation2d(0.4, 0.0), 0.0, true);
-      })).repeatedly());
-
       new POVButton(driverPXN, 90)
         .whileTrue((Commands.runOnce(() -> {
           new SlowDrive(drivebase, 90);
@@ -509,6 +504,22 @@ public class RobotContainer {
           new SlowDrive(drivebase, 180);
       })).repeatedly());
 
+
+      
+      // new Trigger(() -> (!elevatorSubsystem.getL2SensorStatus() && elevatorSubsystem.getL3SensorStatus()))
+      //   .onTrue((Commands.runOnce(() -> {
+      //     // elevator is at L2
+      //     System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
+      //     elevatorSubsystem.setLevel(2);
+      // })));
+      // new Trigger(() -> (!elevatorSubsystem.getL3SensorStatus() && elevatorSubsystem.getL2SensorStatus()))
+      //   .onTrue((Commands.runOnce(() -> {
+      //     // elevator is at L2
+      //     System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
+      //     elevatorSubsystem.setLevel(3);
+      // })));
+      
+      
 
       
 

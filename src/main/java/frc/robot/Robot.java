@@ -56,6 +56,8 @@ public class Robot extends TimedRobot
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-back");
     NetworkTableEntry tx = table.getEntry("tx");
+    double tx_val = tx.getDouble(0.0);
+    SmartDashboard.putNumber("Limelight Back TX", tx_val);
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 

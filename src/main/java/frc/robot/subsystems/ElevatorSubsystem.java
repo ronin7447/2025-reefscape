@@ -13,7 +13,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -169,6 +168,14 @@ public class ElevatorSubsystem extends SubsystemBase {
             while (L2_DIOInput.get() && L3_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
+
+            // // Daniel ver
+            // if (!L2_DIOInput.get()) {
+            //     currentLevel = 2;
+            // } else if (!L3_DIOInput.get()) {
+            //     currentLevel = 3;
+            // }
+
         } else if (currentLevel > 2) {
           while (L2_DIOInput.get()) {
             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
@@ -204,6 +211,14 @@ public class ElevatorSubsystem extends SubsystemBase {
             while (L2_DIOInput.get() && L3_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
+
+            // // Daniel ver
+            // if (!L2_DIOInput.get()) {
+            //     currentLevel = 2;
+            // } else if (!L3_DIOInput.get()) {
+            //     currentLevel = 3;
+            // }
+
         } else if (currentLevel > 3) {
           while (L3_DIOInput.get()) {
             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);

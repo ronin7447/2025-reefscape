@@ -72,6 +72,10 @@ public final class Constants
     public static final int BUTTON_4 = 4;
     public static final int BUTTON_5 = 5;
     public static final int BUTTON_6 = 6;
+    public static final int BUTTON_7 = 7;
+    public static final int BUTTON_8 = 8;
+    public static final int BUTTON_9 = 9;
+    public static final int BUTTON_10 = 10;
     
     
   }

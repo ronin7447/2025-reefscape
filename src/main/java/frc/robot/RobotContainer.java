@@ -266,14 +266,14 @@ public class RobotContainer {
       // Limelight code
 
       final Pose2d[] poseHolder = new Pose2d[1];
-      driverXbox.start().whileTrue((new FunctionalCommand(()-> {}, ()-> {
+      driverXbox.b().whileTrue((new FunctionalCommand(()-> {}, ()-> {
         drivebase.drive(new ChassisSpeeds(0, 0, close.calculate(visionSubsystem.getTX(), 0)));
       }, (bool)-> {
         poseHolder[0] = drivebase.getPose();
         System.out.println(poseHolder[0]);
       }, ()-> visionSubsystem.getTX() < 3 && visionSubsystem.getTX() > -3, drivebase)));
 
-      driverXbox.y().whileTrue((new FunctionalCommand(()-> {}, ()-> {
+      driverXbox.leftTrigger().whileTrue((new FunctionalCommand(()-> {}, ()-> {
         if (visionSubsystem.getTA() < 12.0) {
           drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 15.0), 0, 0));
         }
@@ -284,37 +284,52 @@ public class RobotContainer {
         System.out.println(poseHolder[0]);
         System.out.println(drivebase.getPose());
         // drivebase.driveToPose(poseHolder[0]);
-      }, ()->visionSubsystem.getTA() > 12.0, drivebase)));
+      }, () -> visionSubsystem.getTA() > 12.0, drivebase)));
 
       // Debug elevator code
-      driverXbox.a().onTrue((Commands.runOnce(() -> {
+      driverXbox.povRight().onTrue((Commands.runOnce(() -> {
         System.out.println(elevatorSubsystem.getElevatorPosition());
         System.out.println(elevatorSubsystem.getLevel());
       })));
 
       // Elevator Go to L1
-      driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
-        // elevatorSubsystem.setInitPos();
-        elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-        elevatorSubsystem.goToL1();
-        // while (!L1_DIOInput.get()) {
-        //   elevatorSubsystem.goToL1();
-        // }
-        elevatorSubsystem.stopElevatorMotor();
+      // driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
+      //   // elevatorSubsystem.setInitPos();
+      //   // elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
+      //   elevatorSubsystem.goToL1();
+      //   // while (!L1_DIOInput.get()) {
+      //   //   elevatorSubsystem.goToL1();
+      //   // }
+      //   // elevatorSubsystem.stopElevatorMotor();
 
-      })));
+      // })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.goToL1();
+        })));
 
       // Elevator Go to L3
-      driverXbox.rightBumper().onTrue((Commands.runOnce(() -> {
-        //elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-        elevatorSubsystem.goToL3();
-      })));
+      // driverXbox.rightBumper().onTrue((Commands.runOnce(() -> {
+      //   //elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
+      //   elevatorSubsystem.goToL3();
+      // })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.goToL3();
+        })));
 
       // Elevator Go to L2
-      driverXbox.x().onTrue((Commands.runOnce(() -> {
-        // elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-        // elevatorSubsystem.goToL2();
-        System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
+      // driverXbox.x().onTrue((Commands.runOnce(() -> {
+      //   // elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
+      //   // elevatorSubsystem.goToL2();
+      //   System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
+      //   elevatorSubsystem.goToL2();
+      // })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
+      .onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.goToL2();
       })));
 
@@ -333,7 +348,7 @@ public class RobotContainer {
       //helllothere
 
 
-      // Reverse Shooter
+      // Reverse Shooter Algae
       driverXbox.rightTrigger().onTrue((Commands.runOnce(() -> {
         shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_REVERSE_SPEED);
       })));
@@ -398,9 +413,10 @@ public class RobotContainer {
       // })));
 
       // Reset the Gyro to 0
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      // driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+
       driverXbox.start().onTrue((Commands.runOnce(() -> {
-        drivebase.zeroGyro();
+        drivebase.zeroGyro(); 
         System.out.println("GYRO HAS BEEN RESET!");
       })));
 
@@ -409,14 +425,14 @@ public class RobotContainer {
       
       // TEST BUTTON remove later pls! -kaden 3/20/2025
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // THE PURPLE ONE
-        .onTrue((Commands.runOnce(() -> {
+        .whileTrue((Commands.runOnce(() -> {
           shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
         })));
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
-        .onFalse((Commands.runOnce(() -> {
-          shooterSubsystem.stopShooterMotor();
-      })));
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
+      //   .onFalse((Commands.runOnce(() -> {
+      //     shooterSubsystem.stopShooterMotor();
+      // })));
 
       // Algae button forward
       // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2) // THE RED ONE IS FORWARD I THINK -kaden 3/20/2025
@@ -442,58 +458,36 @@ public class RobotContainer {
     
     
       //SLOW MOVEMENT
-      // new POVButton(driverPXN, 0)
-      //   .whileTrue((Commands.runOnce(() -> {
-      //     new SlowDrive(drivebase, 0);
-      // })).repeatedly());
+
 
       new POVButton(driverPXN, 0)
         .whileTrue(new SlowDrive(drivebase, 0));
 
       new POVButton(driverPXN, 90)
-        .whileTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 90);
-      })).repeatedly());
+        .whileTrue(new SlowDrive(drivebase, 90));
 
       new POVButton(driverPXN, 180)
-        .whileTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 180);
-      })).repeatedly());
-
+        .whileTrue(new SlowDrive(drivebase, 180));
+        
       new POVButton(driverPXN, 270)
-        .whileTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 270);
-      })).repeatedly());
-
-      // CLIMB JOYSTICK MODE (everything +-90 degrees)
-      // new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1)
-      //   .onTrue((Commands.runOnce(() -> {
-      //     new SlowDrive(drivebase, 270);
-      // })).repeatedly());
-      
-      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1)
-        .onTrue((Commands.runOnce(() -> {
-          System.out.println("Kaden's new code says hello1");
-        })));
-
-      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1)
         .whileTrue(new SlowDrive(drivebase, 270));
 
 
-      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == 1)
-        .onTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 0);
-      })).repeatedly());
+      // CLIMB JOYSTICK MODE (everything +-90 degrees)
 
-      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == -1)
-        .onTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 90);
-      })).repeatedly());
       
+
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == -1) // -1 is up for some reason..?
+        .whileTrue(new SlowDrive(drivebase, 270));
+
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == 1)
+        .whileTrue(new SlowDrive(drivebase, 0));
+
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1) // 1 is up for some reason..?
+        .whileTrue(new SlowDrive(drivebase, 90));
+    
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == -1)
-        .onTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 180);
-      })).repeatedly());
+        .whileTrue(new SlowDrive(drivebase, 180));
 
       
 

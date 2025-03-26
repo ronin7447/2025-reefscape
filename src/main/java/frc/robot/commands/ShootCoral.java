@@ -1,24 +1,42 @@
-// package frc.robot.commands;
+package frc.robot.commands;
 
-// import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.Constants;
-// import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.subsystems.ShooterSubsystem;
 
-// public class ShootCoral extends Command {
+public class ShootCoral extends Command {
     
-//     private final ShooterSubsystem m_shooter;
+    private final int direction;
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
-//     public ShootCoral(ShooterSubsystem shooter) {
+    public ShootCoral(int direction) {
 
-//         m_shooter = shooter;
-//         addRequirements(m_shooter);
+        this.direction = direction;
 
-//     }
+    }
 
-//     @Override
-//     public void execute() {
+    @Override
+    public void execute() {
 
-//         m_shooter.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED);
+        if (direction > 0) {
+            shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH); // Maybe change to dynamic based on elevation level
+        }
+        if (direction < 0) {
+            shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_REVERSE_SPEED); // Algae
+        }
 
-//     }
-// }
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+        shooterSubsystem.stopShooterMotor();
+
+    }
+
+    @Override
+    public boolean isFinished() {
+        // This command runs until the button is released.
+        return false;
+    }
+}

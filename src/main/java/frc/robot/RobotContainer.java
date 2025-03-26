@@ -319,24 +319,26 @@ public class RobotContainer {
       })));
 
       // Activate Shooter
-      driverXbox.rightTrigger().onTrue((Commands.runOnce(() -> {
-        if (elevatorSubsystem.getElevatorPosition() > 30) {
-          shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
-        } else {
-          shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_LOW);
-        }
-      })));
-      driverXbox.rightTrigger().onFalse((Commands.runOnce(() -> {
-        shooterSubsystem.stopShooterMotor();
-      })));
+      // driverXbox.rightTrigger().onTrue((Commands.runOnce(() -> {
+      //   if (elevatorSubsystem.getElevatorPosition() > 30) {
+      //     shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
+      //   } else {
+      //     shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_LOW);
+      //   }
+      // })));
+      // driverXbox.rightTrigger().onFalse((Commands.runOnce(() -> {
+      //   shooterSubsystem.stopShooterMotor();
+      // })));
+
+      //helllothere
 
 
       // Reverse Shooter
-      driverXbox.leftTrigger().onTrue((Commands.runOnce(() -> {
+      driverXbox.rightTrigger().onTrue((Commands.runOnce(() -> {
         shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_REVERSE_SPEED);
       })));
 
-      driverXbox.leftTrigger().onFalse((Commands.runOnce(() -> {
+      driverXbox.rightTrigger().onFalse((Commands.runOnce(() -> {
         shooterSubsystem.stopShooterMotor();
       })));
       
@@ -377,27 +379,27 @@ public class RobotContainer {
       })));
 
       // Climb up
-      driverXbox.povLeft().onTrue((Commands.runOnce(() -> {
-        climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_SPEED);
-      })));
+      // driverXbox.povLeft().onTrue((Commands.runOnce(() -> {
+      //   climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_SPEED);
+      // })));
 
-      driverXbox.povLeft().onFalse((Commands.runOnce(() -> {
-        climbSubsystem.stopClimbMotor();
-      })));
+      // driverXbox.povLeft().onFalse((Commands.runOnce(() -> {
+      //   climbSubsystem.stopClimbMotor();
+      // })));
 
-      // Climb down
-      driverXbox.povRight().onTrue((Commands.runOnce(() -> {
-        climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
-      })));
+      // // Climb down
+      // driverXbox.povRight().onTrue((Commands.runOnce(() -> {
+      //   climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
+      // })));
 
 
-      driverXbox.povRight().onFalse((Commands.runOnce(() -> {
-        climbSubsystem.stopClimbMotor();
-      })));
+      // driverXbox.povRight().onFalse((Commands.runOnce(() -> {
+      //   climbSubsystem.stopClimbMotor();
+      // })));
 
       // Reset the Gyro to 0
-      driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.b().onTrue((Commands.runOnce(() -> {
+      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      driverXbox.start().onTrue((Commands.runOnce(() -> {
         drivebase.zeroGyro();
         System.out.println("GYRO HAS BEEN RESET!");
       })));
@@ -417,33 +419,36 @@ public class RobotContainer {
       })));
 
       // Algae button forward
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2) // THE RED ONE IS FORWARD I THINK -kaden 3/20/2025
-        .onTrue((Commands.runOnce(() -> {
-          algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
-        })));
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2) // THE RED ONE IS FORWARD I THINK -kaden 3/20/2025
+      //   .onTrue((Commands.runOnce(() -> {
+      //     algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+      //   })));
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
-        .onFalse((Commands.runOnce(() -> {
-          algaeSubsystem.stopAlgaeMotor();
-      })));
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
+      //   .onFalse((Commands.runOnce(() -> {
+      //     algaeSubsystem.stopAlgaeMotor();
+      // })));
 
       // Climb up/down
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5) // THE BLUE ONE IS BACKWARD I THINK -kaden 3/20/2025
         .whileTrue((Commands.runOnce(() -> {
-          algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+          climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_SPEED);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)
         .whileTrue((Commands.runOnce(() -> {
-          algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+          climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
       })));
     
     
       //SLOW MOVEMENT
+      // new POVButton(driverPXN, 0)
+      //   .whileTrue((Commands.runOnce(() -> {
+      //     new SlowDrive(drivebase, 0);
+      // })).repeatedly());
+
       new POVButton(driverPXN, 0)
-        .whileTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 0);
-      })).repeatedly());
+        .whileTrue(new SlowDrive(drivebase, 0));
 
       new POVButton(driverPXN, 90)
         .whileTrue((Commands.runOnce(() -> {
@@ -461,10 +466,19 @@ public class RobotContainer {
       })).repeatedly());
 
       // CLIMB JOYSTICK MODE (everything +-90 degrees)
+      // new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     new SlowDrive(drivebase, 270);
+      // })).repeatedly());
+      
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1)
         .onTrue((Commands.runOnce(() -> {
-          new SlowDrive(drivebase, 270);
-      })).repeatedly());
+          System.out.println("Kaden's new code says hello1");
+        })));
+
+      new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1)
+        .whileTrue(new SlowDrive(drivebase, 270));
+
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == 1)
         .onTrue((Commands.runOnce(() -> {

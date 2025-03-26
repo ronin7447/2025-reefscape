@@ -17,7 +17,7 @@ public class SlowDrive extends Command {
         // this.controller = controller;
         this.angle = angle;
 
-        addRequirements(this.swerveSubsystem);
+        addRequirements(swerveSubsystem);
     }
 
     @Override
@@ -42,16 +42,13 @@ public class SlowDrive extends Command {
 
         swerveSubsystem.drive(new Translation2d(moveX, moveY), 0.0, true);
         
+        
     }
 
     @Override
     public void end(boolean interrupted)
     {
-        swerveSubsystem.driveCommand(
-            () -> 0.0,
-            () -> 0.0,
-            () -> 0.0
-        );
+        swerveSubsystem.drive(new Translation2d(0.0, 0.0), 0.0, true);
 
     }
 

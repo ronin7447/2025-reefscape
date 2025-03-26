@@ -4,17 +4,26 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -30,6 +39,8 @@ public class Robot extends TimedRobot
   private RobotContainer m_robotContainer;
 
   private Timer disabledTimer;
+  
+  private Thread m_visionThread;
 
   public Robot()
   {
@@ -60,6 +71,54 @@ public class Robot extends TimedRobot
     NetworkTableEntry tx = table.getEntry("tx");
     double tx_val = tx.getDouble(0.0);
     SmartDashboard.putNumber("Limelight Back TX", tx_val);
+
+    // initialize the webcam thread
+    m_visionThread =
+        new Thread(
+            () -> {
+              // Get the UsbCamera from CameraServer
+              UsbCamera camera = CameraServer.startAutomaticCapture();
+              // Set the resolution
+              camera.setResolution(640, 480);
+
+              // Get a CvSink. This will capture Mats from the camera
+              CvSink cvSink = CameraServer.getVideo();
+              // Setup a CvSource. This will send images back to the Dashboard
+              // use 480 x 640 for rotated output
+              CvSource outputStream = CameraServer.putVideo("Shooter Camera", 480, 640);
+
+              // Mats are very memory expensive. Lets reuse this Mat.
+              Mat mat = new Mat();
+
+              // This cannot be 'true'. The program will never exit if it is. This
+              // lets the robot stop this thread when restarting robot code or
+              // deploying.
+              while (!Thread.interrupted()) {
+                // Tell the CvSink to grab a frame from the camera and put it
+                // in the source mat.  If there is an error notify the output.
+                if (cvSink.grabFrame(mat) == 0) {
+                  // Send the output the error.
+                  outputStream.notifyError(cvSink.getError());
+                  // skip the rest of the current iteration
+                  continue;
+                }
+                // Imgproc.rotate(mat, mat, Imgproc.ROTATE_90_CLOCKWISE);
+                // 90 degree rotation
+                Core.transpose(mat, mat);
+                Core.flip(mat, mat, 1);
+                // Put a rectangle on the image
+                Imgproc.rectangle(
+                    mat, new Point(100, 100), new Point(400, 400), new Scalar(255, 255, 255), 5);
+                // Give the output stream a new image to display
+                outputStream.putFrame(mat);
+              }
+            });
+    m_visionThread.setDaemon(true);
+    m_visionThread.start();
+
+
+
+
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 

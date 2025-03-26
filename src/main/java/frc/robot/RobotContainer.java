@@ -331,52 +331,12 @@ public class RobotContainer {
       // UNRESTRCITED MOVING THE ELEVATOR,
       // SHOULD NOT USE IT UNLESS HAVE TO.
 
-      driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
-        
-      })));
+      driverXbox.povUp()
+        .whileTrue(new ElevatorManual(1));
 
-      driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setLevel();
-      })).repeatedly());
+      driverXbox.povDown()
+        .whileTrue(new ElevatorManual(-1));
 
-      driverXbox.povUp().onFalse((Commands.runOnce(() -> {
-        elevatorSubsystem.stopElevatorMotor();
-      })));
-
-      driverXbox.povDown().whileTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 4);
-      })));
-
-      driverXbox.povDown().whileTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setLevel();
-      })).repeatedly());
-
-      driverXbox.povDown().onFalse((Commands.runOnce(() -> {
-        elevatorSubsystem.stopElevatorMotor();
-      })));
-
-      // Climb up
-      // driverXbox.povLeft().onTrue((Commands.runOnce(() -> {
-      //   climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_SPEED);
-      // })));
-
-      // driverXbox.povLeft().onFalse((Commands.runOnce(() -> {
-      //   climbSubsystem.stopClimbMotor();
-      // })));
-
-      // // Climb down
-      // driverXbox.povRight().onTrue((Commands.runOnce(() -> {
-      //   climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
-      // })));
-
-
-      // driverXbox.povRight().onFalse((Commands.runOnce(() -> {
-      //   climbSubsystem.stopClimbMotor();
-      // })));
-
-      // Reset the Gyro to 0
-      // driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
       driverXbox.start().onTrue((Commands.runOnce(() -> {
         drivebase.zeroGyro(); 

@@ -69,6 +69,8 @@ public void robotInit()
     PortForwarder.add(5801, "limelight-back.local", 5801);
     PortForwarder.add(5800, "limelight-back.local", 5800);
 
+    java.util.logging.Logger.getLogger("edu.wpi.first.cameraserver.CameraServer").setLevel(java.util.logging.Level.SEVERE);
+
     // Check if the camera is reachable before starting capture
     try {
         URL cameraUrl = new URL("http://172.28.0.1:5800/stream.mjpg");

@@ -14,13 +14,10 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -375,19 +372,25 @@ public class RobotContainer {
       // VERY IMPORTANT FOR BACKUP,
       // UNRESTRCITED MOVING THE ELEVATOR,
       // SHOULD NOT USE IT UNLESS HAVE TO.
-      driverXbox.povUp().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setMotorLimit(1000, 0);
+      driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
         elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
       })));
+
+      driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
+        elevatorSubsystem.setLevel();
+      })).repeatedly());
 
       driverXbox.povUp().onFalse((Commands.runOnce(() -> {
         elevatorSubsystem.stopElevatorMotor();
       })));
 
-      driverXbox.povDown().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setMotorLimit(1000, -1000);
+      driverXbox.povDown().whileTrue((Commands.runOnce(() -> {
         elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 4);
       })));
+
+      driverXbox.povDown().whileTrue((Commands.runOnce(() -> {
+        elevatorSubsystem.setLevel();
+      })).repeatedly());
 
       driverXbox.povDown().onFalse((Commands.runOnce(() -> {
         elevatorSubsystem.stopElevatorMotor();

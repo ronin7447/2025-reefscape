@@ -117,9 +117,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    public void setLevel(int currentLevel) {
+    public void setLevel() {
 
-        this.currentLevel = currentLevel;
+        if (!L1_DIOInput.get()) {
+            currentLevel = 1;
+        } else if (!L2_DIOInput.get()) {
+            currentLevel = 2;
+        } else if (!L3_DIOInput.get()) {
+            currentLevel = 3;
+        } else {
+            currentLevel = 0;
+        }
 
     }
 
@@ -146,6 +154,8 @@ public class ElevatorSubsystem extends SubsystemBase {
             while (L1_DIOInput.get() && L2_DIOInput.get() && L3_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
+
+            stopElevatorMotor();
 
             if (!L1_DIOInput.get()) {
                 currentLevel = 1;
@@ -195,6 +205,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
 
+            stopElevatorMotor();
+
             if (!L1_DIOInput.get()) {
                 currentLevel = 1;
             } else if (!L2_DIOInput.get()) {
@@ -205,7 +217,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         } else if (currentLevel > 2) {
 
-          while (L1_DIOInput.get()) {
+          while (L2_DIOInput.get()) {
             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
           }
 
@@ -214,7 +226,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         } else if (currentLevel < 2) {
 
-          while (L1_DIOInput.get()) {
+          while (L2_DIOInput.get()) {
             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
           }
 
@@ -247,6 +259,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
 
+            stopElevatorMotor();
+
             if (!L1_DIOInput.get()) {
                 currentLevel = 1;
             } else if (!L2_DIOInput.get()) {
@@ -257,7 +271,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         } else if (currentLevel < 3) {
 
-          while (L1_DIOInput.get()) {
+          while (L3_DIOInput.get()) {
             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
           }
 

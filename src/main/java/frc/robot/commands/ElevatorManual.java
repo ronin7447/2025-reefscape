@@ -7,11 +7,14 @@ import frc.robot.subsystems.ElevatorSubsystem;
 public class ElevatorManual extends Command {
     
     private final int direction;
-    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    private final ElevatorSubsystem elevatorSubsystem;
+    
+        public ElevatorManual(int direction, ElevatorSubsystem elevatorSubsystem) {
+    
+            this.elevatorSubsystem = elevatorSubsystem;
+            this.direction = direction;
 
-    public ElevatorManual(int direction) {
-
-        this.direction = direction;
+            addRequirements(elevatorSubsystem);
 
     }
 

@@ -7,11 +7,15 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootCoral extends Command {
     
     private final int direction;
-    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final ShooterSubsystem shooterSubsystem;
 
-    public ShootCoral(int direction) {
+    public ShootCoral(int direction, ShooterSubsystem shooterSubsystem) {
+
+        this.shooterSubsystem = shooterSubsystem;
 
         this.direction = direction;
+
+        addRequirements(shooterSubsystem);
 
     }
 

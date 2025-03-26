@@ -310,7 +310,7 @@ public class RobotContainer {
 
       // Reverse Shooter Algae
       driverXbox.rightTrigger()
-        .whileTrue(new ShootCoral(-1));
+        .whileTrue(new ShootCoral(-1, shooterSubsystem));
       
 
       // THIS IS FOR ELEVATOR POSITION RESET, [!IMPORTANT!]
@@ -332,10 +332,10 @@ public class RobotContainer {
       // SHOULD NOT USE IT UNLESS HAVE TO.
 
       driverXbox.povUp()
-        .whileTrue(new ElevatorManual(1));
+        .whileTrue(new ElevatorManual(1, elevatorSubsystem));
 
       driverXbox.povDown()
-        .whileTrue(new ElevatorManual(-1));
+        .whileTrue(new ElevatorManual(-1, elevatorSubsystem));
 
 
       driverXbox.start().onTrue((Commands.runOnce(() -> {
@@ -347,7 +347,7 @@ public class RobotContainer {
       // Main PXN driver controls
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // Purple button 1
-        .whileTrue(new ShootCoral(1));
+        .whileTrue(new ShootCoral(1, shooterSubsystem));
 
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5) // Leftest button 5

@@ -29,6 +29,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ElevatorManual;
+import frc.robot.commands.ShootCoral;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -290,71 +292,27 @@ public class RobotContainer {
         System.out.println(elevatorSubsystem.getLevel());
       })));
 
-      // Elevator Go to L1
-      // driverXbox.leftBumper().onTrue((Commands.runOnce(() -> {
-      //   // elevatorSubsystem.setInitPos();
-      //   // elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-      //   elevatorSubsystem.goToL1();
-      //   // while (!L1_DIOInput.get()) {
-      //   //   elevatorSubsystem.goToL1();
-      //   // }
-      //   // elevatorSubsystem.stopElevatorMotor();
-
-      // })));
-
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
         .onTrue((Commands.runOnce(() -> {
           elevatorSubsystem.goToL1();
         })));
 
-      // Elevator Go to L3
-      // driverXbox.rightBumper().onTrue((Commands.runOnce(() -> {
-      //   //elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-      //   elevatorSubsystem.goToL3();
-      // })));
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.goToL2();
+        })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
         .onTrue((Commands.runOnce(() -> {
           elevatorSubsystem.goToL3();
         })));
 
-      // Elevator Go to L2
-      // driverXbox.x().onTrue((Commands.runOnce(() -> {
-      //   // elevatorSubsystem.setMotorLimit(Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.L1_HEIGHT);
-      //   // elevatorSubsystem.goToL2();
-      //   System.out.println("elevator is currently at "+elevatorSubsystem.getLevel());
-      //   elevatorSubsystem.goToL2();
-      // })));
-
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
-      .onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.goToL2();
-      })));
-
-      // Activate Shooter
-      // driverXbox.rightTrigger().onTrue((Commands.runOnce(() -> {
-      //   if (elevatorSubsystem.getElevatorPosition() > 30) {
-      //     shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
-      //   } else {
-      //     shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_LOW);
-      //   }
-      // })));
-      // driverXbox.rightTrigger().onFalse((Commands.runOnce(() -> {
-      //   shooterSubsystem.stopShooterMotor();
-      // })));
-
-      //helllothere
-
 
       // Reverse Shooter Algae
-      driverXbox.rightTrigger().onTrue((Commands.runOnce(() -> {
-        shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_REVERSE_SPEED);
-      })));
-
-      driverXbox.rightTrigger().onFalse((Commands.runOnce(() -> {
-        shooterSubsystem.stopShooterMotor();
-      })));
+      driverXbox.rightTrigger()
+        .whileTrue(new ShootCoral(-1));
       
+
       // THIS IS FOR ELEVATOR POSITION RESET, [!IMPORTANT!]
       // WHEN PRESSING BOTH BACK AND START BTNSs
       driverXbox.back()
@@ -367,14 +325,15 @@ public class RobotContainer {
       //   elevatorSubsystem.goToTrueZero();
       // })));
       
-
      
 
       // VERY IMPORTANT FOR BACKUP,
       // UNRESTRCITED MOVING THE ELEVATOR,
       // SHOULD NOT USE IT UNLESS HAVE TO.
+
       driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
         elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+        
       })));
 
       driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
@@ -426,56 +385,20 @@ public class RobotContainer {
 
       
       // Main PXN driver controls
-      
-      // TEST BUTTON remove later pls! -kaden 3/20/2025
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // THE PURPLE ONE
-        .onTrue((Commands.runOnce(() -> {
-          shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
-        })));
-        
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // THE PURPLE ONE
-        .onFalse((Commands.runOnce(() -> {
-          shooterSubsystem.stopShooterMotor();;
-        })));
 
-      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
-      //   .onFalse((Commands.runOnce(() -> {
-      //     shooterSubsystem.stopShooterMotor();
-      // })));
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // Purple button 1
+        .whileTrue(new ShootCoral(1));
 
-      // Algae button forward
-      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2) // THE RED ONE IS FORWARD I THINK -kaden 3/20/2025
-      //   .onTrue((Commands.runOnce(() -> {
-      //     algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
-      //   })));
 
-      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
-      //   .onFalse((Commands.runOnce(() -> {
-      //     algaeSubsystem.stopAlgaeMotor();
-      // })));
-
-      // Climb up/down
-      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5)
-      //   .onTrue((Commands.runOnce(() -> {
-      //     climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_SPEED);
-      //   })));
-
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5)
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5) // Leftest button 5
         .whileTrue(new ClimbCommand(1, climbSubsystem));
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3) // Pink button 3
         .whileTrue(new ClimbCommand(-1, climbSubsystem));
-
-
-      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)
-      //   .onTrue((Commands.runOnce(() -> {
-      //     climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
-      // })));
 
     
     
       //SLOW MOVEMENT
-
 
       new POVButton(driverPXN, 0)
         .whileTrue(new SlowDrive(drivebase, 0));
@@ -491,8 +414,6 @@ public class RobotContainer {
 
 
       // CLIMB JOYSTICK MODE (everything +-90 degrees)
-
-      
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == -1) // -1 is up for some reason..?
         .whileTrue(new SlowDrive(drivebase, 270));

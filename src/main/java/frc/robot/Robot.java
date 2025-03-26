@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -106,7 +105,7 @@ public void robotInit()
               CvSink cvSink = CameraServer.getVideo();
               // Setup a CvSource. This will send images back to the Dashboard
               // use 480 x 640 for rotated output
-              CvSource outputStream = CameraServer.putVideo("Shooter Camera", 480, 640);
+              CvSource outputStream = CameraServer.putVideo("Shooter Camera", 640, 480);
 
               // Mats are very memory expensive. Lets reuse this Mat.
               Mat mat = new Mat();
@@ -125,8 +124,8 @@ public void robotInit()
                 }
                 // Imgproc.rotate(mat, mat, Imgproc.ROTATE_90_CLOCKWISE);
                 // 90 degree rotation
-                Core.transpose(mat, mat);
-                Core.flip(mat, mat, 1);
+                // Core.transpose(mat, mat);
+                // Core.flip(mat, mat, 1);
                 // Put a rectangle on the image
                 Imgproc.rectangle(
                     mat, new Point(100, 100), new Point(400, 400), new Scalar(255, 255, 255), 5);

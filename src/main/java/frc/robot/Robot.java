@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -56,16 +60,31 @@ public class Robot extends TimedRobot
    * This function is run when the robot is first started up and should be used for any initialization code.
    */
   @Override
-  public void robotInit()
-  {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+public void robotInit()
+{
+    // Instantiate our RobotContainer. This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
     PortForwarder.add(5801, "limelight-back.local", 5801);
     PortForwarder.add(5800, "limelight-back.local", 5800);
 
-    CameraServer.startAutomaticCapture("limelight-back", "http://172.28.0.1:5800/stream.mjpg");
+    // Check if the camera is reachable before starting capture
+    try {
+        URL cameraUrl = new URL("http://172.28.0.1:5800/stream.mjpg");
+        HttpURLConnection connection = (HttpURLConnection) cameraUrl.openConnection();
+        connection.setRequestMethod("HEAD");
+        connection.setConnectTimeout(1000); // 1 second timeout
+        connection.connect();
+
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            CameraServer.startAutomaticCapture("limelight-back", "http://172.28.0.1:5800/stream.mjpg");
+        } else {
+            System.out.println("Camera not reachable: " + connection.getResponseCode());
+        }
+    } catch (IOException e) {
+        System.out.println("Failed to connect to camera: " + e.getMessage());
+    }
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-back");
     NetworkTableEntry tx = table.getEntry("tx");

@@ -7,11 +7,14 @@ import frc.robot.subsystems.ClimbSubsystem;
 public class ClimbCommand extends Command {
 
     private int direction;
-    private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+    private final ClimbSubsystem climbSubsystem;
 
-    public ClimbCommand(int direction) {
-
+    public ClimbCommand(int direction, ClimbSubsystem climbSubsystem) {
+        this.climbSubsystem = climbSubsystem;
+        
         this.direction = direction;
+
+        addRequirements(climbSubsystem);
 
     }
 

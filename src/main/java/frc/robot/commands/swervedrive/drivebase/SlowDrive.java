@@ -23,24 +23,13 @@ public class SlowDrive extends Command {
     @Override
     public void execute()
     {
-        if (angle == 0) { // Forward
-            moveX = Constants.DECREASED_SPEED;
-            moveY = 0.0;
-        }
-        if (angle == 90) { // Rightward
-            moveX = 0.0;
-            moveY = Constants.DECREASED_SPEED * -1;
-        }
-        if (angle == 180) { // Backward
-            moveX = Constants.DECREASED_SPEED * -1;
-            moveY = 0.0;
-        }
-        if (angle == 270) { // Leftward
-            moveX = 0.0;
-            moveY = Constants.DECREASED_SPEED;
-        }
 
-        swerveSubsystem.drive(new Translation2d(moveX, moveY), 0.0, true);
+        double angleRadians = Math.toRadians(angle);
+
+        moveX = Constants.DECREASED_SPEED * Math.cos(angleRadians);
+        moveY = Constants.DECREASED_SPEED * Math.sin(angleRadians);
+
+        swerveSubsystem.drive(new Translation2d(moveX, moveY), angleRadians, true);
         
         
     }

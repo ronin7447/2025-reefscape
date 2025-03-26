@@ -164,15 +164,6 @@ public class ElevatorSubsystem extends SubsystemBase {
           stopElevatorMotor();
           currentLevel = 1;
 
-        } else if (currentLevel < 1) {
-
-          while (L1_DIOInput.get()) {
-            runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
-          }
-
-          stopElevatorMotor();
-          currentLevel = 1;
-
         }
     }
     // public void setInitPos() {
@@ -272,7 +263,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
           stopElevatorMotor();
           currentLevel = 3;
-          
+
         }    
     }
     // public void goToTrueZero() {

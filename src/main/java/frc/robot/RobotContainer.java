@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -425,8 +426,13 @@ public class RobotContainer {
       
       // TEST BUTTON remove later pls! -kaden 3/20/2025
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // THE PURPLE ONE
-        .whileTrue((Commands.runOnce(() -> {
+        .onTrue((Commands.runOnce(() -> {
           shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
+        })));
+        
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // THE PURPLE ONE
+        .onFalse((Commands.runOnce(() -> {
+          shooterSubsystem.stopShooterMotor();;
         })));
 
       // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
@@ -446,15 +452,23 @@ public class RobotContainer {
       // })));
 
       // Climb up/down
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5) // THE BLUE ONE IS BACKWARD I THINK -kaden 3/20/2025
-        .whileTrue((Commands.runOnce(() -> {
-          climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_SPEED);
-        })));
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_SPEED);
+      //   })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5)
+        .whileTrue(new ClimbCommand(1));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)
-        .whileTrue((Commands.runOnce(() -> {
-          climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
-      })));
+        .whileTrue(new ClimbCommand(-1));
+
+
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)
+      //   .onTrue((Commands.runOnce(() -> {
+      //     climbSubsystem.runClimbMotor(Constants.ClimbConstants.CLIMB_REVERSE_SPEED);
+      // })));
+
     
     
       //SLOW MOVEMENT

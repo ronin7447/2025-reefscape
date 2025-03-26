@@ -461,10 +461,10 @@ public class RobotContainer {
       //   })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5)
-        .whileTrue(new ClimbCommand(1));
+        .whileTrue(new ClimbCommand(1, climbSubsystem));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)
-        .whileTrue(new ClimbCommand(-1));
+        .whileTrue(new ClimbCommand(-1, climbSubsystem));
 
 
       // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3)

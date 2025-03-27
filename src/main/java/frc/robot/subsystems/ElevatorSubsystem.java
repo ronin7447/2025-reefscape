@@ -26,14 +26,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     private DigitalInput L2_DIOInput;
     private DigitalInput L3_DIOInput;
 
-    //private double initPos;
+
     private double[] positions = {0, 0, 0};
 
     private double lastPosition;
 
     private int currentLevel;
 
-    // private boolean L1bool = false; // Probably starts at false kaden3/21/25
+
     public ElevatorSubsystem() {
 
         ElevatorMotor = new SparkMax(Constants.ElevatorConstants.ELEVATOR_MOTORID, MotorType.kBrushless);

@@ -27,9 +27,9 @@ public class SlowDrive extends Command {
         double angleRadians = Math.toRadians(angle);
 
         moveX = Constants.DECREASED_SPEED * Math.cos(angleRadians);
-        moveY = Constants.DECREASED_SPEED * Math.sin(angleRadians);
+        moveY = -1 * Constants.DECREASED_SPEED * Math.sin(angleRadians);
 
-        swerveSubsystem.drive(new Translation2d(moveX, moveY), angleRadians, true);
+        swerveSubsystem.drive(new Translation2d(moveX, moveY), 0.0, true);
         
         
     }

@@ -331,12 +331,25 @@ public class RobotContainer {
       // UNRESTRCITED MOVING THE ELEVATOR,
       // SHOULD NOT USE IT UNLESS HAVE TO.
 
-      driverXbox.povUp()
-        .whileTrue(new ElevatorManual(1, elevatorSubsystem));
+      // driverXbox.povUp()
+      //   .onTrue(new ElevatorManual(1, elevatorSubsystem));
 
-      driverXbox.povDown()
-        .whileTrue(new ElevatorManual(-1, elevatorSubsystem));
+  
+      driverXbox.povUp().onTrue((Commands.runOnce(() -> {
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 3);
+      })));
 
+      driverXbox.povUp().onFalse((Commands.runOnce(() -> {
+        elevatorSubsystem.stopElevatorMotor();
+      })));
+
+      driverXbox.povDown().onTrue((Commands.runOnce(() -> {
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 3);
+      })));
+
+      driverXbox.povDown().onFalse((Commands.runOnce(() -> {
+        elevatorSubsystem.stopElevatorMotor();
+      })));
 
       driverXbox.start().onTrue((Commands.runOnce(() -> {
         drivebase.zeroGyro(); 

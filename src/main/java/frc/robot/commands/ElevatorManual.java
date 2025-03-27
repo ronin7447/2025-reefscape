@@ -23,7 +23,7 @@ public class ElevatorManual extends Command {
 
         if (direction > 0) {
             elevatorSubsystem.setMotorLimit(-10000, 10000);
-            elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+            elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
         }
         if (direction < 0) {
             elevatorSubsystem.setMotorLimit(-10000, 10000);

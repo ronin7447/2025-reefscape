@@ -31,7 +31,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private double lastPosition;
 
-    private int currentLevel;
+    public int currentLevel;
 
 
     public ElevatorSubsystem() {

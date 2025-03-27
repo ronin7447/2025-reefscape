@@ -97,8 +97,8 @@ public final class Constants
     // New Elevator Maths
 
     // Distances from 0 to L1, L2, and L3 perfect heights
-    public static final int[] distances = {43, 90, 149};
-    public static final int[] distanceToEncoder = {2, 2, 2}; // KADEN PLACEHOLDERS WE NEED TO FIND THESE 3/27/25
+    public static final int[] distances = {42, 86, 147};
+    public static final int[] distanceToEncoder = {2, 4, 2}; // KADEN PLACEHOLDERS WE NEED TO FIND THESE 3/27/25
 
   }
 

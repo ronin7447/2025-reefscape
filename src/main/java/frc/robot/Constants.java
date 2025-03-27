@@ -91,7 +91,7 @@ public final class Constants
     //public static final int TRUE_BOTTOM = 0;
     public static final int L1_HEIGHT = 46; //change 0 to true bottom
     public static final int L2_HEIGHT = 94;
-    public static final int L3_HEIGHT = 151;
+    public static final int L3_HEIGHT = 151; // new one is 161
     public static final double TOLERANCE = 0.1;
 
   }
@@ -122,8 +122,8 @@ public final class Constants
   public static final class AlgaeConstants {
     
     public static final int ALGAE_MOTORID = 16;
-    public static final double ALGAE_SPEED = -0.6;
-    public static final double ALGAE_REVERSE_SPEED = 0.6;
+    public static final double ALGAE_SPEED = 0.6;
+    public static final double ALGAE_REVERSE_SPEED = -0.6;
 
   }
 

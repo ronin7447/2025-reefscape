@@ -174,7 +174,7 @@ public class NewElevatorSubsystem extends SubsystemBase {
         }
 
         if (getLevel() == 2) {
-            while (getElevatorPosition() > Constants.ElevatorConstants.distances[1] - Constants.ElevatorConstants.distances[0]) {
+            while (getElevatorPosition() > lastPosition - (Constants.ElevatorConstants.distances[1] - Constants.ElevatorConstants.distances[0])) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
             }
 
@@ -201,14 +201,20 @@ public class NewElevatorSubsystem extends SubsystemBase {
 
         } else if (getLevel() == 3) {
 
-            while (getElevatorPosition() > Constants.ElevatorConstants.distances[2] - Constants.ElevatorConstants.distances[1]) {
+            while ((Constants.ElevatorConstants.distances[2] - Constants.ElevatorConstants.distances[1]) - (lastPosition - getElevatorPosition()) > 0) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
             }
 
             currentLevel = 2; // this is kinda weird
+
+
+
+
+
         }
 
     }
+
 
     public void goToL3() {
         calibrateElevator();

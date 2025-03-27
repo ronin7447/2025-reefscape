@@ -30,7 +30,6 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
-import frc.robot.commands.ElevatorManual;
 import frc.robot.commands.ShootCoral;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
@@ -376,6 +375,14 @@ public class RobotContainer {
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // Purple button 1
         .whileTrue(new ShootCoral(1, shooterSubsystem));
 
+
+      new Trigger(() -> {
+          // Returns true when button 1 is released AND button 10 is not pressed
+          return !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_1) && 
+                 !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10);
+        }).onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.goToL1();
+        })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5) // Leftest button 5
         .whileTrue(new ClimbCommand(1, climbSubsystem));

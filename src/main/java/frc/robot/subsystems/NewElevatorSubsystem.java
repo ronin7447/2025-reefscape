@@ -174,13 +174,18 @@ public class NewElevatorSubsystem extends SubsystemBase {
             }
 
             setLevel();
-            
+
             while (getElevatorPosition() < Constants.ElevatorConstants.distanceToEncoder[1] + Constants.ElevatorConstants.distances[1]) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2); // Half speed because it's nearly there
             };
 
             stopElevatorMotor();
 
+        } else if (getLevel() == 3) {
+            while (getElevatorPosition() > Constants.ElevatorConstants.distances[2] - Constants.ElevatorConstants.distances[1]) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+            }
+            currentLevel = 2; // this is kinda weird
         }
 
     }

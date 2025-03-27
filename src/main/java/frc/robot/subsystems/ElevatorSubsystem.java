@@ -1,7 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
@@ -28,7 +27,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private DigitalInput L3_DIOInput;
 
     //private double initPos;
-
     private double[] positions = {0, 0, 0};
 
     private double lastPosition;
@@ -36,7 +34,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private int currentLevel;
 
     // private boolean L1bool = false; // Probably starts at false kaden3/21/25
-
     public ElevatorSubsystem() {
 
         ElevatorMotor = new SparkMax(Constants.ElevatorConstants.ELEVATOR_MOTORID, MotorType.kBrushless);
@@ -60,13 +57,13 @@ public class ElevatorSubsystem extends SubsystemBase {
             currentLevel = 0;
         }
 
-        ElevatorMotorConfig.idleMode(IdleMode.kBrake);   
+        ElevatorMotorConfig.idleMode(IdleMode.kBrake);
         ElevatorMotorConfig.softLimit
-        .forwardSoftLimit(1000)
-        .forwardSoftLimitEnabled(true)
-        .reverseSoftLimit(-1000)
-        .reverseSoftLimitEnabled(true);     
-        
+                .forwardSoftLimit(1000)
+                .forwardSoftLimitEnabled(true)
+                .reverseSoftLimit(-1000)
+                .reverseSoftLimitEnabled(true);
+
         ElevatorMotor.configure(ElevatorMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         // ElevatorEncoder.setPosition(0);
     }
@@ -75,12 +72,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         lastPosition = ElevatorEncoder.getPosition();
     }
 
-    public void setMotorLimit(int upperLimit, int lowerLimit){
+    public void setMotorLimit(int upperLimit, int lowerLimit) {
         ElevatorMotorConfig.softLimit
-        .forwardSoftLimit(upperLimit)
-        .forwardSoftLimitEnabled(true)
-        .reverseSoftLimit(lowerLimit)
-        .reverseSoftLimitEnabled(true);
+                .forwardSoftLimit(upperLimit)
+                .forwardSoftLimitEnabled(true)
+                .reverseSoftLimit(lowerLimit)
+                .reverseSoftLimitEnabled(true);
 
         ElevatorMotor.configure(ElevatorMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
@@ -118,7 +115,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double getElevatorPosition() {
 
         return ElevatorEncoder.getPosition();
-        
+
     }
 
     public void resetPosition() {
@@ -157,13 +154,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         return currentLevel;
 
     }
-    
 
     // Be careful... NEVER start using the elevator when it's above L3!
     // Only runs when level is unknown
     public void calibrateElevator() { // Move up slowly until it hits a target
         if (currentLevel == 0) {
-            
+
             while (L1_DIOInput.get() && L2_DIOInput.get() && L3_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
@@ -178,15 +174,16 @@ public class ElevatorSubsystem extends SubsystemBase {
         calibrateElevator();
 
         if (getLevel() == 3) {
-            while(L2_DIOInput.get()) {
+            while (L2_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
             }
 
+            // set the level to L2 and keep running the elevator down (getlevel == 2)
             setLevel();
         }
 
         if (getLevel() == 2) {
-            while (getElevatorPosition() > lastPosition - (Constants.ElevatorConstants.distances[1] - Constants.ElevatorConstants.distances[0])) {
+            while ((lastPosition - getElevatorPosition()) < (Constants.ElevatorConstants.distances[1] - Constants.ElevatorConstants.distances[0])) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
             }
 
@@ -205,47 +202,46 @@ public class ElevatorSubsystem extends SubsystemBase {
 
             setLevel();
 
-            while (getElevatorPosition() < Constants.ElevatorConstants.distanceToEncoder[1] + Constants.ElevatorConstants.distances[1]) {
+            while ((getElevatorPosition() - lastPosition) < Constants.ElevatorConstants.distanceToEncoder[1]) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2); // Half speed because it's nearly there
-            };
+            }
 
             stopElevatorMotor();
 
         } else if (getLevel() == 3) {
 
+            // last position is the position of the elevator when it was at L3
+            // getElevatorPosition() is the position of the elevator currently
+            // if the difference between the two is greater than the distance between L2 and L3, then we need to go down
             while ((Constants.ElevatorConstants.distances[2] - Constants.ElevatorConstants.distances[1]) - (lastPosition - getElevatorPosition()) > 0) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
             }
 
             currentLevel = 2; // this is kinda weird
 
-
-
-
-
         }
 
     }
-
 
     public void goToL3() {
         calibrateElevator();
 
         if (getLevel() == 1) {
-            while(L2_DIOInput.get()) {
+            while (L2_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
 
+            // set the level to L2 and keep running the elevator down (getlevel == 2)
             setLevel();
         }
         if (getLevel() == 2) {
-            while(L3_DIOInput.get()) {
+            while (L3_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
 
             setLevel();
 
-            while (getElevatorPosition() < Constants.ElevatorConstants.distanceToEncoder[2] + Constants.ElevatorConstants.distances[2]) {
+            while ((getElevatorPosition() - lastPosition) < Constants.ElevatorConstants.distanceToEncoder[2]) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
 

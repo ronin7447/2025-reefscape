@@ -138,16 +138,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void goToL1() {
-        // if (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
-        //     while (getElevatorPosition() > Constants.ElevatorConstants.L1_HEIGHT) {
-        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
-        //     }
-        // } else {
-        //     while (getElevatorPosition() < Constants.ElevatorConstants.L1_HEIGHT) {
-        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-        //     }
-        // }
-        // stopElevatorMotor();
 
         if (currentLevel == 0) {
             
@@ -185,16 +175,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // }
 
     public void goToL2() {
-        // if (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT) {
-        //     while (getElevatorPosition() < Constants.ElevatorConstants.L2_HEIGHT ) {
-        //       runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-        //     }
-        // } else {
-        //     while (getElevatorPosition() > Constants.ElevatorConstants.L2_HEIGHT) {
-        //       runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
-        //     }
-        // }        
-        // stopElevatorMotor();
         System.out.println("elevator is currently at (before)"+currentLevel);
         //currentLevel = getElevatorLevelFromEncoder();
         System.out.println("elevator is currently at (from encoder update)"+currentLevel);
@@ -238,17 +218,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void goToL3() {
-        // if (getElevatorPosition() < Constants.ElevatorConstants.L3_HEIGHT) {
-        //     while (getElevatorPosition() < Constants.ElevatorConstants.L3_HEIGHT) {
-        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-        //     }
-        // } else {
-        //     while (getElevatorPosition() > Constants.ElevatorConstants.L3_HEIGHT) {
-        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
-        //     }
-        // }
-        // stopElevatorMotor();
-        // runElevatorMotor(getElevatorSpeed(getElevatorPosition(), initPos, Constants.ElevatorConstants.L3_HEIGHT, Constants.ElevatorConstants.BASE_SPEED));
         System.out.println("elevator is currently at (before)"+currentLevel);
         //currentLevel = getElevatorLevelFromEncoder();
         System.out.println("elevator is currently at (from encoder update)"+currentLevel);

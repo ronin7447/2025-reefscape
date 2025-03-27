@@ -322,7 +322,6 @@ public class RobotContainer {
       })));
 
       
-
       // driverXbox.povLeft().onTrue((Commands.runOnce(() -> {
       //   elevatorSubsystem.goToTrueZero();
       // })));
@@ -346,9 +345,6 @@ public class RobotContainer {
       // VERY IMPORTANT FOR BACKUP,
       // UNRESTRCITED MOVING THE ELEVATOR,
       // SHOULD NOT USE IT UNLESS HAVE TO.
-
-      // driverXbox.povUp()
-      //   .onTrue(new ElevatorManual(1, elevatorSubsystem));
 
   
       driverXbox.povUp().onTrue((Commands.runOnce(() -> {

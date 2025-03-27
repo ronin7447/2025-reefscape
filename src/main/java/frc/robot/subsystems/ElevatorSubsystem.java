@@ -82,6 +82,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         ElevatorMotor.configure(ElevatorMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
+    public double getElevatorSpeed() {
+        return ElevatorMotor.get();
+    }
+
     public void runElevatorMotor(double speed) {
 
         ElevatorMotor.set(speed);

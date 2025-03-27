@@ -424,40 +424,47 @@ public class RobotContainer {
         .whileTrue(new SlowDrive(drivebase, 180));
       
       // Drag code
-      new Trigger(() -> 
-        elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[0] < 0 &&
-        elevatorSubsystem.currentLevel == 1 &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_8) &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
-        XboxInfo.getPOV() == -1)
-          .whileTrue((Commands.runOnce(() -> { 
-            elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
-          })));
+      // new Trigger(() -> 
+      //   elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[0] < 0 &&
+      //   elevatorSubsystem.currentLevel == 1 &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_8) &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
+      //   XboxInfo.getPOV() == -1)
+      //     .whileTrue((Commands.runOnce(() -> { 
+      //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+      //     })));
 
-      new Trigger(() -> 
-        elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[1] < 0 &&
-        elevatorSubsystem.currentLevel == 2 &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_8) &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
-        XboxInfo.getPOV() == -1)
-          .whileTrue((Commands.runOnce(() -> { 
-            elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
-          })));
+      // new Trigger(() -> 
+      //   elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[1] < 0 &&
+      //   elevatorSubsystem.currentLevel == 2 &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_8) &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
+      //   XboxInfo.getPOV() == -1)
+      //     .whileTrue((Commands.runOnce(() -> { 
+      //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+      //     })));
+
+      // new Trigger(() -> 
+      //   elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[2] < 0 &&
+      //   elevatorSubsystem.currentLevel == 3 &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_8) &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
+      //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
+      //   XboxInfo.getPOV() == -1)
+      //     .whileTrue((Commands.runOnce(() -> { 
+      //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+      //     })));
 
       new Trigger(() -> 
         elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[2] < 0 &&
         elevatorSubsystem.currentLevel == 3 &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_8) &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
-        !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
-        XboxInfo.getPOV() == -1)
+        elevatorSubsystem.getElevatorSpeed() == 0)
           .whileTrue((Commands.runOnce(() -> { 
             elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
           })));
 
-      
 
 
     }

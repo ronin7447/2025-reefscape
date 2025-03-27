@@ -94,6 +94,12 @@ public final class Constants
     public static final int L3_HEIGHT = 151; // new one is 161
     public static final double TOLERANCE = 0.1;
 
+    // New Elevator Maths
+
+    // Distances from 0 to L1, L2, and L3 perfect heights
+    public static final int[] distances = {43, 90, 149};
+    public static final int[] distanceToEncoder = {2, 2, 2}; // KADEN PLACEHOLDERS WE NEED TO FIND THESE 3/27/25
+
   }
 
   public static final class ShooterConstants {

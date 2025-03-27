@@ -122,8 +122,8 @@ public final class Constants
   public static final class AlgaeConstants {
     
     public static final int ALGAE_MOTORID = 16;
-    public static final double ALGAE_SPEED = 0.6;
-    public static final double ALGAE_REVERSE_SPEED = -0.6;
+    public static final double ALGAE_SPEED = -0.3;
+    public static final double ALGAE_REVERSE_SPEED = 0.3;
 
   }
 

@@ -321,11 +321,27 @@ public class RobotContainer {
         elevatorSubsystem.resetPosition();
       })));
 
+      
+
       // driverXbox.povLeft().onTrue((Commands.runOnce(() -> {
       //   elevatorSubsystem.goToTrueZero();
       // })));
       
-     
+      driverXbox.y().onTrue((Commands.runOnce(() -> {
+        algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+      })));
+
+      driverXbox.y().onFalse((Commands.runOnce(() -> {
+        algaeSubsystem.stopAlgaeMotor();
+      })));
+
+      driverXbox.a().onTrue((Commands.runOnce(() -> {
+        algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+      })));
+
+      driverXbox.a().onFalse((Commands.runOnce(() -> {
+        algaeSubsystem.stopAlgaeMotor();
+      })));
 
       // VERY IMPORTANT FOR BACKUP,
       // UNRESTRCITED MOVING THE ELEVATOR,

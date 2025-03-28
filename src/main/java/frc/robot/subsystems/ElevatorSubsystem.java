@@ -193,6 +193,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
             currentLevel = 2; // this is kinda weird
 
+            stopElevatorMotor();
+
         }
     }
 
@@ -233,15 +235,18 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (getLevel() == 1) {
             while (L2_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+                
             }
+            System.out.println("kadens elevator made it to L2");
 
-            // set the level to L2 and keep running the elevator down (getlevel == 2)
+            // set the level to L2 and keep running the elevator up (getlevel == 2)
             setLevel();
         }
         if (getLevel() == 2) {
             while (L3_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
+            System.out.println("kadens elevator made it to L3");
 
             setLevel();
 

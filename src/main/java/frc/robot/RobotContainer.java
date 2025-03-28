@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ShootCoral;
+import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -93,7 +94,18 @@ public class RobotContainer {
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
         () -> -driverXbox.getLeftY(),
         () -> -driverXbox.getLeftX())
-        .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
+        // .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
+        .withControllerRotationAxis(() -> {
+          if (driverXbox.getLeftTriggerAxis() > 0.5) {
+            if (visionSubsystem.getTX() < 2.5 && visionSubsystem.getTX() > -2.5) {
+              return 0.0;
+            } else {
+              return close.calculate(visionSubsystem.getTX(), 0);
+            }
+          } else {
+            return -1 * driverXbox.getRightX();
+          }
+        })
         .deadband(OperatorConstants.DEADBAND)
         .scaleTranslation(0.8)
         .allianceRelativeControl(false);
@@ -246,7 +258,7 @@ public class RobotContainer {
       // })));
 
       // auto align command
-      // driverXbox.start().whileTrue((Commands.runOnce(() -> {
+      // driverXbox.leftTrigger().whileTrue((Commands.runOnce(() -> {
       //   System.out.println("Auto align start");
       //   //  AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, 0, 0, 0, 0);
       //   //  autoAlignCommand.execute();
@@ -274,7 +286,7 @@ public class RobotContainer {
         System.out.println(poseHolder[0]);
       }, ()-> visionSubsystem.getTX() < 3 && visionSubsystem.getTX() > -3, drivebase)));
 
-      driverXbox.leftTrigger().whileTrue((new FunctionalCommand(()-> {}, ()-> {
+      driverXbox.leftTrigger().whileTrue((new FunctionalCommand(()-> {}, ()-> { // move command
         if (visionSubsystem.getTA() < 12.0) {
           drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 15.0), 0, 0));
         }
@@ -286,6 +298,17 @@ public class RobotContainer {
         System.out.println(drivebase.getPose());
         // drivebase.driveToPose(poseHolder[0]);
       }, () -> visionSubsystem.getTA() > 12.0, drivebase)));
+
+      // Alignment command new
+      driverXbox.leftTrigger().onTrue( // Supposed to aim while you can move with joystick(s)
+        new AutoAlignCommand(drivebase, visionSubsystem, 0.0, 0.0)
+          .repeatedly()
+        );
+
+
+
+
+
 
       // Debug elevator code
       driverXbox.povRight().onTrue((Commands.runOnce(() -> {

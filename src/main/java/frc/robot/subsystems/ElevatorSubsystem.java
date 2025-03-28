@@ -22,9 +22,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final SparkMaxConfig ElevatorMotorConfig;
     private RelativeEncoder ElevatorEncoder;
 
-    private DigitalInput L1_DIOInput;
-    private DigitalInput L2_DIOInput;
-    private DigitalInput L3_DIOInput;
+    public DigitalInput L1_DIOInput;
+    public DigitalInput L2_DIOInput;
+    public DigitalInput L3_DIOInput;
 
 
     private double[] positions = {0, 0, 0};
@@ -177,85 +177,148 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void goToL1() {
         calibrateElevator();
 
-        if (getLevel() == 3) {
-            while (L2_DIOInput.get()) {
+        if (ElevatorEncoder.getPosition() > positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
+
+            while (ElevatorEncoder.getPosition() > positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
             }
 
-            // set the level to L2 and keep running the elevator down (getlevel == 2)
+            currentLevel = 1;
+
+        } else if (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
+
+            while (L1_DIOInput.get()) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+            }
+
             setLevel();
-        }
 
-        if (getLevel() == 2) {
-            while ((lastPosition - getElevatorPosition()) < (Constants.ElevatorConstants.distances[1] - Constants.ElevatorConstants.distances[0])) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+            while (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
 
-            currentLevel = 2; // this is kinda weird
-
-            stopElevatorMotor();
 
         }
+
+        stopElevatorMotor();
+
     }
 
     public void goToL2() {
-        calibrateElevator(); // Precaution
 
-        if (getLevel() == 1) {
+        calibrateElevator();
+        // From L1 or below
+        if (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
             while (L2_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
 
             setLevel();
 
-            while ((getElevatorPosition() - lastPosition) < Constants.ElevatorConstants.distanceToEncoder[1]) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2); // Half speed because it's nearly there
+            while (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
 
             stopElevatorMotor();
 
-        } else if (getLevel() == 3) {
+        } else if (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
 
-            // last position is the position of the elevator when it was at L3
-            // getElevatorPosition() is the position of the elevator currently
-            // if the difference between the two is greater than the distance between L2 and L3, then we need to go down
-            while ((Constants.ElevatorConstants.distances[2] - Constants.ElevatorConstants.distances[1]) - (lastPosition - getElevatorPosition()) > 0) {
+            while (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
             }
 
-            currentLevel = 2; // this is kinda weird
-
         }
+
+        currentLevel = 2;
+        stopElevatorMotor();
 
     }
 
+    // public void goToL2() {
+    //     calibrateElevator(); // Precaution
+
+    //     if (getLevel() == 1) {
+    //         while (L2_DIOInput.get()) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+    //         }
+
+    //         setLevel();
+
+    //         while ((getElevatorPosition() - lastPosition) < Constants.ElevatorConstants.distanceToEncoder[1]) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2); // Half speed because it's nearly there
+    //         }
+
+    //         stopElevatorMotor();
+
+    //     } else if (getLevel() == 3) {
+
+    //         // last position is the position of the elevator when it was at L3
+    //         // getElevatorPosition() is the position of the elevator currently
+    //         // if the difference between the two is greater than the distance between L2 and L3, then we need to go down
+    //         while ((Constants.ElevatorConstants.distances[2] - Constants.ElevatorConstants.distances[1]) - (lastPosition - getElevatorPosition()) > 0) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+    //         }
+
+    //         currentLevel = 2; // this is kinda weird
+
+    //     }
+
+    // }
+
     public void goToL3() {
         calibrateElevator();
+        // From L1 or below
+        if (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
 
-        if (getLevel() == 1) {
-            while (L2_DIOInput.get()) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-                
-            }
-            System.out.println("kadens elevator made it to L2");
-
-            // set the level to L2 and keep running the elevator up (getlevel == 2)
-            setLevel();
-        }
-        if (getLevel() == 2) {
             while (L3_DIOInput.get()) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
-            System.out.println("kadens elevator made it to L3");
-
             setLevel();
+            while (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
 
-            while ((getElevatorPosition() - lastPosition) < Constants.ElevatorConstants.distanceToEncoder[2]) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+
             }
 
             stopElevatorMotor();
+
+        } else if (ElevatorEncoder.getPosition() > positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
+
+            while (ElevatorEncoder.getPosition() > positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
+
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+
+            }
+
+            stopElevatorMotor();
+
         }
+
+        stopElevatorMotor();
+
+
+
+        // if (getLevel() == 1) {
+        //     while (L2_DIOInput.get()) {
+        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+        //     }
+
+        //     // set the level to L2 and keep running the elevator down (getlevel == 2)
+        //     setLevel();
+        // }
+        // if (getLevel() == 2) {
+        //     while (L3_DIOInput.get()) {
+        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+        //     }
+
+        //     setLevel();
+
+        //     while ((getElevatorPosition() - lastPosition) < Constants.ElevatorConstants.distanceToEncoder[2]) {
+        //         runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+        //     }
+
+        //     stopElevatorMotor();
+        // }
 
     }
 }

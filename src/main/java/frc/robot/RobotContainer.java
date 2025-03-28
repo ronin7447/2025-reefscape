@@ -465,6 +465,14 @@ public class RobotContainer {
             elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
           })));
 
+      new Trigger(() -> 
+        !elevatorSubsystem.L1_DIOInput.get() ||
+        !elevatorSubsystem.L2_DIOInput.get() ||
+        !elevatorSubsystem.L3_DIOInput.get()
+        )
+          .onTrue((Commands.runOnce(() -> { 
+            elevatorSubsystem.setLevel();
+          })));
 
 
     }

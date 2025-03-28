@@ -342,7 +342,7 @@ public class RobotContainer {
       // WHEN PRESSING BOTH BACK AND START BTNSs
       driverXbox.back()
       .and(driverXbox.start()).onTrue((Commands.runOnce(() -> {
-        
+        RobotLogger.warning("Elevator encoder position has been reset!");
         elevatorSubsystem.resetPosition();
       })));
 
@@ -420,12 +420,15 @@ public class RobotContainer {
           // Only go to L1 if button 10 is not pressed
           if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10)) {
             // if the button 10 is pressed, go to l3
+            RobotLogger.log("Button 10 is pressed, going to L3");
             elevatorSubsystem.goToL3();
           } else if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9)) {
             // if the button 9 is pressed, go to l2
+            RobotLogger.log("Button 9 is pressed, going to L2");
             elevatorSubsystem.goToL2();
           } else {
-              elevatorSubsystem.goToL1();
+            RobotLogger.log("No button is pressed, going to L1");
+            elevatorSubsystem.goToL1();
           }
       }));
 

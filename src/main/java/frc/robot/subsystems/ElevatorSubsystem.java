@@ -187,10 +187,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         } else if (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
 
-            while (L1_DIOInput.get()) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+            if (ElevatorEncoder.getPosition() < positions[0]) {
+                while (L1_DIOInput.get()) {
+                    runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+                }
             }
-
             setLevel();
 
             while (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
@@ -209,10 +210,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         calibrateElevator();
         // From L1 or below
         if (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
-            while (L2_DIOInput.get()) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
-            }
+            if (ElevatorEncoder.getPosition() < positions[1]) {
 
+                while (L2_DIOInput.get()) {
+                    runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+                }
+        }
             setLevel();
 
             while (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
@@ -269,9 +272,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         calibrateElevator();
         // From L1 or below
         if (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
-
-            while (L3_DIOInput.get()) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+            if (ElevatorEncoder.getPosition() < positions[2]) {
+                while (L3_DIOInput.get()) {
+                  runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+                }
             }
             setLevel();
             while (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {

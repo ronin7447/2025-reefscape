@@ -367,6 +367,20 @@ public class RobotContainer {
         elevatorSubsystem.stopElevatorMotor();
       })));
 
+
+      // KADENS DEBUG STUFF
+      driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
+        System.out.println("pov L1: " + elevatorSubsystem.positions[0]);
+        System.out.println("pov L2: " + elevatorSubsystem.positions[1]);
+        System.out.println("pov L3: " + elevatorSubsystem.positions[2]);
+      })));
+
+      driverXbox.povDown().whileTrue((Commands.runOnce(() -> {
+        System.out.println("pov L1: " + elevatorSubsystem.positions[0]);
+        System.out.println("pov L2: " + elevatorSubsystem.positions[1]);
+        System.out.println("pov L3: " + elevatorSubsystem.positions[2]);
+      })));
+
       driverXbox.start().onTrue((Commands.runOnce(() -> {
         drivebase.zeroGyro(); 
         System.out.println("GYRO HAS BEEN RESET!");
@@ -475,6 +489,9 @@ public class RobotContainer {
         )
           .onTrue((Commands.runOnce(() -> { 
             elevatorSubsystem.setLevel();
+            System.out.println("new L1: " + elevatorSubsystem.positions[0]);
+            System.out.println("new L2: " + elevatorSubsystem.positions[1]);
+            System.out.println("new L3: " + elevatorSubsystem.positions[2]);
           })));
 
 

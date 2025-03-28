@@ -188,7 +188,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else if (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
 
             while (L1_DIOInput.get()) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
             }
 
             setLevel();

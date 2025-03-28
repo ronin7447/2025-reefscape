@@ -18,18 +18,21 @@ public class RobotLogger {
     public static void log(String message) {
         String logMessage = "[" + getTimestamp() + "] [INFO] " + message;
         System.out.println(logMessage);
+        writeToDashboard(message);
         // writeToFile(logMessage);
     }
 
     public static void warning(String message) {
         String logMessage = "[" + getTimestamp() + "] [WARNING] " + message;
         System.out.println(logMessage);
+        writeToDashboard(message);
         // writeToFile(logMessage);
     }
 
     public static void error(String message) {
         String logMessage = "[" + getTimestamp() + "] [ERROR] " + message;
         System.err.println(logMessage);
+        writeToDashboard(message);
         // writeToFile(logMessage);
     }
 

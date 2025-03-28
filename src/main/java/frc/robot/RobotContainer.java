@@ -420,7 +420,13 @@ public class RobotContainer {
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
         .onFalse(Commands.runOnce(() -> {
           // Only go to L1 if button 10 is not pressed
-          if (!driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10)) {
+          if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10)) {
+            // if the button 10 is pressed, go to l3
+            elevatorSubsystem.goToL3();
+          } else if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9)) {
+            // if the button 9 is pressed, go to l2
+            elevatorSubsystem.goToL2();
+          } else {
               elevatorSubsystem.goToL1();
           }
       }));
@@ -497,10 +503,9 @@ public class RobotContainer {
       //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
       //     })));
 
-      new Trigger(() -> 
-        elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[2] < 0 &&
-        elevatorSubsystem.currentLevel == 3 &&
-        elevatorSubsystem.getElevatorSpeed() == 0)
+      new Trigger(() -> (elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[2] < 0 &&
+      elevatorSubsystem.currentLevel == 3 &&
+      elevatorSubsystem.getElevatorSpeed() == 0))
           .whileTrue((Commands.runOnce(() -> { 
             elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
           })));

@@ -13,8 +13,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -23,7 +21,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -31,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ShootCoral;
-import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -98,8 +94,10 @@ public class RobotContainer {
         .withControllerRotationAxis(() -> {
           if (driverXbox.getLeftTriggerAxis() > 0.5) {
             if (visionSubsystem.getTX() < 2.5 && visionSubsystem.getTX() > -2.5) {
+              RobotLogger.log("Auto align completes");
               return 0.0;
             } else {
+              RobotLogger.log("Auto align in progress, moving speed is: " + close.calculate(visionSubsystem.getTX(), 0));
               return close.calculate(visionSubsystem.getTX(), 0);
             }
           } else {
@@ -278,32 +276,32 @@ public class RobotContainer {
 
       // Limelight code
 
-      final Pose2d[] poseHolder = new Pose2d[1];
-      driverXbox.b().whileTrue((new FunctionalCommand(()-> {}, ()-> {
-        drivebase.drive(new ChassisSpeeds(0, 0, close.calculate(visionSubsystem.getTX(), 0)));
-      }, (bool)-> {
-        poseHolder[0] = drivebase.getPose();
-        System.out.println(poseHolder[0]);
-      }, ()-> visionSubsystem.getTX() < 3 && visionSubsystem.getTX() > -3, drivebase)));
+      // final Pose2d[] poseHolder = new Pose2d[1];
+      // driverXbox.b().whileTrue((new FunctionalCommand(()-> {}, ()-> {
+      //   drivebase.drive(new ChassisSpeeds(0, 0, close.calculate(visionSubsystem.getTX(), 0)));
+      // }, (bool)-> {
+      //   poseHolder[0] = drivebase.getPose();
+      //   System.out.println(poseHolder[0]);
+      // }, ()-> visionSubsystem.getTX() < 3 && visionSubsystem.getTX() > -3, drivebase)));
 
-      driverXbox.leftTrigger().whileTrue((new FunctionalCommand(()-> {}, ()-> { // move command
-        if (visionSubsystem.getTA() < 12.0) {
-          drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 15.0), 0, 0));
-        }
-      }, (bool)-> {
-        System.out.println("TA");
-        System.out.println(visionSubsystem.getTA());
-        System.out.println("finished. moving back to pose");
-        System.out.println(poseHolder[0]);
-        System.out.println(drivebase.getPose());
-        // drivebase.driveToPose(poseHolder[0]);
-      }, () -> visionSubsystem.getTA() > 12.0, drivebase)));
+      // driverXbox.leftTrigger().whileTrue((new FunctionalCommand(()-> {}, ()-> { // move command
+      //   if (visionSubsystem.getTA() < 12.0) {
+      //     drivebase.drive(new ChassisSpeeds(translationalign.calculate(visionSubsystem.getTA(), 15.0), 0, 0));
+      //   }
+      // }, (bool)-> {
+      //   System.out.println("TA");
+      //   System.out.println(visionSubsystem.getTA());
+      //   System.out.println("finished. moving back to pose");
+      //   System.out.println(poseHolder[0]);
+      //   System.out.println(drivebase.getPose());
+      //   // drivebase.driveToPose(poseHolder[0]);
+      // }, () -> visionSubsystem.getTA() > 12.0, drivebase)));
 
       // Alignment command new
-      driverXbox.leftTrigger().onTrue( // Supposed to aim while you can move with joystick(s)
-        new AutoAlignCommand(drivebase, visionSubsystem, 0.0, 0.0)
-          .repeatedly()
-        );
+      // driverXbox.leftTrigger().onTrue( // Supposed to aim while you can move with joystick(s)
+      //   new AutoAlignCommand(drivebase, visionSubsystem, 0.0, 0.0)
+      //     .repeatedly()
+      //   );
 
 
 

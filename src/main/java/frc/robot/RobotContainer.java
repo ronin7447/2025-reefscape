@@ -487,7 +487,7 @@ public class RobotContainer {
         !elevatorSubsystem.L2_DIOInput.get() ||
         !elevatorSubsystem.L3_DIOInput.get()
         )
-          .onTrue((Commands.runOnce(() -> { 
+          .whileTrue((Commands.run(() -> { 
             elevatorSubsystem.setLevel();
             System.out.println("new L1: " + elevatorSubsystem.positions[0]);
             System.out.println("new L2: " + elevatorSubsystem.positions[1]);

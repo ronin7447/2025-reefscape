@@ -289,6 +289,9 @@ public class RobotContainer {
 
       // Debug elevator code
       driverXbox.povRight().onTrue((Commands.runOnce(() -> {
+        System.out.println("L1: " + elevatorSubsystem.positions[0]);
+        System.out.println("L2: " + elevatorSubsystem.positions[1]);
+        System.out.println("L3: " + elevatorSubsystem.positions[2]);
         System.out.println(elevatorSubsystem.getElevatorPosition());
         System.out.println(elevatorSubsystem.getLevel());
       })));

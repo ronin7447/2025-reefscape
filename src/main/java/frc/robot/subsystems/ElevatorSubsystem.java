@@ -27,7 +27,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public DigitalInput L3_DIOInput;
 
 
-    private double[] positions = {0, 0, 0};
+    public double[] positions = {0, 0, 0};
 
     private double lastPosition;
 

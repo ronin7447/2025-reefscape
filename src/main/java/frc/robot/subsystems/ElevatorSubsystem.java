@@ -82,9 +82,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         ElevatorMotor.configure(ElevatorMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     }
 
-    public double getElevatorSpeed() {
-        return ElevatorMotor.get();
-    }
+    // public double getElevatorSpeed() {
+    //     return ElevatorMotor.get();
+    // }
 
     public void runElevatorMotor(double speed) {
 
@@ -188,7 +188,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else if (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
 
 
-            if (ElevatorEncoder.getPosition() < positions[0]) {
+            if (ElevatorEncoder.getPosition() <     positions[0]) {
                 while (L1_DIOInput.get()) {
                     runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
                 }
@@ -325,6 +325,24 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         //     stopElevatorMotor();
         // }
+
+    }
+
+    public double getElevatorSpeed(double startingPos, double endingPos, double currentPos) {
+        double b = Constants.ElevatorConstants.BASE_SPEED;
+        double a = Math.E;
+        double h = 0.5;
+        double w = Math.abs(startingPos - endingPos);
+        double t = (startingPos + endingPos) / 2;
+        double x = getElevatorPosition();
+
+        double speed = (h - b) * Math.pow(a, -Math.pow(4*(x-t)/w, 4)) + b;
+
+        if (startingPos > endingPos) {
+            speed *= -1;
+        }
+
+        return speed;
 
     }
 }

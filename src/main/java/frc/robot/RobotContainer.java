@@ -342,7 +342,7 @@ public class RobotContainer {
       // WHEN PRESSING BOTH BACK AND START BTNSs
       driverXbox.back()
       .and(driverXbox.start()).onTrue((Commands.runOnce(() -> {
-        System.out.println("Reset to 0");
+        
         elevatorSubsystem.resetPosition();
       })));
 

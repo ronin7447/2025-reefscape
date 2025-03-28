@@ -328,7 +328,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    public double getPIDElevatorSpeed(double startingPos, double endingPos, double currentPos) {
+    public double getElevatorSpeed(double startingPos, double endingPos, double currentPos) {
         double b = Constants.ElevatorConstants.BASE_SPEED;
         double a = Math.E;
         double h = 0.5;

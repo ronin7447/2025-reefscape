@@ -9,13 +9,13 @@ import frc.robot.subsystems.swervedrive.Vision;
 public class AutoAlignCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private final Vision vision;
-    private final double  vX, vY;
+    // private final double  vX, vY;
     private final double headingHorizontal, headingVertical;
-    public AutoAlignCommand(SwerveSubsystem swerveSubsystem, Vision vision, double vX, double vY, double headingHorizontal, double headingVertical) {
+    public AutoAlignCommand(SwerveSubsystem swerveSubsystem, Vision vision, double headingHorizontal, double headingVertical) {
         this.vision = vision;
         this.swerveSubsystem = swerveSubsystem;
-        this.vX = vX;
-        this.vY = vY;
+        // this.vX = vX;
+        // this.vY = vY;
         this.headingHorizontal = headingHorizontal;
         this.headingVertical = headingVertical;
         addRequirements(this.swerveSubsystem);

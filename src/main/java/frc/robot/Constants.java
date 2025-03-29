@@ -114,8 +114,12 @@ public final class Constants
   public static final class ClimbConstants {
 
     public static final int CLIMB_MOTORID = 18;
+    public static final int CLIMB_ENCODERID = 0; // replace with the correct encoder ID
     public static final double CLIMB_SPEED = 0.8;
     public static final double CLIMB_REVERSE_SPEED = -0.8;
+
+    public static final double CLIMB_OUT_ENCODER_POSITION = 0.0; // replace with the correct encoder position
+    public static final double CLIMB_IN_ENCODER_POSITION = 0.0; // replace with the correct encoder position
 
   }
 

@@ -332,10 +332,15 @@ public class RobotContainer {
           elevatorSubsystem.goToL3();
         })));
 
+      driverXbox.leftTrigger()
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.goToL1();
+        })));
 
-      // Reverse Shooter Algae
+
+      // Shoot Coral
       driverXbox.rightTrigger()
-        .whileTrue(new ShootCoral(-1, shooterSubsystem));
+        .whileTrue(new ShootCoral(1, shooterSubsystem));
       
 
       // THIS IS FOR ELEVATOR POSITION RESET, [!IMPORTANT!]
@@ -351,21 +356,21 @@ public class RobotContainer {
       //   elevatorSubsystem.goToTrueZero();
       // })));
       
-      driverXbox.y().onTrue((Commands.runOnce(() -> {
-        algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
-      })));
+      // driverXbox.y().onTrue((Commands.runOnce(() -> {
+      //   algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+      // })));
 
-      driverXbox.y().onFalse((Commands.runOnce(() -> {
-        algaeSubsystem.stopAlgaeMotor();
-      })));
+      // driverXbox.y().onFalse((Commands.runOnce(() -> {
+      //   algaeSubsystem.stopAlgaeMotor();
+      // })));
 
-      driverXbox.a().onTrue((Commands.runOnce(() -> {
-        algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
-      })));
+      // driverXbox.a().onTrue((Commands.runOnce(() -> {
+      //   algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+      // })));
 
-      driverXbox.a().onFalse((Commands.runOnce(() -> {
-        algaeSubsystem.stopAlgaeMotor();
-      })));
+      // driverXbox.a().onFalse((Commands.runOnce(() -> {
+      //   algaeSubsystem.stopAlgaeMotor();
+      // })));
 
       // VERY IMPORTANT FOR BACKUP,
       // UNRESTRCITED MOVING THE ELEVATOR,
@@ -373,7 +378,7 @@ public class RobotContainer {
 
   
       driverXbox.povUp().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 3);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
       })));
 
       driverXbox.povUp().onFalse((Commands.runOnce(() -> {
@@ -381,7 +386,7 @@ public class RobotContainer {
       })));
 
       driverXbox.povDown().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 3);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
       })));
 
       driverXbox.povDown().onFalse((Commands.runOnce(() -> {
@@ -390,17 +395,17 @@ public class RobotContainer {
 
 
       // KADENS DEBUG STUFF
-      driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
-        System.out.println("pov L1: " + elevatorSubsystem.positions[0]);
-        System.out.println("pov L2: " + elevatorSubsystem.positions[1]);
-        System.out.println("pov L3: " + elevatorSubsystem.positions[2]);
-      })));
+      // driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
+      //   System.out.println("pov L1: " + elevatorSubsystem.positions[0]);
+      //   System.out.println("pov L2: " + elevatorSubsystem.positions[1]);
+      //   System.out.println("pov L3: " + elevatorSubsystem.positions[2]);
+      // })));
 
-      driverXbox.povDown().whileTrue((Commands.runOnce(() -> {
-        System.out.println("pov L1: " + elevatorSubsystem.positions[0]);
-        System.out.println("pov L2: " + elevatorSubsystem.positions[1]);
-        System.out.println("pov L3: " + elevatorSubsystem.positions[2]);
-      })));
+      // driverXbox.povDown().whileTrue((Commands.runOnce(() -> {
+      //   System.out.println("pov L1: " + elevatorSubsystem.positions[0]);
+      //   System.out.println("pov L2: " + elevatorSubsystem.positions[1]);
+      //   System.out.println("pov L3: " + elevatorSubsystem.positions[2]);
+      // })));
 
       driverXbox.start().onTrue((Commands.runOnce(() -> {
         drivebase.zeroGyro(); 
@@ -410,27 +415,38 @@ public class RobotContainer {
       
       // Main PXN driver controls
 
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // Purple button 1
-        .whileTrue(new ShootCoral(1, shooterSubsystem));
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // Purple button 1
+      //   .onTrue((Commands.runOnce(() -> {
+      //     shooterSubsystem.runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
+      // })));
+
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1) // Purple button 1
+      //   .onFalse((Commands.runOnce(() -> {
+      //     shooterSubsystem.stopShooterMotor();
+      // })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
+        .whileTrue(new ShootCoral(-1, shooterSubsystem));
+
 
 
       
-      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
-        .onFalse(Commands.runOnce(() -> {
-          // Only go to L1 if button 10 is not pressed
-          if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10)) {
-            // if the button 10 is pressed, go to l3
-            RobotLogger.log("Button 10 is pressed, going to L3");
-            elevatorSubsystem.goToL3();
-          } else if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9)) {
-            // if the button 9 is pressed, go to l2
-            RobotLogger.log("Button 9 is pressed, going to L2");
-            elevatorSubsystem.goToL2();
-          } else {
-            RobotLogger.log("No button is pressed, going to L1");
-            elevatorSubsystem.goToL1();
-          }
-      }));
+      // new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
+      //   .onFalse(Commands.runOnce(() -> {
+      //     // Only go to L1 if button 10 is not pressed
+      //     if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10)) {
+      //       // if the button 10 is pressed, go to l3
+      //       RobotLogger.log("Button 10 is pressed, going to L3");
+      //       elevatorSubsystem.goToL3();
+      //     } else if (driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9)) {
+      //       // if the button 9 is pressed, go to l2
+      //       RobotLogger.log("Button 9 is pressed, going to L2");
+      //       elevatorSubsystem.goToL2();
+      //     } else {
+      //       RobotLogger.log("No button is pressed, going to L1");
+      //       elevatorSubsystem.goToL1();
+      //     }
+      // }));
 
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_5) // Leftest button 5
@@ -439,6 +455,28 @@ public class RobotContainer {
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_3) // Pink button 3
         .whileTrue(new ClimbCommand(-1, climbSubsystem));
 
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_4) // Leftest button 5
+        .onTrue((Commands.runOnce(() -> {
+          algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+        })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_4) // Leftest button 5
+        .onFalse((Commands.runOnce(() -> {
+          algaeSubsystem.stopAlgaeMotor();
+        })));
+
+
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_6) // Pink button 3
+      .onTrue((Commands.runOnce(() -> {
+        algaeSubsystem.runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+      })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_6) // Pink button 3
+      .onFalse((Commands.runOnce(() -> {
+        algaeSubsystem.stopAlgaeMotor();
+      })));
     
     
       //SLOW MOVEMENT
@@ -504,12 +542,12 @@ public class RobotContainer {
       //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
       //     })));
 
-      new Trigger(() -> (elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[2] < 0 &&
-      elevatorSubsystem.currentLevel == 3 &&
-      elevatorSubsystem.getElevatorSpeed() == 0))
-          .whileTrue((Commands.runOnce(() -> { 
-            elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
-          })));
+      // new Trigger(() -> (elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[2] < 0 &&
+      // elevatorSubsystem.currentLevel == 3 &&
+      // elevatorSubsystem.getElevatorSpeed() == 0))
+      //     .whileTrue((Commands.runOnce(() -> { 
+      //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+      //     })));
 
       new Trigger(() -> 
         !elevatorSubsystem.L1_DIOInput.get() ||
@@ -518,9 +556,9 @@ public class RobotContainer {
         )
           .whileTrue((Commands.run(() -> { 
             elevatorSubsystem.setLevel();
-            System.out.println("new L1: " + elevatorSubsystem.positions[0]);
-            System.out.println("new L2: " + elevatorSubsystem.positions[1]);
-            System.out.println("new L3: " + elevatorSubsystem.positions[2]);
+            // System.out.println("new L1: " + elevatorSubsystem.positions[0]);
+            // System.out.println("new L2: " + elevatorSubsystem.positions[1]);
+            // System.out.println("new L3: " + elevatorSubsystem.positions[2]);
           })));
 
 

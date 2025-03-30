@@ -23,7 +23,7 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
-  public static final double MAX_SPEED  = Units.feetToMeters(5);  //RL modify speed from 14.5 to 7.0
+  public static final double MAX_SPEED  = Units.feetToMeters(14);  //RL modify speed from 14.5 to 7.0
   public static final double DECREASED_SPEED  = 0.2; // Distance units
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
@@ -85,8 +85,8 @@ public final class Constants
     public static final double BASE_SPEED = 0.05; // For elevator new function 3/21/25
 
     public static final int ELEVATOR_MOTORID = 25;
-    public static final double ELEVATOR_UP_SPEED = 0.35; // Testing speed is 0.3 / -0.3
-    public static final double ELEVATOR_DOWN_SPEED = -0.35;
+    public static final double ELEVATOR_UP_SPEED = 0.15; // Testing speed is 0.3 / -0.3
+    public static final double ELEVATOR_DOWN_SPEED = -0.15;
 
     //public static final int TRUE_BOTTOM = 0;
     public static final int L1_HEIGHT = 46; //change 0 to true bottom
@@ -98,7 +98,7 @@ public final class Constants
 
     // Distances from 0 to L1, L2, and L3 perfect heights
     public static final int[] distances = {42, 86, 147};
-    public static final int[] distanceToEncoder = {2, 4, 2}; // KADEN PLACEHOLDERS WE NEED TO FIND THESE 3/27/25
+    public static final int[] distanceToEncoder = {9, 2, 8}; // KADEN PLACEHOLDERS WE NEED TO FIND THESE 3/27/25
 
   }
 

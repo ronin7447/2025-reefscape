@@ -128,7 +128,7 @@ public void robotInit()
                 // Core.flip(mat, mat, 1);
                 // Put a rectangle on the image
                 Imgproc.rectangle(
-                    mat, new Point(100, 100), new Point(400, 400), new Scalar(0, 0, 255), 5);
+                    mat, new Point(340, 0), new Point(380, 480), new Scalar(0, 0, 255), 2);
                 // Give the output stream a new image to display
                 outputStream.putFrame(mat);
               }

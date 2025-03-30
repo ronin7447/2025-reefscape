@@ -196,28 +196,34 @@ public class ElevatorSubsystem extends SubsystemBase {
         calibrateElevator();
 
         if (ElevatorEncoder.getPosition() > positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
-            
-            runElevatorMotor(getPIDElevatorSpeed(positions[getLevel() - 1], positions[0] + Constants.ElevatorConstants.distanceToEncoder[0], getElevatorPosition()));
-            
-            setLevel();
-        } else if (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
 
-            if (ElevatorEncoder.getPosition() < positions[0]) {
-                
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+            while (ElevatorEncoder.getPosition() > positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
+                runElevatorMotor(getPIDElevatorSpeed(positions[getLevel() - 1], positions[0] + Constants.ElevatorConstants.distanceToEncoder[0], getElevatorPosition()));
             }
 
+            currentLevel = 1;
+
+        } else if (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
+
+
+            if (ElevatorEncoder.getPosition() < positions[0]) {
+                while (L1_DIOInput.get()) {
+                    runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+                }
+
+            }
             setLevel();
-            
-            runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+
+            while (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+            }
+
+
         }
 
-    if (Math.abs(ElevatorEncoder.getPosition() - (positions[0] + Constants.ElevatorConstants.distanceToEncoder[0])) <= 1) {
-        currentLevel = 1;
+        stopElevatorMotor();
 
-            stopElevatorMotor();
     }
-}
 
     public void goToL2() {
 
@@ -226,14 +232,14 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
             if (ElevatorEncoder.getPosition() < positions[1]) {
 
-                if (L2_DIOInput.get()) {
+                while (L2_DIOInput.get()) {
 
                     runElevatorMotor(getPIDElevatorSpeed(positions[0], positions[1], getElevatorPosition()));
                 }
         }
             setLevel();
 
-            if (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
+            while (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
             }
 
@@ -241,59 +247,81 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         } else if (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
 
-            if (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
+            while (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
 
                 runElevatorMotor(getPIDElevatorSpeed(positions[2], positions[1] + Constants.ElevatorConstants.distanceToEncoder[1], getElevatorPosition()));
             }
 
         }
-        if (Math.abs(ElevatorEncoder.getPosition() - (positions[1] + Constants.ElevatorConstants.distanceToEncoder[1])) <= 1) {
-            currentLevel = 2;
-            stopElevatorMotor();
-        }
 
+        currentLevel = 2;
         stopElevatorMotor();
 
     }
 
-    
+    // public void goToL2() {
+    //     calibrateElevator(); // Precaution
+
+    //     if (getLevel() == 1) {
+    //         while (L2_DIOInput.get()) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED);
+    //         }
+
+    //         setLevel();
+
+    //         while ((getElevatorPosition() - lastPosition) < Constants.ElevatorConstants.distanceToEncoder[1]) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2); // Half speed because it's nearly there
+    //         }
+
+    //         stopElevatorMotor();
+
+    //     } else if (getLevel() == 3) {
+
+    //         // last position is the position of the elevator when it was at L3
+    //         // getElevatorPosition() is the position of the elevator currently
+    //         // if the difference between the two is greater than the distance between L2 and L3, then we need to go down
+    //         while ((Constants.ElevatorConstants.distances[2] - Constants.ElevatorConstants.distances[1]) - (lastPosition - getElevatorPosition()) > 0) {
+    //             runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED);
+    //         }
+
+    //         currentLevel = 2; // this is kinda weird
+
+    //     }
+
+    // }
+
     public void goToL3() {
         calibrateElevator();
-        // From L2 or below//fuck you
+        // From L2 or below
         if (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
             if (ElevatorEncoder.getPosition() < positions[2]) {
-                if (L3_DIOInput.get()) {
+                while (L3_DIOInput.get()) {
 
                   runElevatorMotor(getPIDElevatorSpeed(positions[getLevel() - 1], positions[2], getElevatorPosition()));
                 }
-                setLevel();
             }
             setLevel();
-            else if  (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
+            while (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
 
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
 
             }
 
-            // stopElevatorMotor();
+            stopElevatorMotor();
 
         } else if (ElevatorEncoder.getPosition() > positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
 
-            if (ElevatorEncoder.getPosition() > positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
+            while (ElevatorEncoder.getPosition() > positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
 
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 4);
 
             }
 
             stopElevatorMotor();
 
         }
-        if (Math.abs(ElevatorEncoder.getPosition() - (positions[2] + Constants.ElevatorConstants.distanceToEncoder[2])) <= 1) {
-            currentLevel = 3;
-            stopElevatorMotor();
-        }
 
-
+        stopElevatorMotor();
 
 
 
@@ -319,18 +347,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         //     stopElevatorMotor();
         // }
 
-
     }
 
     
 }
-// i am the greatest of all time
-//- ayush
-//"I agree master ayush"
-//-kaden
-//"I love ayush because he is so cool"
-//-pboob (pcoochie)
-//"trevin andrews is a bum"
-//prahasith
-//"Ayush is the greatest student I have ever had"
-//-johnson

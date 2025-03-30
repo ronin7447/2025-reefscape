@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ShootCoral;
-import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -77,8 +76,6 @@ public class RobotContainer {
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   private final Vision visionSubsystem = new Vision();
-
-  //private final autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
   
 
 
@@ -180,7 +177,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("MoveToL1", elevatorSubsystem.MoveElevatorToL1());
     NamedCommands.registerCommand("MoveToL2", elevatorSubsystem.MoveElevatorToL2());
     NamedCommands.registerCommand("MoveToL3", elevatorSubsystem.MoveElevatorToL3());
-    // NamedCommands.registerCommand("LimeLightAlign", );
+    
+    // scheduleDebugCommand();
   }
 
   
@@ -337,14 +335,9 @@ public class RobotContainer {
         }).until(() -> elevatorSubsystem.getElevatorSpeed() == 0))
         );
 
-      driverXbox.leftBumper()
+      driverXbox.leftTrigger()
         .onTrue((Commands.runOnce(() -> {
           elevatorSubsystem.goToL1();
-        })));
-
-      driverXbox.x()
-        .onTrue((Commands.runOnce(() -> {
-          elevatorSubsystem.stopElevatorMotor();
         })));
 
 
@@ -566,7 +559,6 @@ public class RobotContainer {
         )
           .whileTrue((Commands.run(() -> { 
             elevatorSubsystem.setLevel();
-            // System.out.println("HOLY MOLY THE CODE WORLKS");
             // System.out.println("new L1: " + elevatorSubsystem.positions[0]);
             // System.out.println("new L2: " + elevatorSubsystem.positions[1]);
             // System.out.println("new L3: " + elevatorSubsystem.positions[2]);
@@ -585,10 +577,6 @@ public class RobotContainer {
     // Run autonomous command that made by PathPlanner
     return drivebase.getAutonomousCommand("TestMoveanDRotate");
   }
-
-  // public Command getAutoAlignCommand() {
-  //   return AutoAlignCommand(drivebase, visionSubsystem, close);
-  // }
 
 
   public void setMotorBrake(boolean brake) {

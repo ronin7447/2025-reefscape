@@ -215,7 +215,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             setLevel();
 
             while (ElevatorEncoder.getPosition() < positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
 
 
@@ -240,7 +240,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             setLevel();
 
             while (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
             }
 
             stopElevatorMotor();
@@ -303,7 +303,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             setLevel();
             while (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
 
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
 
             }
 
@@ -313,7 +313,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
             while (ElevatorEncoder.getPosition() > positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
 
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 4);
+                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
 
             }
 

@@ -259,7 +259,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     
     public void goToL3() {
         calibrateElevator();
-        // From L2 or below
+        // From L2 or below//fuck you
         if (ElevatorEncoder.getPosition() < positions[2] + Constants.ElevatorConstants.distanceToEncoder[2]) {
             if (ElevatorEncoder.getPosition() < positions[2]) {
                 if (L3_DIOInput.get()) {
@@ -324,3 +324,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     
 }
+// i am the greatest of all time
+//- ayush
+//"I agree master ayush"
+//-kaden
+//"I love ayush because he is so cool"
+//-pboob (pcoochie)
+//"trevin andrews is a bum"
+//prahasith
+//"Ayush is the greatest student I have ever had"
+//-johnson

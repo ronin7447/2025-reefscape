@@ -24,7 +24,7 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
   public static final double MAX_SPEED  = Units.feetToMeters(14);  //RL modify speed from 14.5 to 7.0
-  public static final double DECREASED_SPEED  = 0.2; // Distance units
+  public static final double DECREASED_SPEED  = 0.35; // Distance units
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
@@ -82,7 +82,7 @@ public final class Constants
 
   public static final class ElevatorConstants {
 
-    public static final double BASE_SPEED = 0.05; // For elevator new function 3/21/25
+    public static final double BASE_SPEED = 0.1; // For elevator new function 3/21/25
 
     public static final int ELEVATOR_MOTORID = 25;
     public static final double ELEVATOR_UP_SPEED = 0.15; // Testing speed is 0.3 / -0.3

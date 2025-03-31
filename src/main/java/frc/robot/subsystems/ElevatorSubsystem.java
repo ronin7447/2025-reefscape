@@ -108,7 +108,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public double getElevatorHeight() {
 
-
         return AbsEncoder.getPosition().getValue().in(Rotations);
     }
 
@@ -122,19 +121,32 @@ public class ElevatorSubsystem extends SubsystemBase {
         ElevatorMotor.stopMotor();
     }
 
+    public double getPIDElevatorSpeed(double startingPos, double endingPos, double currentPos) {
+        double b = Constants.ElevatorConstants.BASE_SPEED;
+        double a = Math.E;
+        double h = 0.3;
+        double w = Math.abs(startingPos - endingPos) * 1.75;
+        double t = (startingPos + endingPos) / 2;
+        double x = getElevatorHeight();
+
+        double speed = (h - b) * Math.pow(a, -1 * Math.pow(4 * (x - t) / w, 4)) + b;
+
+        if (startingPos > endingPos) {
+            speed *= -1;
+        }
+
+        return speed;
+
+    }
+
 
     public void goToL1() {
 
-        if (getElevatorHeight() < Constants.ElevatorConstants.L1_ABS) {
-            runElevatorMotor(1.5);
-        } else if (getElevatorHeight() > Constants.ElevatorConstants.L1_ABS) {
-            runElevatorMotor(-1.5);
-        } 
 
         if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS > 0.05) {
-            runElevatorMotor(-1.5);
+            runElevatorMotor(0.3);
         } else if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS < -0.05) {
-            runElevatorMotor(1.5);
+            runElevatorMotor(-0.3);
         } else {
             stopElevatorMotor();
         }
@@ -143,16 +155,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void goToL2() {
 
 
-        if (getElevatorHeight() < Constants.ElevatorConstants.L2_ABS) {
-            runElevatorMotor(1.5);
-        } else if (getElevatorHeight() > Constants.ElevatorConstants.L2_ABS) {
-            runElevatorMotor(-1.5);
-        } 
-
         if (getElevatorHeight() - Constants.ElevatorConstants.L2_ABS > 0.05) {
-            runElevatorMotor(-1.5);
+            runElevatorMotor(0.3);
         } else if (getElevatorHeight() - Constants.ElevatorConstants.L2_ABS < -0.05) {
-            runElevatorMotor(1.5);
+            runElevatorMotor(-0.3);
         } else {
             stopElevatorMotor();
         }
@@ -160,16 +166,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void goToL3() {
 
-        if (getElevatorHeight() < Constants.ElevatorConstants.L3_ABS) {
-            runElevatorMotor(1.5);
-        } else if (getElevatorHeight() > Constants.ElevatorConstants.L3_ABS) {
-            runElevatorMotor(-1.5);
-        } 
-
         if (getElevatorHeight() - Constants.ElevatorConstants.L3_ABS > 0.05) {
-            runElevatorMotor(-1.5);
+            runElevatorMotor(0.3);
         } else if (getElevatorHeight() - Constants.ElevatorConstants.L3_ABS < -0.05) {
-            runElevatorMotor(1.5);
+            runElevatorMotor(-0.3);
         } else {
             stopElevatorMotor();
         }

@@ -4,10 +4,11 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
-
+// Hi says daniel
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This
  * class should not be used for any other purpose. All constants should be declared globally (i.e. public static). Do
@@ -23,8 +24,8 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
-  public static final double MAX_SPEED  = Units.feetToMeters(14.5);  //RL modify speed from 14.5 to 7.0
-  public static final double DECREASED_SPEED  = Units.feetToMeters(7.25);
+  public static final double MAX_SPEED  = Units.feetToMeters(5);  //RL modify speed from 14.5 to 7.0
+  public static final double DECREASED_SPEED  = 0.2; // Distance units
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
@@ -41,6 +42,12 @@ public final class Constants
     public static final double WHEEL_LOCK_TIME = 10; // seconds
   }
 
+  public static final class LimelightConstants {
+
+    public static final String FRONTLL = "limelight-front";
+    public static final String BACKLL = "limelight-back";
+  }
+
   public static class OperatorConstants
   {
 
@@ -51,28 +58,56 @@ public final class Constants
     public static final double TURN_CONSTANT    = 6;
     
     // Secondary Operator Joystick
-    
+    // public static final int JOYSTICK_UP = 0;
+    // public static final int JOYSTICK_RIGHT = 90;
+    // public static final int JOYSTICK_DOWN = 180;
+    // public static final int JOYSTICK_LEFT = 270;
+
+    public static final int AXIS_X = 0;
+    public static final int AXIS_Y = 1;
 
     // Secondary Operator Buttons
-    public static final int BUTTON1 = 1;
-    public static final int BUTTON2 = 2;
-    public static final int BUTTON3 = 3;
-    public static final int BUTTON4 = 4;
-    public static final int BUTTON5 = 5;
-    public static final int BUTTON6 = 6;
+    public static final int BUTTON_1 = 1;
+    public static final int BUTTON_2 = 2;
+    public static final int BUTTON_3 = 3;
+    public static final int BUTTON_4 = 4;
+    public static final int BUTTON_5 = 5;
+    public static final int BUTTON_6 = 6;
+    public static final int BUTTON_7 = 7;
+    public static final int BUTTON_8 = 8;
+    public static final int BUTTON_9 = 9;
+    public static final int BUTTON_10 = 10;
+    
+    
   }
 
   public static final class ElevatorConstants {
 
+    public static final double BASE_SPEED = 0.1; // For elevator new function 3/21/25
+
     public static final int ELEVATOR_MOTORID = 25;
-    public static final double ELEVATOR_UP_SPEED = 0.75; // Testing speed is 0.3 / -0.3
-    public static final double ELEVATOR_DOWN_SPEED = -0.75;
+    public static final double ELEVATOR_UP_SPEED = 0.15; // Testing speed is 0.3 / -0.3
+    public static final double ELEVATOR_DOWN_SPEED = -0.15;
 
     //public static final int TRUE_BOTTOM = 0;
-    public static final int L1_HEIGHT = 45; //change 0 to true bottom
-    public static final int L2_HEIGHT = 86;
-    public static final int L3_HEIGHT = 147;
+    public static final int L1_HEIGHT = 46; //change 0 to true bottom
+    public static final int L2_HEIGHT = 94;
+    public static final int L3_HEIGHT = 151; // new one is 161
     public static final double TOLERANCE = 0.1;
+
+    // New Elevator Maths
+
+    // Distances from 0 to L1, L2, and L3 perfect heights
+    public static final int[] distances = {42, 86, 147};
+    public static final int[] distanceToEncoder = {9, 2, 8}; // KADEN PLACEHOLDERS WE NEED TO FIND THESE 3/27/25
+    
+
+    // ABS Elevator heights
+    // I think 1.0 is bottom (0)
+    public static final double L1_ABS = 0.875244140625;
+    public static final double L2_ABS = 1.895751953125;
+    public static final double L3_ABS = 3.33935546875;
+
   }
 
   public static final class ShooterConstants {
@@ -80,21 +115,33 @@ public final class Constants
     public static final int SHOOTER_MOTORID = 60;
     public static final double SHOOTER_SPEED_HIGH = 0.25;
     public static final double SHOOTER_SPEED_LOW = 0.125;
-    public static final double SHOOTER_REVERSE_SPEED = -0.1;
+    public static final double SHOOTER_REVERSE_SPEED = -0.1; // NOW USED FOR ALGAE REMOVAL
 
   }
 
   public static final class ClimbConstants {
 
     public static final int CLIMB_MOTORID = 18;
+    public static final int CLIMB_ENCODERID = 0; // replace with the correct encoder ID
     public static final double CLIMB_SPEED = 0.8;
     public static final double CLIMB_REVERSE_SPEED = -0.8;
+
+    public static final double CLIMB_OUT_ENCODER_POSITION = 0.0; // replace with the correct encoder position
+    public static final double CLIMB_IN_ENCODER_POSITION = 0.0; // replace with the correct encoder position
 
   }
 
   public static final class VisionConstants {
 
    public static final double TAG_TO_CAMERA_DIFF = 10.00;
+
+  }
+
+  public static final class AlgaeConstants {
+    
+    public static final int ALGAE_MOTORID = 16;
+    public static final double ALGAE_SPEED = -0.3;
+    public static final double ALGAE_REVERSE_SPEED = 0.3;
 
   }
 

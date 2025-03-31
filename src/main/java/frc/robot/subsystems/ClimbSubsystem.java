@@ -15,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotLogger;
 
 public class ClimbSubsystem extends SubsystemBase {
 
@@ -25,6 +26,7 @@ public class ClimbSubsystem extends SubsystemBase {
     public ClimbSubsystem() {
 
         ClimbMotor = new SparkMax(Constants.ClimbConstants.CLIMB_MOTORID, MotorType.kBrushless);
+        
         ClimbmotorConfig = new SparkMaxConfig();
         //ShooterEncoder = ShooterMotor.getEncoder();
 
@@ -36,6 +38,8 @@ public class ClimbSubsystem extends SubsystemBase {
     }
 
     public void runClimbMotor(double speed) {
+        
+
 
         ClimbMotor.set(speed);
 
@@ -46,4 +50,9 @@ public class ClimbSubsystem extends SubsystemBase {
         ClimbMotor.stopMotor();
 
     }
+
+
+
+
+
 }

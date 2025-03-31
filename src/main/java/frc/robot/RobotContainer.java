@@ -317,27 +317,36 @@ public class RobotContainer {
         System.out.println("L3: " + elevatorSubsystem.positions[2]);
         System.out.println(elevatorSubsystem.getElevatorPosition());
         System.out.println("Current level: " + elevatorSubsystem.getLevel());
+        elevatorSubsystem.getElevatorPos();
       })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
-        .onTrue((Commands.runOnce(() -> {
+        .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL1();
-        })));
+        }).until(() -> 
+          elevatorSubsystem.getElevatorSpeed() == 0
+        )));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
-        .onTrue((Commands.runOnce(() -> {
+        .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL2();
-        })));
+        }).until(() -> 
+          elevatorSubsystem.getElevatorSpeed() == 0
+        )));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
-        .onTrue((Commands.runOnce(() -> {
+        .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL3();
-        })));
+        }).until(() -> 
+          elevatorSubsystem.getElevatorSpeed() == 0
+        )));
 
       driverXbox.leftBumper()
-        .onTrue((Commands.runOnce(() -> {
-          elevatorSubsystem.goToL1();
-        })));
+      .onTrue((Commands.run(() -> {
+        elevatorSubsystem.goToL1();
+      }).until(() -> 
+        elevatorSubsystem.getElevatorSpeed() == 0
+      )));
 
       driverXbox.x()
         .onTrue((Commands.runOnce(() -> {

@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.subsystems;
 
+
+import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -101,6 +103,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void showPosition() {
 
         System.out.println(ElevatorEncoder.getPosition());
+        double elevatorAngleRotations = ElevatorMotor.getEncoder().getPosition();
+        System.out.println(elevatorAngleRotations);
 
     }
 
@@ -193,7 +197,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void goToL1() {
-        calibrateElevator();
+        
+        
+   
+   
+            calibrateElevator();
 
         if (ElevatorEncoder.getPosition() > positions[0] + Constants.ElevatorConstants.distanceToEncoder[0]) {
 
@@ -226,36 +234,44 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void goToL2() {
+        //steven trying to make the code
+        //getting elevator angle in rotations (i think)
+        //double elevatorAngleDegrees = ElevatorMotor.getEncoder().getPosition();
+        //while (L2_DIOInput.get()) {
+            //if 
+            
+        //}
+        
 
         calibrateElevator();
-        // From L1 or below
+        //From L1 or below
         if (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
-            if (ElevatorEncoder.getPosition() < positions[1]) {
+             if (ElevatorEncoder.getPosition() < positions[1]) {
 
-                while (L2_DIOInput.get()) {
+                 while (L2_DIOInput.get()) {
 
-                    runElevatorMotor(getPIDElevatorSpeed(positions[0], positions[1], getElevatorPosition()));
-                }
-        }
-            setLevel();
+                     runElevatorMotor(getPIDElevatorSpeed(positions[0], positions[1], getElevatorPosition()));
+                 }
+         }
+             setLevel();
 
-            while (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
-                runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
-            }
+             while (ElevatorEncoder.getPosition() < positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
+                 runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+             }
 
-            stopElevatorMotor();
+             stopElevatorMotor();
 
-        } else if (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
+         } else if (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
 
-            while (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
+             while (ElevatorEncoder.getPosition() > positions[1] + Constants.ElevatorConstants.distanceToEncoder[1]) {
 
-                runElevatorMotor(getPIDElevatorSpeed(positions[2], positions[1] + Constants.ElevatorConstants.distanceToEncoder[1], getElevatorPosition()));
-            }
+                 runElevatorMotor(getPIDElevatorSpeed(positions[2], positions[1] + Constants.ElevatorConstants.distanceToEncoder[1], getElevatorPosition()));
+             }
 
-        }
+         }
 
-        currentLevel = 2;
-        stopElevatorMotor();
+         currentLevel = 2;
+         stopElevatorMotor();
 
     }
 

@@ -69,7 +69,7 @@ public class RobotContainer {
 
       PIDController aling = new PIDController(.1, 0, 0);
       ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
-      ProfiledPIDController close = new ProfiledPIDController(.05, 0, 10, new Constraints(0.2, 2));
+      PIDController close = new PIDController(.021, 0.0, 0.0);
       ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -78,7 +78,7 @@ public class RobotContainer {
   private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   private final Vision visionSubsystem = new Vision();
 
-  //private final autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
+  private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
   
 
 
@@ -121,7 +121,7 @@ public class RobotContainer {
         .allianceRelativeControl(false);
 
   // if (decrease_held) { // do later kaden decrease speed
-  //   driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+  //   driveAngularVelocity = Swer1veInputStream.of(drivebase.getSwerveDrive(),
   //     () -> -driverXbox.getLeftY() / 2,
   //     () -> -driverXbox.getLeftX() / 2)
   //     .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
@@ -180,7 +180,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("MoveToL1", elevatorSubsystem.MoveElevatorToL1());
     NamedCommands.registerCommand("MoveToL2", elevatorSubsystem.MoveElevatorToL2());
     NamedCommands.registerCommand("MoveToL3", elevatorSubsystem.MoveElevatorToL3());
-    // NamedCommands.registerCommand("LimeLightAlign", );
+    NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
   }
 
   
@@ -400,6 +400,10 @@ public class RobotContainer {
         elevatorSubsystem.stopElevatorMotor();
       })));
 
+      driverXbox.y().onTrue((Commands.runOnce(() -> {
+        elevatorSubsystem.showPosition();
+      })));
+
 
       // KADENS DEBUG STUFF
       // driverXbox.povUp().whileTrue((Commands.runOnce(() -> {
@@ -580,7 +584,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("TestMoveanDRotate");
+    return drivebase.getAutonomousCommand("AVRtestpath");
   }
 
   // public Command getAutoAlignCommand() {

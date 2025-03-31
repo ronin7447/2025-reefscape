@@ -12,6 +12,22 @@ import java.util.logging.Logger;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 
+import static edu.wpi.first.units.Units.Rotations;
+
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.core.CoreCANcoder;
+import java.util.logging.Logger;
+
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+
+import static edu.wpi.first.units.Units.Rotations;
+
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.core.CoreCANcoder;
+
+
+import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -30,6 +46,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private final CANcoder AbsEncoder;
 
+
+
     private final SparkMax ElevatorMotor;
     private final SparkMaxConfig ElevatorMotorConfig;
 
@@ -47,6 +65,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         ElevatorMotor.configure(ElevatorMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         // ElevatorEncoder.setPosition(0);
+    }
+
+    public void getElevatorPos() {
+        System.out.println(AbsEncoder.getPosition().getValue().in(Rotations));
+
     }
 
     public void printElevatorPos() {
@@ -118,6 +141,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void goToL2() {
+
 
         if (getElevatorHeight() < Constants.ElevatorConstants.L2_ABS) {
             runElevatorMotor(1.5);

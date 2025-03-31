@@ -527,6 +527,11 @@ public class RobotContainer {
     
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == -1)
         .whileTrue(new SlowDrive(drivebase, 180));
+
+      new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
+        .whileTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.setEncoderPos(0.0);
+        })).repeatedly());
       
       // Drag code
       // new Trigger(() -> 

@@ -52,12 +52,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final SparkMax ElevatorMotor;
     private final SparkMaxConfig ElevatorMotorConfig;
 
+    private final DigitalInput ElevatorLimitSwitch;
+
     // Elevator Absolute Encoder
 
 
 
     public ElevatorSubsystem() {
 
+        ElevatorLimitSwitch = new DigitalInput(6);
         AbsEncoder = new CANcoder(30);
         ElevatorMotor = new SparkMax(Constants.ElevatorConstants.ELEVATOR_MOTORID, MotorType.kBrushless);
         ElevatorMotorConfig = new SparkMaxConfig();
@@ -77,6 +80,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void printElevatorPos() {
         System.out.println(AbsEncoder.getPosition().getValue().in(Rotations));
 
+    }
+
+    public boolean getLimitSwitch() {
+        return ElevatorLimitSwitch.get();
     }
 
 
@@ -115,7 +122,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void runElevatorMotor(double speed) {
 
-        ElevatorMotor.set(speed);
+        if (!ElevatorLimitSwitch.get()) {
+            if (speed < 0) {
+                ElevatorMotor.set(0.0);
+            } else {
+                ElevatorMotor.set(speed);
+            }
+        } else {
+            ElevatorMotor.set(speed);
+        }
     }
 
     public void stopElevatorMotor() {

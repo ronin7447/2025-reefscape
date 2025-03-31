@@ -3,6 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotations;
+
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.core.CoreCANcoder;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -18,6 +23,8 @@ import frc.robot.Constants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
+    private final CANcoder AbsEncoder;
+
     private final SparkMax ElevatorMotor;
     private final SparkMaxConfig ElevatorMotorConfig;
     private RelativeEncoder ElevatorEncoder;
@@ -29,6 +36,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public double[] positions = {0, 0, 0};
 
+
+
     private double lastPosition;
 
     public int currentLevel;
@@ -36,7 +45,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public ElevatorSubsystem() {
 
-
+        AbsEncoder = new CANcoder(0, "*");
         ElevatorMotor = new SparkMax(Constants.ElevatorConstants.ELEVATOR_MOTORID, MotorType.kBrushless);
         ElevatorMotorConfig = new SparkMaxConfig();
         ElevatorEncoder = ElevatorMotor.getEncoder();
@@ -67,6 +76,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         ElevatorMotor.configure(ElevatorMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         // ElevatorEncoder.setPosition(0);
+    }
+
+    public void getElevatorPos() {
+        System.out.println(AbsEncoder.getPosition().getValue().in(Rotations));
+
     }
 
     public void recordLevel() {

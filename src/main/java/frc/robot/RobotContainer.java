@@ -317,6 +317,7 @@ public class RobotContainer {
         System.out.println("L3: " + elevatorSubsystem.positions[2]);
         System.out.println(elevatorSubsystem.getElevatorPosition());
         System.out.println("Current level: " + elevatorSubsystem.getLevel());
+        elevatorSubsystem.getElevatorPos();
       })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)

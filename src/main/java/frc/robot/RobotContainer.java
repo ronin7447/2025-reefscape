@@ -312,11 +312,11 @@ public class RobotContainer {
 
       // Debug elevator code
       driverXbox.povRight().onTrue((Commands.runOnce(() -> {
-        System.out.println("L1: " + elevatorSubsystem.positions[0]);
-        System.out.println("L2: " + elevatorSubsystem.positions[1]);
-        System.out.println("L3: " + elevatorSubsystem.positions[2]);
-        System.out.println(elevatorSubsystem.getElevatorPosition());
-        System.out.println("Current level: " + elevatorSubsystem.getLevel());
+        // System.out.println("L1: " + elevatorSubsystem.positions[0]);
+        // System.out.println("L2: " + elevatorSubsystem.positions[1]);
+        // System.out.println("L3: " + elevatorSubsystem.positions[2]);
+        // System.out.println(elevatorSubsystem.getElevatorPosition());
+        // System.out.println("Current level: " + elevatorSubsystem.getLevel());
       })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
@@ -360,11 +360,11 @@ public class RobotContainer {
 
       // THIS IS FOR ELEVATOR POSITION RESET, [!IMPORTANT!]
       // WHEN PRESSING BOTH BACK AND START BTNSs
-      driverXbox.back()
-      .and(driverXbox.start()).onTrue((Commands.runOnce(() -> {
-        RobotLogger.warning("Elevator encoder position has been reset!");
-        elevatorSubsystem.resetPosition();
-      })));
+      // driverXbox.back()
+      // .and(driverXbox.start()).onTrue((Commands.runOnce(() -> {
+      //   RobotLogger.warning("Elevator encoder position has been reset!");
+      //   elevatorSubsystem.resetPosition();
+      // })));
 
       
       // driverXbox.povLeft().onTrue((Commands.runOnce(() -> {
@@ -564,18 +564,18 @@ public class RobotContainer {
       //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
       //     })));
 
-      new Trigger(() -> 
-        !elevatorSubsystem.L1_DIOInput.get() ||
-        !elevatorSubsystem.L2_DIOInput.get() ||
-        !elevatorSubsystem.L3_DIOInput.get()
-        )
-          .whileTrue((Commands.run(() -> { 
-            elevatorSubsystem.setLevel();
-            // System.out.println("HOLY MOLY THE CODE WORLKS");
-            // System.out.println("new L1: " + elevatorSubsystem.positions[0]);
-            // System.out.println("new L2: " + elevatorSubsystem.positions[1]);
-            // System.out.println("new L3: " + elevatorSubsystem.positions[2]);
-          })));
+      // new Trigger(() -> 
+      //   !elevatorSubsystem.L1_DIOInput.get() ||
+      //   !elevatorSubsystem.L2_DIOInput.get() ||
+      //   !elevatorSubsystem.L3_DIOInput.get()
+      //   )
+      //     .whileTrue((Commands.run(() -> { 
+      //       // elevatorSubsystem.setLevel();
+      //       // System.out.println("HOLY MOLY THE CODE WORLKS");
+      //       // System.out.println("new L1: " + elevatorSubsystem.positions[0]);
+      //       // System.out.println("new L2: " + elevatorSubsystem.positions[1]);
+      //       // System.out.println("new L3: " + elevatorSubsystem.positions[2]);
+      //     })));
 
 
     }

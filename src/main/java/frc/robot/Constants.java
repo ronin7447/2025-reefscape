@@ -100,6 +100,12 @@ public final class Constants
     public static final int[] distances = {42, 86, 147};
     public static final int[] distanceToEncoder = {9, 2, 8}; // KADEN PLACEHOLDERS WE NEED TO FIND THESE 3/27/25
 
+    // ABS Elevator heights
+    // I think 1.0 is bottom (0)
+    public static final double L1_ABS = 0.136962890625;
+    public static final double L2_ABS = -0.86279296875;
+    public static final double L3_ABS = -2.339111328125;
+
   }
 
   public static final class ShooterConstants {

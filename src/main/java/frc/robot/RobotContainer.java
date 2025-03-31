@@ -432,6 +432,11 @@ public class RobotContainer {
         System.out.println("GYRO HAS BEEN RESET!");
       })));
 
+      driverXbox.back().onTrue((Commands.runOnce(() -> {
+        elevatorSubsystem.setEncoderPos(0.0);
+        System.out.println("ELEVATOR HAS BEEN RESET!");
+      })));
+
       
       // Main PXN driver controls
 

@@ -350,7 +350,7 @@ public class RobotContainer {
 
       driverXbox.x()
         .onTrue((Commands.runOnce(() -> {
-          elevatorSubsystem.stopElevatorMotor();
+          elevatorSubsystem.setEncoderPos(1.0 - Math.abs(elevatorSubsystem.getElevatorHeight()));
         })));
 
 

@@ -83,7 +83,7 @@ public final class Constants
 
   public static final class ElevatorConstants {
 
-    public static final double BASE_SPEED = 0.05; // For elevator new function 3/21/25
+    public static final double BASE_SPEED = 0.1; // For elevator new function 3/21/25
 
     public static final int ELEVATOR_MOTORID = 25;
     public static final double ELEVATOR_UP_SPEED = 0.15; // Testing speed is 0.3 / -0.3
@@ -104,9 +104,9 @@ public final class Constants
 
     // ABS Elevator heights
     // I think 1.0 is bottom (0)
-    public static final double L1_ABS = 0.136962890625;
-    public static final double L2_ABS = -0.86279296875;
-    public static final double L3_ABS = -2.339111328125;
+    public static final double L1_ABS = 0.875244140625;
+    public static final double L2_ABS = 1.895751953125;
+    public static final double L3_ABS = 3.33935546875;
 
   }
 

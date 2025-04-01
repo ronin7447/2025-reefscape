@@ -160,9 +160,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void goToL1() {
 
 
-        if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS > 0.025) {
+        if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS > 0.01) {
             runElevatorMotor(getPIDElevatorSpeed(Constants.ElevatorConstants.L3_ABS, Constants.ElevatorConstants.L1_ABS, getElevatorHeight()));
-        } else if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS < -0.025) {
+        } else if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS < -0.01) {
             runElevatorMotor(0.2);
         } else {
             stopElevatorMotor();

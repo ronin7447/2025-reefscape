@@ -89,7 +89,8 @@ public class Robot extends TimedRobot {
           }
 
           // Draw a rectangle on the image for visualization.
-          Imgproc.rectangle(frame, new Point(340, 0), new Point(380, 480), new Scalar(0, 0, 255), 2);
+          Imgproc.rectangle(frame, new Point(370, 0), new Point(370, 480), new Scalar(0, 0, 255), 2);
+
           outputStream.putFrame(frame);
 
           // Small delay to reduce CPU load and allow native resources to breathe.

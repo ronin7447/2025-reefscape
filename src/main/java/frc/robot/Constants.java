@@ -24,8 +24,8 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
-  public static final double MAX_SPEED  = Units.feetToMeters(5);  //RL modify speed from 14.5 to 7.0
-  public static final double DECREASED_SPEED  = 0.2; // Distance units
+  public static final double MAX_SPEED  = Units.feetToMeters(14.5);  //RL modify speed from 14.5 to 7.0
+  public static final double DECREASED_SPEED  = 0.5; // Distance units
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
@@ -104,18 +104,18 @@ public final class Constants
 
     // ABS Elevator heights
     // I think 1.0 is bottom (0)
-    public static final double L1_ABS = 0.875244140625;
-    public static final double L2_ABS = 1.895751953125;
-    public static final double L3_ABS = 3.33935546875;
+    public static final double L1_ABS = 0.85400390625;
+    public static final double L2_ABS = 1.8183593750000002;
+    public static final double L3_ABS = 3.204345703125;
 
   }
 
   public static final class ShooterConstants {
 
     public static final int SHOOTER_MOTORID = 60;
-    public static final double SHOOTER_SPEED_HIGH = 0.25;
+    public static final double SHOOTER_SPEED_HIGH = 0.35;
     public static final double SHOOTER_SPEED_LOW = 0.125;
-    public static final double SHOOTER_REVERSE_SPEED = -0.1; // NOW USED FOR ALGAE REMOVAL
+    public static final double SHOOTER_REVERSE_SPEED = -0.15; // NOW USED FOR ALGAE REMOVAL
 
   }
 

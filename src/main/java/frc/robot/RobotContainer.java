@@ -69,7 +69,7 @@ public class RobotContainer {
 
       PIDController aling = new PIDController(.1, 0, 0);
       ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
-      PIDController close = new PIDController(.021, 0.0, 0.0);
+      PIDController close = new PIDController(1, 0.0, 2);
       ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -96,12 +96,12 @@ public class RobotContainer {
         // .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
         .withControllerRotationAxis(() -> {
           if (driverXbox.getLeftTriggerAxis() > 0.5) {
-            if (visionSubsystem.getTX() < 2.5 && visionSubsystem.getTX() > -2.5) {
+            if (visionSubsystem.getTX() < 1.25 && visionSubsystem.getTX() > -1.25) {
               RobotLogger.log("Auto align completes");
               return 0.0;
             } else {
               RobotLogger.log("Auto align in progress, moving speed is: " + close.calculate(visionSubsystem.getTX(), 0));
-              return close.calculate(visionSubsystem.getTX(), 0);
+              return close.calculate(visionSubsystem.getTX(), 0.0);
             }
           } else {
             return -1 * driverXbox.getRightX();
@@ -311,6 +311,11 @@ public class RobotContainer {
 
 
       // Debug elevator code
+
+
+
+
+
       driverXbox.povRight().onTrue((Commands.runOnce(() -> {
         // System.out.println("L1: " + elevatorSubsystem.positions[0]);
         // System.out.println("L2: " + elevatorSubsystem.positions[1]);
@@ -433,8 +438,8 @@ public class RobotContainer {
       })));
 
       driverXbox.back().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setEncoderPos(0.0);
-        System.out.println("ELEVATOR HAS BEEN RESET!");
+        elevatorSubsystem.setEncoderPos(0.86572265625);
+        System.out.println("ELEVATOR HAS BEEN SET TO L1!");
       })));
 
       
@@ -451,6 +456,9 @@ public class RobotContainer {
       // })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
+        .whileTrue(new ShootCoral(-1, shooterSubsystem));
+
+      driverXbox.rightBumper()
         .whileTrue(new ShootCoral(-1, shooterSubsystem));
 
 
@@ -536,8 +544,8 @@ public class RobotContainer {
       new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
         .whileTrue((Commands.runOnce(() -> {
           elevatorSubsystem.setEncoderPos(0.0);
-        })).repeatedly());
-      
+        })));
+
       // Drag code
       // new Trigger(() -> 
       //   elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[0] < 0 &&

@@ -115,6 +115,10 @@ public class Vision {
     return LimelightHelpers.getTA("limelight-front");
   }
 
+  public boolean isAligned() {
+    return Math.abs(getTX()) < 1.25; 
+  }
+
   // public double[] getTranslation() {
   //   double tx = LimelightHelpers.getTX("limelight-front");
   //   double txRad = Math.toRadians(tx);

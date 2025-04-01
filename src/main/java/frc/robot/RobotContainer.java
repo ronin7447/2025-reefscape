@@ -399,7 +399,7 @@ public class RobotContainer {
 
   
       driverXbox.povUp().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
       })));
 
       driverXbox.povUp().onFalse((Commands.runOnce(() -> {
@@ -407,7 +407,7 @@ public class RobotContainer {
       })));
 
       driverXbox.povDown().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
       })));
 
       driverXbox.povDown().onFalse((Commands.runOnce(() -> {
@@ -541,9 +541,19 @@ public class RobotContainer {
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == -1)
         .whileTrue(new SlowDrive(drivebase, 180));
 
+
+
       new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
         .whileTrue((Commands.runOnce(() -> {
           elevatorSubsystem.setEncoderPos(0.0);
+        })));
+
+      new Trigger(() -> elevatorSubsystem.getIsElevatorMoving())
+        .onTrue((Commands.runOnce(() -> {
+          Constants.isReducedSpeed = true;
+        })))
+        .onFalse((Commands.runOnce(() -> {
+          Constants.isReducedSpeed = false;
         })));
 
       // Drag code

@@ -84,10 +84,10 @@ public class SwerveSubsystem extends SubsystemBase
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
-      swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED,
+      swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.getMaxSpeed(),
                                                                   new Pose2d(new Translation2d(Meter.of(1),
                                                                                                Meter.of(4)),
-                                                                             Rotation2d.fromDegrees(0)));
+                                                                                                                                                                                    Rotation2d.fromDegrees(0)));
       // Alternative method if you don't want to supply the conversion factor via JSON files.
       // swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed, angleConversionFactor, driveConversionFactor);
     } catch (Exception e)
@@ -121,7 +121,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     swerveDrive = new SwerveDrive(driveCfg,
                                   controllerCfg,
-                                  Constants.MAX_SPEED,
+                                  Constants.getMaxSpeed(),
                                   new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)),
                                              Rotation2d.fromDegrees(0)));
   }
@@ -692,7 +692,7 @@ public class SwerveSubsystem extends SubsystemBase
           SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
 
       double currentHeadingRadians = getHeading().getRadians(); // from your gyro
-      double maxSpeed = Constants.MAX_SPEED;
+      double maxSpeed = Constants.getMaxSpeed();
 
       // Pass them into the 6-parameter function
       return swerveDrive.swerveController.getTargetSpeeds(
@@ -715,7 +715,7 @@ public class SwerveSubsystem extends SubsystemBase
       double headingY = Math.sin(targetAngle.getRadians());
 
       double currentHeadingRadians = getHeading().getRadians(); // from your gyro
-      double maxSpeed = Constants.MAX_SPEED;
+      double maxSpeed = Constants.getMaxSpeed();
 
       return swerveDrive.swerveController.getTargetSpeeds(
           scaledInputs.getX(),  // x translation

@@ -11,11 +11,14 @@ public class SlowDrive extends Command {
     // private final Joystick controller;
     private double moveX, moveY;
     private int angle;
+    private boolean faster;
 
-    public SlowDrive(SwerveSubsystem swerveSubsystem, int angle) {
+    public SlowDrive(SwerveSubsystem swerveSubsystem, int angle, boolean faster) {
         this.swerveSubsystem = swerveSubsystem;
         // this.controller = controller;
         this.angle = angle;
+
+        this.faster = faster;
 
         addRequirements(swerveSubsystem);
     }
@@ -28,6 +31,11 @@ public class SlowDrive extends Command {
 
         moveX = Constants.DECREASED_SPEED * Math.cos(angleRadians);
         moveY = -1 * Constants.DECREASED_SPEED * Math.sin(angleRadians);
+
+        if (faster) {
+            moveX *= 1.5;
+            moveY *= 1.5;
+        }
 
         swerveSubsystem.drive(new Translation2d(moveX, moveY), 0.0, true);
         

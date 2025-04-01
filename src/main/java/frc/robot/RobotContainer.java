@@ -515,31 +515,31 @@ public class RobotContainer {
       //SLOW MOVEMENT
 
       new POVButton(driverPXN, 0)
-        .whileTrue(new SlowDrive(drivebase, 0));
+        .whileTrue(new SlowDrive(drivebase, 0, true));
 
       new POVButton(driverPXN, 90)
-        .whileTrue(new SlowDrive(drivebase, 90));
+        .whileTrue(new SlowDrive(drivebase, 9, false));
 
       new POVButton(driverPXN, 180)
-        .whileTrue(new SlowDrive(drivebase, 180));
+        .whileTrue(new SlowDrive(drivebase, 180, true));
         
       new POVButton(driverPXN, 270)
-        .whileTrue(new SlowDrive(drivebase, 270));
+        .whileTrue(new SlowDrive(drivebase, 270, false));
 
 
       // CLIMB JOYSTICK MODE (everything +-90 degrees)
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == -1) // -1 is up for some reason..?
-        .whileTrue(new SlowDrive(drivebase, 270));
+        .whileTrue(new SlowDrive(drivebase, 270, true));
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == 1)
-        .whileTrue(new SlowDrive(drivebase, 0));
+        .whileTrue(new SlowDrive(drivebase, 0, true));
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1) // 1 is up for some reason..?
-        .whileTrue(new SlowDrive(drivebase, 90));
+        .whileTrue(new SlowDrive(drivebase, 90, true));
     
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == -1)
-        .whileTrue(new SlowDrive(drivebase, 180));
+        .whileTrue(new SlowDrive(drivebase, 180, true));
 
 
 

@@ -45,9 +45,9 @@ import frc.robot.RobotLogger;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
+    private boolean IsElevatorMoving;
+
     private final CANcoder AbsEncoder;
-
-
 
     private final SparkMax ElevatorMotor;
     private final SparkMaxConfig ElevatorMotorConfig;
@@ -59,7 +59,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
     public ElevatorSubsystem() {
-
+        IsElevatorMoving = false;
         ElevatorLimitSwitch = new DigitalInput(6);
         AbsEncoder = new CANcoder(30);
         ElevatorMotor = new SparkMax(Constants.ElevatorConstants.ELEVATOR_MOTORID, MotorType.kBrushless);
@@ -120,7 +120,21 @@ public class ElevatorSubsystem extends SubsystemBase {
         return AbsEncoder.getPosition().getValue().in(Rotations);
     }
 
-    public void runElevatorMotor(double speed) {
+    public boolean getIsElevatorMoving() {
+        return IsElevatorMoving;
+    }
+
+    public void runElevatorMotor(double speed, boolean bypass) {
+
+        if (!bypass) {
+            if (speed != 0) {
+                IsElevatorMoving = true;
+            } else {
+                IsElevatorMoving = false;
+            }
+        }  
+
+
 
         if (!ElevatorLimitSwitch.get()) {
             if (speed < 0) {
@@ -131,6 +145,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         } else {
             ElevatorMotor.set(speed);
         }
+    }
+
+    public void runElevatorMotor(double speed) {
+        runElevatorMotor(speed, false);
     }
 
     public void stopElevatorMotor() {

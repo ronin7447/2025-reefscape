@@ -29,6 +29,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ShootCoral;
 import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
+import frc.robot.commands.swervedrive.drivebase.AlignToReefTagRelative;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -80,7 +81,8 @@ public class RobotContainer {
   private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   private final Vision visionSubsystem = new Vision();
 
-  private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, rotationalign);
+  private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
+  private final AlignToReefTagRelative alignToReefTagRelative = new AlignToReefTagRelative(false, drivebase);
   
 
 
@@ -92,23 +94,32 @@ public class RobotContainer {
    * Converts driver input into a field-relative ChassisSpeeds that is controlled
    * by angular velocity.
    */
+  // SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
+  //       () -> -driverXbox.getLeftY(),
+  //       () -> -driverXbox.getLeftX())
+  //       // .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
+  //       .withControllerRotationAxis(() -> {
+  //         if (driverXbox.getLeftTriggerAxis() > 0.5) {
+  //           if (visionSubsystem.getTX() < 1.25 && visionSubsystem.getTX() > -1.25) {
+  //             RobotLogger.log("Auto align completes");
+  //             return 0.0;
+  //           } else {
+  //             RobotLogger.log("Auto align in progress, moving speed is: " + close.calculate(visionSubsystem.getTX(), 0));
+  //             return close.calculate(visionSubsystem.getTX(), 0.0);
+  //           }
+  //         } else {
+  //           return -1 * driverXbox.getRightX();
+  //         }
+  //       })
+  //       .deadband(OperatorConstants.DEADBAND)
+  //       .scaleTranslation(0.8)
+  //       .allianceRelativeControl(false);
+
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
         () -> -driverXbox.getLeftY(),
         () -> -driverXbox.getLeftX())
-        // .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
-        .withControllerRotationAxis(() -> {
-          if (driverXbox.getLeftTriggerAxis() > 0.5) {
-            if (visionSubsystem.getTX() < 1.25 && visionSubsystem.getTX() > -1.25) {
-              RobotLogger.log("Auto align completes");
-              return 0.0;
-            } else {
-              RobotLogger.log("Auto align in progress, moving speed is: " + rotationalign.calculate(visionSubsystem.getTX(), 0));
-              return rotationalign.calculate(visionSubsystem.getTX(), 0.0);
-            }
-          } else {
-            return -1 * driverXbox.getRightX();
-          }
-        })
+        .withControllerRotationAxis(() -> -1 * driverXbox.getRightX()) // rotation is inverted so we inverted the input :)
+        // .withControllerRotationAxis()
         .deadband(OperatorConstants.DEADBAND)
         .scaleTranslation(0.8)
         .allianceRelativeControl(false);
@@ -358,6 +369,11 @@ public class RobotContainer {
         elevatorSubsystem.getElevatorSpeed() == 0
       )));
 
+      driverXbox.leftTrigger()
+        .whileTrue((Commands.runOnce(() -> {
+          new AlignToReefTagRelative(visionSubsystem.getTX() > 0, drivebase);
+        })));
+
       driverXbox.x()
         .onTrue((Commands.runOnce(() -> {
           elevatorSubsystem.setEncoderPos(1.0 - Math.abs(elevatorSubsystem.getElevatorHeight()));
@@ -404,7 +420,7 @@ public class RobotContainer {
 
   
       driverXbox.povUp().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 2);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
       })));
 
       driverXbox.povUp().onFalse((Commands.runOnce(() -> {
@@ -412,7 +428,7 @@ public class RobotContainer {
       })));
 
       driverXbox.povDown().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_DOWN_SPEED / 2);
+        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
       })));
 
       driverXbox.povDown().onFalse((Commands.runOnce(() -> {
@@ -520,35 +536,45 @@ public class RobotContainer {
       //SLOW MOVEMENT
 
       new POVButton(driverPXN, 0)
-        .whileTrue(new SlowDrive(drivebase, 0));
+        .whileTrue(new SlowDrive(drivebase, 0, true));
 
       new POVButton(driverPXN, 90)
-        .whileTrue(new SlowDrive(drivebase, 90));
+        .whileTrue(new SlowDrive(drivebase, 9, false));
 
       new POVButton(driverPXN, 180)
-        .whileTrue(new SlowDrive(drivebase, 180));
+        .whileTrue(new SlowDrive(drivebase, 180, true));
         
       new POVButton(driverPXN, 270)
-        .whileTrue(new SlowDrive(drivebase, 270));
+        .whileTrue(new SlowDrive(drivebase, 270, false));
 
 
       // CLIMB JOYSTICK MODE (everything +-90 degrees)
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == -1) // -1 is up for some reason..?
-        .whileTrue(new SlowDrive(drivebase, 270));
+        .whileTrue(new SlowDrive(drivebase, 270, true));
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == 1)
-        .whileTrue(new SlowDrive(drivebase, 0));
+        .whileTrue(new SlowDrive(drivebase, 0, true));
 
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_Y) == 1) // 1 is up for some reason..?
-        .whileTrue(new SlowDrive(drivebase, 90));
+        .whileTrue(new SlowDrive(drivebase, 90, true));
     
       new Trigger(() -> driverPXN.getRawAxis(Constants.OperatorConstants.AXIS_X) == -1)
-        .whileTrue(new SlowDrive(drivebase, 180));
+        .whileTrue(new SlowDrive(drivebase, 180, true));
+
+
 
       new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
         .whileTrue((Commands.runOnce(() -> {
           elevatorSubsystem.setEncoderPos(0.0);
+        })));
+
+      new Trigger(() -> elevatorSubsystem.getIsElevatorMoving())
+        .onTrue((Commands.runOnce(() -> {
+          Constants.isReducedSpeed = true;
+        })))
+        .onFalse((Commands.runOnce(() -> {
+          Constants.isReducedSpeed = false;
         })));
 
       // Drag code

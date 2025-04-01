@@ -24,7 +24,14 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
-  public static final double MAX_SPEED  = Units.feetToMeters(14.5);  //RL modify speed from 14.5 to 7.0
+  public static boolean isReducedSpeed = false; // Flag to toggle reduced speed
+  public static final double MAX_SPEED_NORMAL = Units.feetToMeters(14.5); // Normal max speed
+  public static final double MAX_SPEED_REDUCED = Units.feetToMeters(10.0); // Reduced max speed
+
+  public static double getMaxSpeed() {
+    return isReducedSpeed ? MAX_SPEED_REDUCED : MAX_SPEED_NORMAL;
+  }
+
   public static final double DECREASED_SPEED  = 0.5; // Distance units
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
@@ -88,6 +95,7 @@ public final class Constants
     public static final int ELEVATOR_MOTORID = 25;
     public static final double ELEVATOR_UP_SPEED = 0.15; // Testing speed is 0.3 / -0.3
     public static final double ELEVATOR_DOWN_SPEED = -0.15;
+    public static final double ELEVATOR_SLOW_SPEED = 0.1;
 
     //public static final int TRUE_BOTTOM = 0;
     public static final int L1_HEIGHT = 46; //change 0 to true bottom
@@ -133,7 +141,21 @@ public final class Constants
 
   public static final class VisionConstants {
 
-   public static final double TAG_TO_CAMERA_DIFF = 10.00;
+    //public static final double TAG_TO_CAMERA_DIFF = 10.00;
+    public static final double X_REEF_ALIGNMENT_P = 3.3;
+    public static final double Y_REEF_ALIGNMENT_P = 3.3;
+    public static final double ROT_REEF_ALIGNMENT_P = 0.058;
+
+    public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
+    public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 1;
+    public static final double X_SETPOINT_REEF_ALIGNMENT = -0.34;  // Vertical pose
+    public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.1;
+    public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.16;  // Horizontal pose
+    public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.1;
+
+    public static final double DONT_SEE_TAG_WAIT_TIME = 1;
+    public static final double POSE_VALIDATION_TIME = 0.3;
+
 
   }
 

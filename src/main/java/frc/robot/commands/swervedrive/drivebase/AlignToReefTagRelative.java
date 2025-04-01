@@ -17,7 +17,7 @@ public class AlignToReefTagRelative extends Command {
   private boolean isRightScore;
   private Timer dontSeeTagTimer, stopTimer;
   private SwerveSubsystem drivebase;
-  private double tagID = -1;
+  private double tagID = 18;
 
   public AlignToReefTagRelative(boolean isRightScore, SwerveSubsystem drivebase) {
     xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0);  // Vertical movement
@@ -44,23 +44,24 @@ public class AlignToReefTagRelative extends Command {
     yController.setSetpoint(isRightScore ? Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT : -Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT);
     yController.setTolerance(Constants.VisionConstants.Y_TOLERANCE_REEF_ALIGNMENT);
 
-    tagID = LimelightHelpers.getFiducialID("");
+    tagID = LimelightHelpers.getFiducialID("limelight-front");
   }
 
   @Override
   public void execute() {
-    if (LimelightHelpers.getTV("") && LimelightHelpers.getFiducialID("") == tagID) {
+    if (LimelightHelpers.getTV("limelight-front") && LimelightHelpers.getFiducialID("limelight-front") == tagID) {
       this.dontSeeTagTimer.reset();
+      System.out.println("sees smth");
 
-      double[] postions = LimelightHelpers.getBotPose_TargetSpace("");
+      double[] postions = LimelightHelpers.getBotPose_TargetSpace("limelight-front");
       SmartDashboard.putNumber("x", postions[2]);
 
-      double xSpeed = xController.calculate(postions[2]);
-      SmartDashboard.putNumber("xspee", xSpeed);
-      double ySpeed = -yController.calculate(postions[0]);
+      double xSpeed = xController.calculate(postions[2]) / 2;
+      SmartDashboard.putNumber("xspeed", xSpeed);
+      double ySpeed = -yController.calculate(postions[0]) / 2;
       double rotValue = -rotController.calculate(postions[4]);
 
-      drivebase.drive(new Translation2d(xSpeed, ySpeed), rotValue, false);
+      drivebase.drive(new Translation2d(xSpeed, ySpeed), rotValue, false, true);
 
       if (!rotController.atSetpoint() ||
           !yController.atSetpoint() ||
@@ -69,6 +70,7 @@ public class AlignToReefTagRelative extends Command {
       }
     } else {
       drivebase.drive(new Translation2d(), 0, false);
+      System.out.println("no sees smth");
     }
 
     SmartDashboard.putNumber("poseValidTimer", stopTimer.get());

@@ -81,7 +81,7 @@ public class RobotContainer {
   private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   private final Vision visionSubsystem = new Vision();
 
-  private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
+  // private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
   private final AlignToReefTagRelative alignToReefTagRelative = new AlignToReefTagRelative(false, drivebase);
   
 
@@ -196,7 +196,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("MoveToL1", elevatorSubsystem.MoveElevatorToL1());
     NamedCommands.registerCommand("MoveToL2", elevatorSubsystem.MoveElevatorToL2());
     NamedCommands.registerCommand("MoveToL3", elevatorSubsystem.MoveElevatorToL3());
-    NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
+    // NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
   }
 
   
@@ -370,9 +370,7 @@ public class RobotContainer {
       )));
 
       driverXbox.leftTrigger()
-        .whileTrue((Commands.runOnce(() -> {
-          new AlignToReefTagRelative(visionSubsystem.getTX() > 0, drivebase);
-        })));
+        .whileTrue(new AlignToReefTagRelative(visionSubsystem.getTX() > 0, drivebase));
 
       driverXbox.x()
         .onTrue((Commands.runOnce(() -> {
@@ -428,7 +426,7 @@ public class RobotContainer {
       })));
 
       driverXbox.povDown().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
+        elevatorSubsystem.runElevatorMotor(-1 * Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
       })));
 
       driverXbox.povDown().onFalse((Commands.runOnce(() -> {
@@ -539,7 +537,7 @@ public class RobotContainer {
         .whileTrue(new SlowDrive(drivebase, 0, true));
 
       new POVButton(driverPXN, 90)
-        .whileTrue(new SlowDrive(drivebase, 9, false));
+        .whileTrue(new SlowDrive(drivebase, 90, false));
 
       new POVButton(driverPXN, 180)
         .whileTrue(new SlowDrive(drivebase, 180, true));

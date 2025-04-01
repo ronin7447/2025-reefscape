@@ -69,8 +69,10 @@ public class RobotContainer {
 
       PIDController aling = new PIDController(.1, 0, 0);
       ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
-      PIDController close = new PIDController(1, 0.0, 2);
+      PIDController close = new PIDController(.1, 0.0, 2);
       ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
+
+      ProfiledPIDController rotationalign = new ProfiledPIDController(0.1, 0, 2, new Constraints(0.2, 0.2));
 
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -78,7 +80,7 @@ public class RobotContainer {
   private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
   private final Vision visionSubsystem = new Vision();
 
-  private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
+  private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, rotationalign);
   
 
 
@@ -100,8 +102,8 @@ public class RobotContainer {
               RobotLogger.log("Auto align completes");
               return 0.0;
             } else {
-              RobotLogger.log("Auto align in progress, moving speed is: " + close.calculate(visionSubsystem.getTX(), 0));
-              return close.calculate(visionSubsystem.getTX(), 0.0);
+              RobotLogger.log("Auto align in progress, moving speed is: " + rotationalign.calculate(visionSubsystem.getTX(), 0));
+              return rotationalign.calculate(visionSubsystem.getTX(), 0.0);
             }
           } else {
             return -1 * driverXbox.getRightX();
@@ -174,6 +176,9 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    rotationalign.reset(0.0, 0.0);
+    
     DriverStation.silenceJoystickConnectionWarning(true);
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     NamedCommands.registerCommand("ShootCoral", shooterSubsystem.ShootCoral());

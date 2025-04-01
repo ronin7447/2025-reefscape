@@ -103,7 +103,7 @@ public final class Constants
     
 
     // ABS Elevator heights
-    // I think 1.0 is bottom (0)
+    // I think 0.0 is bottom (0)
     public static final double L1_ABS = 0.85400390625;
     public static final double L2_ABS = 1.8183593750000002;
     public static final double L3_ABS = 3.204345703125;

@@ -1,6 +1,6 @@
 package frc.robot.commands.swervedrive.auto;
 
-import edu.wpi.first.math.controller.PIDController;
+//import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,16 +13,16 @@ public class AutoAlignCommand extends Command {
     private final Vision vision;
     // private final double  vX, vY;
     // private final double headingHorizontal, headingVertical;
-    private final PIDController close;
+    private final ProfiledPIDController pid;
     
-    public AutoAlignCommand(SwerveSubsystem swerveSubsystem, Vision vision, PIDController close) {
+    public AutoAlignCommand(SwerveSubsystem swerveSubsystem, Vision vision, ProfiledPIDController pid) {
         this.vision = vision;
         this.swerveSubsystem = swerveSubsystem;
         // this.vX = vX;
         // this.vY = vY;
         // this.headingHorizontal = headingHorizontal;
         // this.headingVertical = headingVertical;
-        this.close = close;
+        this.pid = pid;
         addRequirements(this.swerveSubsystem);
     }
 
@@ -44,7 +44,7 @@ public class AutoAlignCommand extends Command {
           RobotLogger.log("Auto align completes");
           rotationSpeed = 0.0;
         } else {
-          rotationSpeed = close.calculate(tx, 0);
+          rotationSpeed = pid.calculate(tx, 0);
           RobotLogger.log("Auto align in progress, moving speed is: " + rotationSpeed);
         }
 
@@ -53,8 +53,8 @@ public class AutoAlignCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        // End the command if the alignment error is within ±2.5
-        return Math.abs(vision.getTX()) < 2.5;
+        // End the command if the alignment error is within ±1.25
+        return Math.abs(vision.getTX()) < 1.25;
     }
 
     @Override

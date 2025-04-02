@@ -83,9 +83,11 @@ public class RobotContainer {
   private final Vision visionSubsystem = new Vision();
 
   // private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
-  private final AlignToReefTagRelative alignToReefTagRelativeLeft = new AlignToReefTagRelative(0, drivebase);
-  private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(1, drivebase);
-  private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(2, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelativeLeft = new AlignToReefTagRelative(0, drivebase, Constants.LimelightConstants.FRONTLL);
+  private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.FRONTLL);
+  private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(2, drivebase, Constants.LimelightConstants.FRONTLL);
+
+  private final AlignToReefTagRelative alignToCoral = new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL);
 
   private final MoveALittle goLeftALittle = new MoveALittle(drivebase, 0);
   private final MoveALittle goRightALittle = new MoveALittle(drivebase, 1);
@@ -252,6 +254,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("LimeLightAlignCenter", alignToReefTagRelativeCenter.until(() -> alignToReefTagRelativeCenter.isFinished()));
 
     NamedCommands.registerCommand("LimeLightAlignRight", alignToReefTagRelativeRight.until(() -> alignToReefTagRelativeRight.isFinished()));
+
+    NamedCommands.registerCommand("LimeLightAlignCoral", alignToCoral.until(() -> alignToCoral.isFinished()));
 
 
    
@@ -439,11 +443,13 @@ public class RobotContainer {
       // )));
 
       driverXbox.leftBumper()
-        .whileTrue(new AlignToReefTagRelative(0, drivebase));
+        .whileTrue(new AlignToReefTagRelative(0, drivebase, Constants.LimelightConstants.FRONTLL));
       driverXbox.rightBumper()
-        .whileTrue(new AlignToReefTagRelative(2, drivebase));
-      
+        .whileTrue(new AlignToReefTagRelative(2, drivebase, Constants.LimelightConstants.FRONTLL));
 
+      driverXbox.y()
+        .whileTrue(new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL));
+      
       driverXbox.x()
         .onTrue((Commands.runOnce(() -> {
           elevatorSubsystem.setEncoderPos(1.0 - Math.abs(elevatorSubsystem.getElevatorHeight()));
@@ -505,9 +511,6 @@ public class RobotContainer {
         elevatorSubsystem.stopElevatorMotor();
       })));
 
-      driverXbox.y().onTrue((Commands.runOnce(() -> {
-        // elevatorSubsystem.showPosition();
-      })));
 
 
       // KADENS DEBUG STUFF
@@ -712,7 +715,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("AVRAlgaeRemover");
+    return drivebase.getAutonomousCommand("AVRL2AlgaeRemover");
+
   }
 
   // public Command getAutoAlignCommand() {

@@ -22,12 +22,15 @@ public class AlignToReefTagRelative extends Command {
   private double ySpeed;
   private double rotSpeed;
 
-  public AlignToReefTagRelative(int side, SwerveSubsystem drivebase) {
+  private String limelight;
+
+  public AlignToReefTagRelative(int side, SwerveSubsystem drivebase, String limelight) {
     xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0.04);  // Vertical movement
     yController = new PIDController(Constants.VisionConstants.Y_REEF_ALIGNMENT_P, 0.0, 0.04);  // Horitontal movement
     rotController = new PIDController(Constants.VisionConstants.ROT_REEF_ALIGNMENT_P, 0, 0);  // Rotation
     this.side = side;
     this.drivebase = drivebase;
+    this.limelight = limelight;
 
     xSpeed = 0;
     ySpeed = 0;
@@ -58,15 +61,15 @@ public class AlignToReefTagRelative extends Command {
     // yController.setSetpoint(isRightScore ? Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT : -Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT);
     yController.setTolerance(Constants.VisionConstants.Y_TOLERANCE_REEF_ALIGNMENT);
 
-    tagID = LimelightHelpers.getFiducialID("limelight-front");
+    tagID = LimelightHelpers.getFiducialID(limelight);
   }
 
   @Override
   public void execute() {
-    if (LimelightHelpers.getTV("limelight-front") && LimelightHelpers.getFiducialID("limelight-front") == tagID) {
+    if (LimelightHelpers.getTV(limelight) && LimelightHelpers.getFiducialID(limelight) == tagID) {
       System.out.println("sees smth");
 
-      double[] postions = LimelightHelpers.getBotPose_TargetSpace("limelight-front");
+      double[] postions = LimelightHelpers.getBotPose_TargetSpace(limelight);
       SmartDashboard.putNumber("x", postions[2]);
 
       xSpeed = xController.calculate(postions[2]) / 2;

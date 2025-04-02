@@ -67,9 +67,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "AlgaeIn"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveToL1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AlgaeIn"
+                }
+              }
+            ]
           }
         }
       ]

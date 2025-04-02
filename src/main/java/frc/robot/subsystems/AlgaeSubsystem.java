@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj2.command.Command; //importd command
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -41,6 +42,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     }
 
+    public void resetAlgaeMotor() {
+        AlgaeEncoder.setPosition(0);
+    }
+
     public double getAlgaeDebug() {
         return AlgaeEncoder.getPosition();
     }
@@ -49,5 +54,29 @@ public class AlgaeSubsystem extends SubsystemBase {
 
         AlgaeMotor.stopMotor();
 
+    }
+
+    public void algaeOut() {
+        if (getAlgaeDebug() > -45) {
+            runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+        } else {
+            stopAlgaeMotor();
+        }
+    }
+
+    public void algaeIn() {
+        if (getAlgaeDebug() < 0) {
+            runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+        } else {
+            stopAlgaeMotor();
+        }
+    }
+
+    public Command AlgaeOut() {
+        return run(() -> algaeOut()).until(() -> getAlgaeDebug() == 0);
+    }
+
+    public Command AlgaeIn() {
+        return run(() -> algaeIn()).until(() -> getAlgaeDebug() == 0);
     }
 }

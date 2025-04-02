@@ -25,8 +25,8 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
   public static boolean isReducedSpeed = false; // Flag to toggle reduced speed
-  public static final double MAX_SPEED_NORMAL = Units.feetToMeters(7.25); // Normal max speed
-  public static final double MAX_SPEED_REDUCED = Units.feetToMeters(5.0); // Reduced max speed
+  public static final double MAX_SPEED_NORMAL = Units.feetToMeters(10); // Normal max speed
+  public static final double MAX_SPEED_REDUCED = Units.feetToMeters(7.5); // Reduced max speed
 
   public static double getMaxSpeed() {
     return isReducedSpeed ? MAX_SPEED_REDUCED : MAX_SPEED_NORMAL;
@@ -142,15 +142,24 @@ public final class Constants
   public static final class VisionConstants {
 
     //public static final double TAG_TO_CAMERA_DIFF = 10.00;
-    public static final double X_REEF_ALIGNMENT_P = 3.3;
-    public static final double Y_REEF_ALIGNMENT_P = 3.3;
-    public static final double ROT_REEF_ALIGNMENT_P = 0.058;
+    public static final double X_REEF_ALIGNMENT_P = 3.0;
+    public static final double Y_REEF_ALIGNMENT_P = 2.875;
+    public static final double ROT_REEF_ALIGNMENT_P = 0.035;
 
     public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
     public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 0.05;
     public static final double X_SETPOINT_REEF_ALIGNMENT = -0.18;  // Vertical pose
     public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.05;
-    public static final double Y_SETPOINT_REEF_ALIGNMENT = 0.151;  // Horizontal pose
+
+
+    // Offsets for command
+    public static final double Y_SETPOINT_REEF_ALIGNMENT_CENTER = 0.0;  // Horizontal pose
+    public static final double Y_SETPOINT_REEF_ALIGNMENT_LEFT = -0.223;
+    public static final double Y_SETPOINT_REEF_ALIGNMENT_RIGHT = 0.223;
+
+
+
+
     public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.05;
 
     public static final double DONT_SEE_TAG_WAIT_TIME = 1;

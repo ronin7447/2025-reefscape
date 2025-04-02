@@ -82,7 +82,7 @@ public class RobotContainer {
   private final Vision visionSubsystem = new Vision();
 
   // private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
-  private final AlignToReefTagRelative alignToReefTagRelative = new AlignToReefTagRelative(false, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelative = new AlignToReefTagRelative(1, drivebase);
   
 
 
@@ -191,11 +191,43 @@ public class RobotContainer {
     rotationalign.reset(0.0, 0.0);
     
     DriverStation.silenceJoystickConnectionWarning(true);
+
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+
     NamedCommands.registerCommand("ShootCoral", shooterSubsystem.ShootCoral());
-    NamedCommands.registerCommand("MoveToL1", elevatorSubsystem.MoveElevatorToL1());
-    NamedCommands.registerCommand("MoveToL2", elevatorSubsystem.MoveElevatorToL2());
-    NamedCommands.registerCommand("MoveToL3", elevatorSubsystem.MoveElevatorToL3());
+
+    NamedCommands.registerCommand("MoveToL1",
+      (Commands.run(() -> {
+        elevatorSubsystem.goToL1();
+      }).until(() -> 
+        elevatorSubsystem.getElevatorSpeed() == 0
+      )));
+
+    NamedCommands.registerCommand("MoveToL2",
+      (Commands.run(() -> {
+        elevatorSubsystem.goToL2();
+      }).until(() -> 
+        elevatorSubsystem.getElevatorSpeed() == 0
+      )));
+
+    NamedCommands.registerCommand("MoveToL3",
+      (Commands.run(() -> {
+        elevatorSubsystem.goToL3();
+      }).until(() -> 
+        elevatorSubsystem.getElevatorSpeed() == 0
+      )));
+
+    NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeUp());
+
+    NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeDown());
+    
+
+    NamedCommands.registerCommand("LimeLightAlignRightAUTON",
+      (Commands.run(() -> {
+        new AlignToReefTagRelative(0, drivebase);
+      }).until(() -> 
+        AlignToReefTagRelative.getDone() == true;
+      )));
     // NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
   }
 
@@ -331,6 +363,9 @@ public class RobotContainer {
 
 
 
+      driverXbox.button(9).onTrue((Commands.runOnce(() -> {
+        algaeSubsystem.resetAlgaeMotor();
+      })));
 
       driverXbox.povRight().onTrue((Commands.runOnce(() -> {
         // System.out.println("L1: " + elevatorSubsystem.positions[0]);
@@ -339,6 +374,7 @@ public class RobotContainer {
         // System.out.println(elevatorSubsystem.getElevatorPosition());
         // System.out.println("Current level: " + elevatorSubsystem.getLevel());
         System.out.println("Rotations: " + elevatorSubsystem.getElevatorHeight());
+        System.out.println("Algae Position:" +  algaeSubsystem.getAlgaeDebug());
       })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
@@ -362,15 +398,18 @@ public class RobotContainer {
           elevatorSubsystem.getElevatorSpeed() == 0
         )));
 
-      driverXbox.leftBumper()
-      .onTrue((Commands.run(() -> {
-        elevatorSubsystem.goToL1();
-      }).until(() -> 
-        elevatorSubsystem.getElevatorSpeed() == 0
-      )));
+      // driverXbox.leftBumper()
+      // .onTrue((Commands.run(() -> {
+      //   elevatorSubsystem.goToL1();
+      // }).until(() -> 
+      //   elevatorSubsystem.getElevatorSpeed() == 0
+      // )));
 
-      driverXbox.leftTrigger()
-        .whileTrue(new AlignToReefTagRelative(visionSubsystem.getTX() > 0, drivebase));
+      driverXbox.leftBumper()
+        .whileTrue(new AlignToReefTagRelative(0, drivebase));
+      driverXbox.rightBumper()
+        .whileTrue(new AlignToReefTagRelative(2, drivebase));
+      
 
       driverXbox.x()
         .onTrue((Commands.runOnce(() -> {
@@ -477,8 +516,8 @@ public class RobotContainer {
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
         .whileTrue(new ShootCoral(-1, shooterSubsystem));
 
-      driverXbox.rightBumper()
-        .whileTrue(new ShootCoral(-1, shooterSubsystem));
+      // driverXbox.rightBumper()
+      //   .whileTrue(new ShootCoral(-1, shooterSubsystem));
 
 
 

@@ -56,7 +56,10 @@ public class Robot extends TimedRobot {
 
   // private final LEDPattern m_ok = LEDPattern.solid(Color.kGreen);
 
-  private final LEDPattern m_ok = LEDPattern.gradient(GradientType.kContinuous, new Color(41, 203, 255), new Color(35, 34, 98));
+  private final LEDPattern m_ok = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, new Color(41, 203, 255), new Color(0, 0, 17));
+  private final LEDPattern m_elevatorMoving = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, new Color(221, 255, 0), new Color(255, 149, 0));
+
+  // private final LEDPattern m_vok = LEDPattern.
 
   private final LEDPattern m_notok = LEDPattern.solid(Color.kRed);
 
@@ -173,7 +176,7 @@ public class Robot extends TimedRobot {
     // Update the buffer with the rainbow animation
 
     if (m_robotContainer.robotGetElevatorSpeed() != 0) {
-      m_notok.applyTo(m_ledBuffer);
+      m_elevatorMoving.applyTo(m_ledBuffer);
     } else {
       m_ok.applyTo(m_ledBuffer);
     }

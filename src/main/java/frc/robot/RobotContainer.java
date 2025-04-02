@@ -30,6 +30,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ShootCoral;
 import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.commands.swervedrive.drivebase.AlignToReefTagRelative;
+import frc.robot.commands.swervedrive.drivebase.MoveALittle;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -85,6 +86,10 @@ public class RobotContainer {
   private final AlignToReefTagRelative alignToReefTagRelativeLeft = new AlignToReefTagRelative(0, drivebase);
   private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(1, drivebase);
   private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(2, drivebase);
+
+  private final MoveALittle goLeftALittle = new MoveALittle(drivebase, 0);
+  private final MoveALittle goRightALittle = new MoveALittle(drivebase, 1);
+
   
 
 
@@ -235,19 +240,17 @@ public class RobotContainer {
       }).until(() -> 
         algaeSubsystem.getAlgaeMotor() == 0
       )));
-    
-
-    NamedCommands.registerCommand("LimeLightAlignLeftAUTON",
-      Commands.run(() -> {
-        alignToReefTagRelativeLeft.execute();
-      }));
       
-    NamedCommands.registerCommand("GoLeftALittle", drivebase.goLeftALittle(drivebase));
+    NamedCommands.registerCommand("GoLeftALittle", goLeftALittle.until(() -> goLeftALittle.isFinished()));
+    
+    NamedCommands.registerCommand("GoLeftALittle", goRightALittle.until(() -> goRightALittle.isFinished()));
 
     NamedCommands.registerCommand("LimeLightAlignLeft", alignToReefTagRelativeLeft.until(() -> alignToReefTagRelativeLeft.isFinished()));
 
     NamedCommands.registerCommand("LimeLightAlignCenter", alignToReefTagRelativeCenter.until(() -> alignToReefTagRelativeCenter.isFinished()));
-;
+
+    NamedCommands.registerCommand("LimeLightAlignRight", alignToReefTagRelativeRight.until(() -> alignToReefTagRelativeRight.isFinished()));
+
 
    
   }

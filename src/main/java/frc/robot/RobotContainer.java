@@ -217,17 +217,40 @@ public class RobotContainer {
         elevatorSubsystem.getElevatorSpeed() == 0
       )));
 
-    NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeUp());
+    NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeOut());
 
-    NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeDown());
+    NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeIn());
     
 
+    NamedCommands.registerCommand("LimeLightAlignLeftAUTON",
+      Commands.run(() -> {
+        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(0, drivebase);
+        alignCommand.execute();
+      }).until(() -> {
+        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(0, drivebase); // Create a new instance
+        return alignCommand.getDone(); // Check the `done` value of the new instance
+      })
+    ); 
+
+    NamedCommands.registerCommand("LimeLightAlignCenterAUTON",
+      Commands.run(() -> {
+        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(1, drivebase);
+        alignCommand.execute();
+      }).until(() -> {
+        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(1, drivebase); // Create a new instance
+        return alignCommand.getDone(); // Check the `done` value of the new instance
+      })
+    );
+
     NamedCommands.registerCommand("LimeLightAlignRightAUTON",
-      (Commands.run(() -> {
-        new AlignToReefTagRelative(0, drivebase);
-      }).until(() -> 
-        AlignToReefTagRelative.getDone() == true;
-      )));
+      Commands.run(() -> {
+        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(2, drivebase);
+        alignCommand.execute();
+      }).until(() -> {
+        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(2, drivebase); // Create a new instance
+        return alignCommand.getDone(); // Check the `done` value of the new instance
+      })
+    );
     // NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
   }
 

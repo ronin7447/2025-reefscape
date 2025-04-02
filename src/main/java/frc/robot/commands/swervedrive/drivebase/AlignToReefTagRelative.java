@@ -18,6 +18,7 @@ public class AlignToReefTagRelative extends Command {
   private Timer dontSeeTagTimer, stopTimer;
   private SwerveSubsystem drivebase;
   private double tagID = 18;
+  private boolean done;
 
   public AlignToReefTagRelative(int side, SwerveSubsystem drivebase) {
     xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0.04);  // Vertical movement
@@ -26,8 +27,14 @@ public class AlignToReefTagRelative extends Command {
     this.side = side;
     this.drivebase = drivebase;
 
+    done = false;
+
     addRequirements(drivebase);
     
+  }
+
+  public boolean getDone() {
+    return done;
   }
 
   @Override
@@ -76,6 +83,7 @@ public class AlignToReefTagRelative extends Command {
     } else {
       drivebase.drive(new Translation2d(), 0, false);
       System.out.println("no sees smth");
+      done = true;
     }
   }
 

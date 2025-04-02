@@ -43,6 +43,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -811,6 +812,20 @@ public class SwerveSubsystem extends SubsystemBase
   public void addFakeVisionReading()
   {
     swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
+  }
+
+  public Command goLeftALittle(SwerveSubsystem drivebase) {
+    return runOnce(() -> {
+      new SlowDrive(drivebase, 270, true);
+    });
+
+  }
+
+  public Command goRightALittle(SwerveSubsystem drivebase) {
+    return runOnce(() -> {
+      new SlowDrive(drivebase, 90, true);
+    });
+
   }
 
   /**

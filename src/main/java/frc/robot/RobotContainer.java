@@ -242,13 +242,10 @@ public class RobotContainer {
         alignToReefTagRelativeLeft.execute();
       }));
 
-    NamedCommands.registerCommand("LimeLightAlignTest", alignToReefTagRelativeLeft.until(() -> alignToReefTagRelativeLeft.isFinished()));
+    NamedCommands.registerCommand("LimeLightAlignLeft", alignToReefTagRelativeLeft.until(() -> alignToReefTagRelativeLeft.isFinished()));
 
-    NamedCommands.registerCommand("LimeLightAlignCenterAUTON",
-      Commands.run(() -> {
-        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(1, drivebase);
-        alignCommand.execute();
-      }));
+    NamedCommands.registerCommand("LimeLightAlignCenter", alignToReefTagRelativeCenter.until(() -> alignToReefTagRelativeCenter.isFinished()));
+;
 
    
   }

@@ -341,6 +341,13 @@ public class RobotContainer {
         System.out.println("Rotations: " + elevatorSubsystem.getElevatorHeight());
       })));
 
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
+        .onTrue((Commands.run(() -> {
+          elevatorSubsystem.goToL0();
+        }).until(() -> 
+          elevatorSubsystem.getElevatorSpeed() == 0
+        )));
+      
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL1();

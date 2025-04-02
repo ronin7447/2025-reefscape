@@ -83,8 +83,8 @@ public class RobotContainer {
 
   // private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
   private final AlignToReefTagRelative alignToReefTagRelativeLeft = new AlignToReefTagRelative(0, drivebase);
-  private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(0, drivebase);
-  private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(0, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(1, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(2, drivebase);
   
 
 
@@ -241,6 +241,8 @@ public class RobotContainer {
       Commands.run(() -> {
         alignToReefTagRelativeLeft.execute();
       }));
+
+    NamedCommands.registerCommand("LimeLightAlignTest", alignToReefTagRelativeLeft.until(() -> alignToReefTagRelativeLeft.isFinished()));
 
     NamedCommands.registerCommand("LimeLightAlignCenterAUTON",
       Commands.run(() -> {

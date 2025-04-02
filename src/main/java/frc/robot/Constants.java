@@ -25,8 +25,8 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
   public static boolean isReducedSpeed = false; // Flag to toggle reduced speed
-  public static final double MAX_SPEED_NORMAL = Units.feetToMeters(10); // Normal max speed
-  public static final double MAX_SPEED_REDUCED = Units.feetToMeters(7.5); // Reduced max speed
+  public static final double MAX_SPEED_NORMAL = Units.feetToMeters(3); // Normal max speed
+  public static final double MAX_SPEED_REDUCED = Units.feetToMeters(1.5); // Reduced max speed
 
   public static double getMaxSpeed() {
     return isReducedSpeed ? MAX_SPEED_REDUCED : MAX_SPEED_NORMAL;
@@ -90,7 +90,7 @@ public final class Constants
 
   public static final class ElevatorConstants {
 
-    public static final double BASE_SPEED = 0.1; // For elevator new function 3/21/25
+    public static final double BASE_SPEED = 0.05; // For elevator new function 3/21/25
 
     public static final int ELEVATOR_MOTORID = 25;
     public static final double ELEVATOR_UP_SPEED = 0.15; // Testing speed is 0.3 / -0.3

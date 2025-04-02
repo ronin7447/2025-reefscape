@@ -72,7 +72,6 @@ public class SwerveSubsystem extends SubsystemBase
    * PhotonVision class to keep an accurate odometry.
    */
 //  private       Vision              vision;
-  private boolean done;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -83,7 +82,6 @@ public class SwerveSubsystem extends SubsystemBase
   {
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-    done = false;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.getMaxSpeed(),
@@ -524,13 +522,6 @@ public class SwerveSubsystem extends SubsystemBase
     });
   }
 
-  public boolean getDone() {
-    return done;
-  }
-
-  public void setDone(boolean state) {
-    done = state;
-  }
 
   /**
    * Drive according to the chassis robot oriented velocity.

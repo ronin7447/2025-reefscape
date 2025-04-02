@@ -16,7 +16,7 @@ public class AlignToReefTagRelative extends Command {
   private PIDController xController, yController, rotController;
   private int side;
   private SwerveSubsystem drivebase;
-  private double tagID = 19;
+  private double tagID = 1;
 
   private double xSpeed;
   private double ySpeed;
@@ -77,9 +77,12 @@ public class AlignToReefTagRelative extends Command {
       drivebase.drive(new Translation2d(xSpeed, ySpeed), rotSpeed, false, true);
 
     } else {
-      drivebase.drive(new Translation2d(), 0, false);
+      drivebase.drive(new Translation2d(0.0, 0.0), 0, false);
+      xSpeed = 0.0;
+      ySpeed = 0.0;
       
       System.out.println("no sees smth");
+      System.out.println("SPEEDS ARE: " + xSpeed + "," + ySpeed);
     }
   }
 

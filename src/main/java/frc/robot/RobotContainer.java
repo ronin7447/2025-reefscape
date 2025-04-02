@@ -241,6 +241,8 @@ public class RobotContainer {
       Commands.run(() -> {
         alignToReefTagRelativeLeft.execute();
       }));
+      
+    NamedCommands.registerCommand("GoLeftALittle", drivebase.goLeftALittle(drivebase));
 
     NamedCommands.registerCommand("LimeLightAlignLeft", alignToReefTagRelativeLeft.until(() -> alignToReefTagRelativeLeft.isFinished()));
 

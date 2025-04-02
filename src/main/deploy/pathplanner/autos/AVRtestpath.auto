@@ -21,6 +21,12 @@
           "data": {
             "name": "AlgaeIn"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GoLeftALittle"
+          }
         }
       ]
     }

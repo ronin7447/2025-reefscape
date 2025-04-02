@@ -13,13 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AlgaeUp"
+            "name": "AlgaeOut"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "MoveToL1"
+            "name": "ShootCoral"
           }
         }
       ]

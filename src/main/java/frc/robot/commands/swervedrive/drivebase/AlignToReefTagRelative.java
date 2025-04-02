@@ -15,10 +15,12 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 public class AlignToReefTagRelative extends Command {
   private PIDController xController, yController, rotController;
   private int side;
-  private Timer dontSeeTagTimer, stopTimer;
   private SwerveSubsystem drivebase;
-  private double tagID = 18;
-  private boolean done;
+  private double tagID = 19;
+
+  private double xSpeed;
+  private double ySpeed;
+  private double rotSpeed;
 
   public AlignToReefTagRelative(int side, SwerveSubsystem drivebase) {
     xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0.04);  // Vertical movement
@@ -27,23 +29,17 @@ public class AlignToReefTagRelative extends Command {
     this.side = side;
     this.drivebase = drivebase;
 
-    done = false;
+    xSpeed = 0;
+    ySpeed = 0;
+    rotSpeed = 0;
 
     addRequirements(drivebase);
     
   }
 
-  public boolean getDone() {
-    return done;
-  }
 
   @Override
   public void initialize() {
-    this.stopTimer = new Timer();
-    this.stopTimer.start();
-    this.dontSeeTagTimer = new Timer();
-    this.dontSeeTagTimer.start();
-
     rotController.setSetpoint(Constants.VisionConstants.ROT_SETPOINT_REEF_ALIGNMENT);
     rotController.setTolerance(Constants.VisionConstants.ROT_TOLERANCE_REEF_ALIGNMENT);
 
@@ -71,31 +67,26 @@ public class AlignToReefTagRelative extends Command {
       System.out.println("sees smth");
 
       double[] postions = LimelightHelpers.getBotPose_TargetSpace("limelight-front");
+      SmartDashboard.putNumber("x", postions[2]);
 
-      double xSpeed = xController.calculate(postions[2]) / 2;
+      xSpeed = xController.calculate(postions[2]) / 2;
       SmartDashboard.putNumber("xspeed", xSpeed);
-      double ySpeed = -yController.calculate(postions[0]) / 2;
-      double rotValue = -rotController.calculate(postions[4]);
+      ySpeed = -yController.calculate(postions[0]) / 2;
+      rotSpeed = -rotController.calculate(postions[4]);
 
-      drivebase.drive(new Translation2d(xSpeed, ySpeed), rotValue, false, true);
+      drivebase.drive(new Translation2d(xSpeed, ySpeed), rotSpeed, false, true);
 
-    
     } else {
       drivebase.drive(new Translation2d(), 0, false);
+      
       System.out.println("no sees smth");
-      done = true;
     }
   }
 
-  @Override
-  public void end(boolean interrupted) {
-    drivebase.drive(new Translation2d(), 0, false);
+    @Override
+    public boolean isFinished() {
+      return xSpeed + ySpeed <= 0.1;
+    }
+
   }
 
-  @Override
-  public boolean isFinished() {
-    // Requires the robot to stay in the correct position for 0.3 seconds, as long as it gets a tag in the camera
-    return this.dontSeeTagTimer.hasElapsed(Constants.VisionConstants.DONT_SEE_TAG_WAIT_TIME) ||
-        stopTimer.hasElapsed(Constants.VisionConstants.POSE_VALIDATION_TIME);
-  }
-}

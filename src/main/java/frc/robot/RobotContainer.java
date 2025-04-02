@@ -82,7 +82,9 @@ public class RobotContainer {
   private final Vision visionSubsystem = new Vision();
 
   // private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
-  private final AlignToReefTagRelative alignToReefTagRelative = new AlignToReefTagRelative(1, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelativeLeft = new AlignToReefTagRelative(0, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(0, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(0, drivebase);
   
 
 
@@ -218,48 +220,35 @@ public class RobotContainer {
       )));
 
     
-
-      NamedCommands.registerCommand("AlgaeUp",
+    NamedCommands.registerCommand("AlgaeOut",
       (Commands.run(() -> {
-        algaeSubsystem.algaeOut();
+       algaeSubsystem.algaeOut();
+       System.out.println(algaeSubsystem.getAlgaeMotor() < -45);
       }).until(() -> 
-      algaeSubsystem.getAlgaeMotor() <= -45)));
+        algaeSubsystem.getAlgaeMotor() == 0
+      )));
 
-  
-
-    NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeIn());
+    NamedCommands.registerCommand("AlgaeIn",
+      (Commands.run(() -> {
+       algaeSubsystem.algaeIn();
+       System.out.println(algaeSubsystem.getAlgaeMotor() > 0);
+      }).until(() -> 
+        algaeSubsystem.getAlgaeMotor() == 0
+      )));
     
 
     NamedCommands.registerCommand("LimeLightAlignLeftAUTON",
       Commands.run(() -> {
-        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(0, drivebase);
-        alignCommand.execute();
-      }).until(() -> {
-        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(0, drivebase); // Create a new instance
-        return alignCommand.getDone(); // Check the `done` value of the new instance
-      })
-    ); 
+        alignToReefTagRelativeLeft.execute();
+      }));
 
     NamedCommands.registerCommand("LimeLightAlignCenterAUTON",
       Commands.run(() -> {
         AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(1, drivebase);
         alignCommand.execute();
-      }).until(() -> {
-        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(1, drivebase); // Create a new instance
-        return alignCommand.getDone(); // Check the `done` value of the new instance
-      })
-    );
+      }));
 
-    NamedCommands.registerCommand("LimeLightAlignRightAUTON",
-      Commands.run(() -> {
-        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(2, drivebase);
-        alignCommand.execute();
-      }).until(() -> {
-        AlignToReefTagRelative alignCommand = new AlignToReefTagRelative(2, drivebase); // Create a new instance
-        return alignCommand.getDone(); // Check the `done` value of the new instance
-      })
-    );
-    // NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
+   
   }
 
   

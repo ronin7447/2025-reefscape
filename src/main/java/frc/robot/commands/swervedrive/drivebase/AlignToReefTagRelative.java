@@ -28,6 +28,15 @@ public class AlignToReefTagRelative extends Command {
     addRequirements(drivebase);
   }
 
+  public AlignToReefTagRelative(BooleanSupplier isRightScoreSupp, SwerveSubsystem drivebase) {
+    xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0);  // Vertical movement
+    yController = new PIDController(Constants.VisionConstants.Y_REEF_ALIGNMENT_P, 0.0, 0);  // Horitontal movement
+    rotController = new PIDController(Constants.VisionConstants.ROT_REEF_ALIGNMENT_P, 0, 0);  // Rotation
+    this.isRightScore = isRightScoreSupp.getAsBoolean();
+    this.drivebase = drivebase;
+    addRequirements(drivebase);
+  }
+
   @Override
   public void initialize() {
     this.stopTimer = new Timer();

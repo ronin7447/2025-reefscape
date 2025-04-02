@@ -29,6 +29,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ShootCoral;
 import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
+import frc.robot.commands.swervedrive.drivebase.AlignToCoralStationTagRelative;
 import frc.robot.commands.swervedrive.drivebase.AlignToReefTagRelative;
 import frc.robot.commands.swervedrive.drivebase.MoveALittle;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
@@ -69,10 +70,10 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
 
-      PIDController aling = new PIDController(.1, 0, 0);
-      ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
-      PIDController close = new PIDController(.1, 0.0, 2);
-      ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
+      // PIDController aling = new PIDController(.1, 0, 0);
+      // ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
+      // PIDController close = new PIDController(.1, 0.0, 2);
+      // ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
 
       ProfiledPIDController rotationalign = new ProfiledPIDController(0.1, 0, 2, new Constraints(0.2, 0.2));
 
@@ -87,7 +88,7 @@ public class RobotContainer {
   private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.FRONTLL);
   private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(2, drivebase, Constants.LimelightConstants.FRONTLL);
 
-  private final AlignToReefTagRelative alignToCoral = new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL);
+  private final AlignToCoralStationTagRelative alignToCoral = new AlignToCoralStationTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL);
 
   private final MoveALittle goLeftALittle = new MoveALittle(drivebase, 0);
   private final MoveALittle goRightALittle = new MoveALittle(drivebase, 1);
@@ -133,14 +134,6 @@ public class RobotContainer {
         .scaleTranslation(0.8)
         .allianceRelativeControl(false);
 
-        SwerveInputStream autoAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-        () -> 0,
-        () -> 0
-        )
-        .withControllerRotationAxis(() -> -1 * aling.calculate(visionSubsystem.getTX(), 0)) // rotation is inverted so we inverted the input :)
-        .deadband(OperatorConstants.DEADBAND)
-        .scaleTranslation(0.8)
-        .allianceRelativeControl(false);
 
   // if (decrease_held) { // do later kaden decrease speed
   //   driveAngularVelocity = Swer1veInputStream.of(drivebase.getSwerveDrive(),
@@ -286,7 +279,6 @@ public class RobotContainer {
     Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleSim);
 
-    Command driveAutoAngularVelocity = drivebase.driveFieldOriented(autoAngularVelocity);
 
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);

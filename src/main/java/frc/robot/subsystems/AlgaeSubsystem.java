@@ -79,7 +79,6 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public Command AlgaeOut() {
         return runOnce(() -> {
-
             if (getAlgaeDebug() > -45) {
                 runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
             } else {

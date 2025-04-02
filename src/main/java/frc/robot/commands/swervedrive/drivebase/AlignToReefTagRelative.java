@@ -85,7 +85,7 @@ public class AlignToReefTagRelative extends Command {
 
     @Override
     public boolean isFinished() {
-      return xSpeed + ySpeed <= 0.1;
+      return Math.abs(xSpeed) <= 0.05 && Math.abs(ySpeed) <= 0.05;
     }
 
   }

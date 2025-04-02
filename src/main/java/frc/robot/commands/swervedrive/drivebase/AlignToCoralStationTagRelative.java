@@ -70,7 +70,7 @@ public class AlignToCoralStationTagRelative extends Command {
 
       xSpeed = -1 * xController.calculate(postions[2]) / 2; // multiply by -1 because we're using the back camera
       SmartDashboard.putNumber("xspeed", xSpeed);
-      ySpeed = -yController.calculate(postions[0]) / 2;
+      ySpeed = yController.calculate(postions[0]) / 2; // not multiply by -1 because we're using the back camera
       rotSpeed = -rotController.calculate(postions[4]);
 
       drivebase.drive(new Translation2d(xSpeed, ySpeed), rotSpeed, false, true);

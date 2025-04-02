@@ -23,9 +23,12 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -50,6 +53,12 @@ public class Robot extends TimedRobot {
   // Create an LED pattern that will display a rainbow across
   // all hues at maximum saturation and half brightness
   private final LEDPattern m_rainbow = LEDPattern.rainbow(255, 128);
+
+  // private final LEDPattern m_ok = LEDPattern.solid(Color.kGreen);
+
+  private final LEDPattern m_ok = LEDPattern.gradient(GradientType.kContinuous, new Color(41, 203, 255), new Color(35, 34, 98));
+
+  private final LEDPattern m_notok = LEDPattern.solid(Color.kRed);
 
   // Our LED strip has a density of 120 LEDs per meter
   private static final Distance kLedSpacing = Meters.of(1 / 120.0);
@@ -162,10 +171,15 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     // Run the command scheduler for command management.
     // Update the buffer with the rainbow animation
-    m_scrollingRainbow.applyTo(m_ledBuffer);
+
+    if (m_robotContainer.robotGetElevatorSpeed() != 0) {
+      m_notok.applyTo(m_ledBuffer);
+    } else {
+      m_ok.applyTo(m_ledBuffer);
+    }
     // Set the LEDs
     m_led.setData(m_ledBuffer);
-    
+
     CommandScheduler.getInstance().run();
 
     // Update front NetworkTable value (e.g., tx) on the SmartDashboard.

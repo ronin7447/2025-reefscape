@@ -254,7 +254,9 @@ public class RobotContainer {
    
   }
 
-  
+  public double robotGetElevatorSpeed() {
+    return elevatorSubsystem.getElevatorSpeed();
+  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be

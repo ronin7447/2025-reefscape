@@ -26,6 +26,7 @@ public class MoveALittle extends Command {
     public void execute()
     
     {
+        System.out.println("PLS WOROKORKOROKRKORKOKOROKROROKKRKRKOROKOKROKROKRPOKRLPR");
         Pose2d currentPose = swerveSubsystem.getPose();
         if (direction == 0) {
             targetPose = currentPose.transformBy(new Transform2d(new Translation2d(0, Constants.VisionConstants.MOVEALITTLE_LEFT), new Rotation2d(0)));
@@ -34,6 +35,7 @@ public class MoveALittle extends Command {
         }
         
         swerveSubsystem.driveToPose(targetPose);
+        
     }
 
     @Override

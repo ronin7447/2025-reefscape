@@ -166,8 +166,8 @@ public final class Constants
     public static final double POSE_VALIDATION_TIME = 0.3;
 
     //Offsets for moving a little
-    public static final double MOVEALITTLE_LEFT = 0.2;
-    public static final double MOVEALITTLE_RIGHT = -0.2;
+    public static final double MOVEALITTLE_LEFT = 1;
+    public static final double MOVEALITTLE_RIGHT = -1;
     public static final double DISTANCE_TOLERANCE = 0.05;   // Tolerance in meters
     public static final double ANGLE_TOLERANCE = 0.1;       // Tolerance in radians
 

@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LimeLightAlignLeft"
+            "name": "LimeLightAlignRight"
           }
         },
         {
@@ -31,8 +31,45 @@
                 "data": {
                   "name": "MoveToL2"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "GoLeftALittle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AlgaeOut"
+                }
               }
             ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "GoBackALittle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "RemoveAlgae"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeIn"
           }
         }
       ]

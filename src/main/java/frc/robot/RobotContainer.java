@@ -203,6 +203,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("ShootCoral", shooterSubsystem.ShootCoral());
 
+    NamedCommands.registerCommand("RemoveAlgae", shooterSubsystem.RemoveAlgae());
+
     NamedCommands.registerCommand("MoveToL1",
       (Commands.run(() -> {
         elevatorSubsystem.goToL1();
@@ -710,7 +712,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("AVRTestPath");
+    return drivebase.getAutonomousCommand("AVRAlgaeRemover");
   }
 
   // public Command getAutoAlignCommand() {

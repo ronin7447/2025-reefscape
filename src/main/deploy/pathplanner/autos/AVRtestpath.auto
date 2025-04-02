@@ -5,33 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "AlgaeOut"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootCoral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AlgaeIn"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GoLeftALittle"
+            "pathName": "GoLeftALittle"
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

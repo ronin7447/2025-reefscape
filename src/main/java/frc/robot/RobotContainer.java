@@ -243,7 +243,7 @@ public class RobotContainer {
       
     NamedCommands.registerCommand("GoLeftALittle", goLeftALittle.until(() -> goLeftALittle.isFinished()));
     
-    NamedCommands.registerCommand("GoLeftALittle", goRightALittle.until(() -> goRightALittle.isFinished()));
+    NamedCommands.registerCommand("GoRightALittle", goRightALittle.until(() -> goRightALittle.isFinished()));
 
     NamedCommands.registerCommand("LimeLightAlignLeft", alignToReefTagRelativeLeft.until(() -> alignToReefTagRelativeLeft.isFinished()));
 

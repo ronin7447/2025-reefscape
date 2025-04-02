@@ -814,20 +814,7 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
   }
 
-  public Command goLeftALittle(SwerveSubsystem drivebase) {
-    return runOnce(() -> {
-      new SlowDrive(drivebase, 270, true);
-      
-    });
 
-  }
-
-  public Command goRightALittle(SwerveSubsystem drivebase) {
-    return runOnce(() -> {
-      new SlowDrive(drivebase, 90, true);
-    });
-
-  }
 
   /**
    * Gets the swerve drive object.

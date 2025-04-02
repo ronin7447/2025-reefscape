@@ -11,24 +11,28 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class MoveALittle extends Command {
     private final SwerveSubsystem swerveSubsystem;
+    private int direction;
     // private final Joystick controller;
-    private final Pose2d targetPose;
+    private Pose2d targetPose;
 
     public MoveALittle(SwerveSubsystem swerveSubsystem, int direction) {
         this.swerveSubsystem = swerveSubsystem;
+        this.direction = direction;
 
         addRequirements(swerveSubsystem);
+        
+    }
+    @Override
+    public void execute()
+    
+    {
         Pose2d currentPose = swerveSubsystem.getPose();
         if (direction == 0) {
             targetPose = currentPose.transformBy(new Transform2d(new Translation2d(0, Constants.VisionConstants.MOVEALITTLE_LEFT), new Rotation2d(0)));
         } else {
             targetPose = currentPose.transformBy(new Transform2d(new Translation2d(0, Constants.VisionConstants.MOVEALITTLE_RIGHT), new Rotation2d(0)));
         }
-        }
-
-    @Override
-    public void execute()
-    {
+        
         swerveSubsystem.driveToPose(targetPose);
     }
 

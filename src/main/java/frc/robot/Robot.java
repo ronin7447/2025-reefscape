@@ -17,6 +17,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -105,6 +106,12 @@ public class Robot extends TimedRobot {
     } catch (IOException e) {
       System.out.println("Failed to connect to front camera: " + e.getMessage());
     }
+
+    // ----- BACK LIMELIGHT CAMERA -----
+
+    PortForwarder.add(5801, "limelight-back.local", 5801);
+    PortForwarder.add(5800, "limelight-back.local", 5800);
+    java.util.logging.Logger.getLogger("edu.wpi.first.cameraserver.CameraServer").setLevel(java.util.logging.Level.SEVERE);
 
     // ----- USB CAMERA (SHOOTER CAMERA) -----
     // Start the USB camera capture and processing on a separate thread.

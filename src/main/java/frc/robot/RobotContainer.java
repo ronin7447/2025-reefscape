@@ -397,6 +397,13 @@ public class RobotContainer {
         System.out.println("Algae Position:" +  algaeSubsystem.getAlgaeDebug());
       })));
 
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
+        .onTrue((Commands.run(() -> {
+          elevatorSubsystem.goToL0();
+        }).until(() -> 
+          elevatorSubsystem.getElevatorSpeed() == 0
+        )));
+
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL1();

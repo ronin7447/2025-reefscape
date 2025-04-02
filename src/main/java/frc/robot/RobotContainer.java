@@ -191,11 +191,39 @@ public class RobotContainer {
     rotationalign.reset(0.0, 0.0);
     
     DriverStation.silenceJoystickConnectionWarning(true);
+
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+
     NamedCommands.registerCommand("ShootCoral", shooterSubsystem.ShootCoral());
-    NamedCommands.registerCommand("MoveToL1", elevatorSubsystem.MoveElevatorToL1());
-    NamedCommands.registerCommand("MoveToL2", elevatorSubsystem.MoveElevatorToL2());
-    NamedCommands.registerCommand("MoveToL3", elevatorSubsystem.MoveElevatorToL3());
+
+    NamedCommands.registerCommand("MoveToL1",
+      (Commands.run(() -> {
+        elevatorSubsystem.goToL1();
+      }).until(() -> 
+        elevatorSubsystem.getElevatorSpeed() == 0
+      )));
+
+    NamedCommands.registerCommand("MoveToL2",
+      (Commands.run(() -> {
+        elevatorSubsystem.goToL2();
+      }).until(() -> 
+        elevatorSubsystem.getElevatorSpeed() == 0
+      )));
+
+    NamedCommands.registerCommand("MoveToL3",
+      (Commands.run(() -> {
+        elevatorSubsystem.goToL3();
+      }).until(() -> 
+        elevatorSubsystem.getElevatorSpeed() == 0
+      )));
+
+    NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeUp());
+
+    NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeDown());
+    
+    NamedCommands.registerCommand("LimeLightAlign",
+    new AlignToReefTagRelative(() -> visionSubsystem.getTX() > 0, drivebase));
+    
     // NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
   }
 

@@ -50,4 +50,32 @@ public class AlgaeSubsystem extends SubsystemBase {
         AlgaeMotor.stopMotor();
 
     }
+
+    public void algaeUp() {
+
+        runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+        Timer.delay(0.8);
+        stopAlgaeMotor();
+
+    }
+
+    public Command AlgaeUp() {
+
+        return runOnce(() -> algaeUp());
+
+    }
+
+    public void algaeDown() {
+
+        runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+        Timer.delay(0.8);
+        stopAlgaeMotor();
+
+    }
+
+    public Command AlgaeDown() {
+
+        return runOnce(() -> algaeDown());
+
+    }
 }

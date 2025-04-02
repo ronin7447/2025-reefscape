@@ -217,7 +217,15 @@ public class RobotContainer {
         elevatorSubsystem.getElevatorSpeed() == 0
       )));
 
-    NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeOut());
+    
+
+      NamedCommands.registerCommand("AlgaeUp",
+      (Commands.run(() -> {
+        algaeSubsystem.algaeOut();
+      }).until(() -> 
+      algaeSubsystem.getAlgaeMotor() <= -45)));
+
+  
 
     NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeIn());
     
@@ -656,7 +664,7 @@ public class RobotContainer {
       //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
       //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
       //   XboxInfo.getPOV() == -1)
-      //     .whileTrue((Commands.runOnce(() -> { 
+      //     .whileTrue((Commands.runOnce(() -> {
       //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
       //     })));
 
@@ -702,7 +710,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("AVRtestpath");
+    return drivebase.getAutonomousCommand("AVRTestPath");
   }
 
   // public Command getAutoAlignCommand() {

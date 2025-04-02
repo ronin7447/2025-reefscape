@@ -56,7 +56,12 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     }
 
+    public double getAlgaeMotor(){
+        return AlgaeMotor.get();
+    }
+
     public void algaeOut() {
+        System.out.println(getAlgaeDebug());
         if (getAlgaeDebug() > -45) {
             runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
         } else {
@@ -73,10 +78,18 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
 
     public Command AlgaeOut() {
-        return run(() -> algaeOut()).until(() -> getAlgaeDebug() == 0);
+        return runOnce(() -> {
+
+            if (getAlgaeDebug() > -45) {
+                runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+            } else {
+                stopAlgaeMotor();
+            }
+
+        });
     }
 
     public Command AlgaeIn() {
-        return run(() -> algaeIn()).until(() -> getAlgaeDebug() == 0);
+        return run(() -> algaeIn());
     }
 }

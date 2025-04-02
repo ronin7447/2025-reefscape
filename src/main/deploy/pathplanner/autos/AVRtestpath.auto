@@ -5,15 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "AVRtest1"
+            "name": "MoveToL2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL1"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

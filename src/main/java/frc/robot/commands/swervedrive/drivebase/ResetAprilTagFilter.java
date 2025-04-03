@@ -10,20 +10,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotLogger;
 
 public class ResetAprilTagFilter extends Command {
-    private SwerveSubsystem drivebase;
+    // private SwerveSubsystem drivebase;
     private String limelight;
     private NetworkTable limelightTable;
 
 
-    public ResetAprilTagFilter(SwerveSubsystem drivebase, String limelight) {
-        this.drivebase = drivebase;
+    public ResetAprilTagFilter(String limelight) {
         this.limelight = limelight;
         this.limelightTable = NetworkTableInstance.getDefault().getTable(limelight);
-        addRequirements(drivebase);
     }
     @Override
     public void initialize() {
-        limelightTable.getEntry("tidx").setNumber(-1);
+        limelightTable.getEntry("priorityid").setNumber(-1);
         limelightTable.getEntry("pipeline").setNumber(0);
         RobotLogger.log("Limelight AprilTag filter reset (no specific ID target).");
     }
@@ -39,7 +37,7 @@ public class ResetAprilTagFilter extends Command {
     public void end(boolean interrupted) {
         // This method is called once when the command ends or is interrupted
         if (interrupted) {
-            System.out.println("ResetReefAprilTag command was interrupted.");
+            RobotLogger.warning("ResetReefAprilTag command was interrupted.");
         }
     }
 

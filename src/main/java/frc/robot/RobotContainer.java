@@ -275,6 +275,10 @@ public class RobotContainer {
     return elevatorSubsystem.getElevatorSpeed();
   }
 
+  public double robotGetShooterSpeed() {
+    return shooterSubsystem.getMotorSpeed();
+  }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
    * created via the
@@ -671,10 +675,10 @@ public class RobotContainer {
           Constants.isReducedSpeed = false;
         })));
 
-      driverXbox.b().onTrue(new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL, -1));
+      driverXbox.b().onTrue(new SetAprilTagFilter(Constants.LimelightConstants.FRONTLL, -1));
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
         .onTrue(
-          new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL, -1)
+          new SetAprilTagFilter(Constants.LimelightConstants.FRONTLL, -1)
         );
 
       // Drag code

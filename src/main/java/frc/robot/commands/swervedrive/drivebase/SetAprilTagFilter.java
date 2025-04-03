@@ -9,20 +9,18 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SetAprilTagFilter extends Command {
-    private SwerveSubsystem drivebase;
+    // private SwerveSubsystem drivebase;
     private double tagID = -1;
     private String limelight;
     private NetworkTable limelightTable;
 
 
-    public SetAprilTagFilter(SwerveSubsystem drivebase, String limelight, double tagID) {
-        this.drivebase = drivebase;
+    public SetAprilTagFilter(String limelight, double tagID) {
         this.limelight = limelight;
         this.limelightTable = NetworkTableInstance.getDefault().getTable(limelight);
         this.tagID = tagID;
-
-        addRequirements(drivebase);
     }
+    
     @Override
     public void initialize() {
         // This method is called once when the command is scheduled
@@ -35,7 +33,7 @@ public class SetAprilTagFilter extends Command {
             SmartDashboard.putNumber("Target AprilTag ID", largestId);
             System.out.println("Target AprilTag ID set to: " + largestId);
             limelightTable.getEntry("pipeline").setNumber(0);
-            limelightTable.getEntry("tidx").setNumber(largestId);
+            limelightTable.getEntry("priorityid").setNumber(largestId);
         }
 
         if (tagIds.length > 0) {
@@ -46,7 +44,7 @@ public class SetAprilTagFilter extends Command {
             if (largestId != -1) {
                 // Assuming pipeline 8 is configured for AprilTag targeting
                 limelightTable.getEntry("pipeline").setNumber(0);
-                limelightTable.getEntry("tidx").setNumber(largestId);
+                limelightTable.getEntry("priorityid").setNumber(largestId);
                 SmartDashboard.putNumber("Limelight Target ID Set To", largestId);
                 System.out.println("Limelight filter set to target AprilTag ID: " + largestId);
             } else {

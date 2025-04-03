@@ -256,15 +256,11 @@ public class RobotContainer {
 
 
    
-=======
-    NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeUp());
 
-    NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeDown());
+    NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeOut());
+
+    NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeIn());
     
-    NamedCommands.registerCommand("LimeLightAlign",
-    new AlignToReefTagRelative(() -> visionSubsystem.getTX() > 0, drivebase));
-    
-    // NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
 
   }
 

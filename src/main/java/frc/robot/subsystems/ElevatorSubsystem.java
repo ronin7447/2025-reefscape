@@ -182,7 +182,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void goToL0() {
 
 
-        if (getElevatorHeight() > 0.1) {
+        if (getElevatorHeight() > 0.1 && ElevatorLimitSwitch.get()) {
             runElevatorMotor(getPIDElevatorSpeed(Constants.ElevatorConstants.L3_ABS, 0.0, getElevatorHeight()));
         } else {
             stopElevatorMotor();
@@ -221,15 +221,6 @@ public class ElevatorSubsystem extends SubsystemBase {
             runElevatorMotor(getPIDElevatorSpeed(Constants.ElevatorConstants.L1_ABS, Constants.ElevatorConstants.L3_ABS, getElevatorHeight()));
         } else {
             stopElevatorMotor();
-        }
-    }
-
-    public void goToL0() {
-
-        goToL1();
-        
-        if (ElevatorLimitSwitch.get()) {
-            runElevatorMotor(-0.2);
         }
     }
 }

@@ -58,6 +58,8 @@ public class Robot extends TimedRobot {
 
   private final LEDPattern m_ok = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, new Color(41, 203, 255), new Color(0, 0, 17));
   private final LEDPattern m_elevatorMoving = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, new Color(221, 255, 0), new Color(255, 149, 0));
+  // green for shooter moving
+  private final LEDPattern m_shooterMoving = LEDPattern.gradient(LEDPattern.GradientType.kContinuous, new Color(0, 255, 0), new Color(41, 94, 41));
 
   // private final LEDPattern m_vok = LEDPattern.
 
@@ -175,11 +177,16 @@ public class Robot extends TimedRobot {
     // Run the command scheduler for command management.
     // Update the buffer with the rainbow animation
 
-    if (m_robotContainer.robotGetElevatorSpeed() != 0) {
+    if (DriverStation.isAutonomous()) {
+      m_scrollingRainbow.applyTo(m_ledBuffer);
+    } else if (m_robotContainer.robotGetElevatorSpeed() != 0) {
       m_elevatorMoving.applyTo(m_ledBuffer);
+    } else if (m_robotContainer.robotGetShooterSpeed() != 0) {
+      m_shooterMoving.applyTo(m_ledBuffer);
     } else {
       m_ok.applyTo(m_ledBuffer);
     }
+
     // Set the LEDs
     m_led.setData(m_ledBuffer);
 

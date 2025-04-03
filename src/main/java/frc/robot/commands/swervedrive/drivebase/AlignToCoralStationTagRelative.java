@@ -15,7 +15,7 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 public class AlignToCoralStationTagRelative extends Command {
   private PIDController xController, yController, rotController;
-  private int side;
+  //private int side;
   private SwerveSubsystem drivebase;
   private double tagID = 1;
 
@@ -25,11 +25,11 @@ public class AlignToCoralStationTagRelative extends Command {
 
   private String limelight;
 
-  public AlignToCoralStationTagRelative(int side, SwerveSubsystem drivebase, String limelight) {
+  public AlignToCoralStationTagRelative(SwerveSubsystem drivebase, String limelight) {
     xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0.04);  // Vertical movement
     yController = new PIDController(Constants.VisionConstants.Y_REEF_ALIGNMENT_P, 0.0, 0.04);  // Horitontal movement
     rotController = new PIDController(Constants.VisionConstants.ROT_REEF_ALIGNMENT_P, 0, 0);  // Rotation
-    this.side = side;
+    //this.side = side;
     this.drivebase = drivebase;
     this.limelight = limelight;
 

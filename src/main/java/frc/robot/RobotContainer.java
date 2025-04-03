@@ -91,7 +91,7 @@ public class RobotContainer {
   private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.FRONTLL);
   private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(2, drivebase, Constants.LimelightConstants.FRONTLL);
 
-  private final AlignToCoralStationTagRelative alignToCoral = new AlignToCoralStationTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL);
+  private final AlignToCoralStationTagRelative alignToCoral = new AlignToCoralStationTagRelative(drivebase, Constants.LimelightConstants.BACKLL);
 
   private final MoveALittle goLeftALittle = new MoveALittle(drivebase, 0);
   private final MoveALittle goRightALittle = new MoveALittle(drivebase, 1);

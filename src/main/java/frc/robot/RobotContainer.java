@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -32,6 +33,7 @@ import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
 import frc.robot.commands.swervedrive.drivebase.AlignToCoralStationTagRelative;
 import frc.robot.commands.swervedrive.drivebase.AlignToReefTagRelative;
 import frc.robot.commands.swervedrive.drivebase.MoveALittle;
+import frc.robot.commands.swervedrive.drivebase.SetAprilTagFilter;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -191,7 +193,7 @@ public class RobotContainer {
     configureBindings();
 
     rotationalign.reset(0.0, 0.0);
-    
+
     DriverStation.silenceJoystickConnectionWarning(true);
 
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
@@ -643,6 +645,12 @@ public class RobotContainer {
         .onFalse((Commands.runOnce(() -> {
           Constants.isReducedSpeed = false;
         })));
+
+      driverXbox.b().onTrue(new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL));
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
+        .onTrue(
+          new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL)
+        );
 
       // Drag code
       // new Trigger(() -> 

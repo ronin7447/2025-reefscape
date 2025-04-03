@@ -9,20 +9,18 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SetAprilTagFilter extends Command {
-    private SwerveSubsystem drivebase;
+    // private SwerveSubsystem drivebase;
     private double tagID = -1;
     private String limelight;
     private NetworkTable limelightTable;
 
 
-    public SetAprilTagFilter(SwerveSubsystem drivebase, String limelight, double tagID) {
-        this.drivebase = drivebase;
+    public SetAprilTagFilter(String limelight, double tagID) {
         this.limelight = limelight;
         this.limelightTable = NetworkTableInstance.getDefault().getTable(limelight);
         this.tagID = tagID;
-
-        addRequirements(drivebase);
     }
+    
     @Override
     public void initialize() {
         // This method is called once when the command is scheduled

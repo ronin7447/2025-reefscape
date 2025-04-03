@@ -10,16 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotLogger;
 
 public class ResetAprilTagFilter extends Command {
-    private SwerveSubsystem drivebase;
+    // private SwerveSubsystem drivebase;
     private String limelight;
     private NetworkTable limelightTable;
 
 
-    public ResetAprilTagFilter(SwerveSubsystem drivebase, String limelight) {
-        this.drivebase = drivebase;
+    public ResetAprilTagFilter(String limelight) {
         this.limelight = limelight;
         this.limelightTable = NetworkTableInstance.getDefault().getTable(limelight);
-        addRequirements(drivebase);
     }
     @Override
     public void initialize() {

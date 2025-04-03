@@ -117,7 +117,55 @@
         {
           "type": "named",
           "data": {
+            "name": "LimeLightAlignLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "MoveToL3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCoral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVR17toAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVRback2reef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLightAlignLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL2"
           }
         },
         {

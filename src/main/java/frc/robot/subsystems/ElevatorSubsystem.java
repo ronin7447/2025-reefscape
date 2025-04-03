@@ -148,7 +148,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void runElevatorMotor(double speed) {
-        runElevatorMotor(speed, false);
+        if (getElevatorHeight() <= 0 && speed < 0) {
+            stopElevatorMotor();
+        } else {
+            runElevatorMotor(speed, false);
+        }
     }
 
     public void stopElevatorMotor() {

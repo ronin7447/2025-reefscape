@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.commands.swervedrive.drivebase.SetAprilTagFilter;
 
 public class AlignToReefTagRelative extends Command {
   private PIDController xController, yController, rotController;
@@ -60,6 +61,8 @@ public class AlignToReefTagRelative extends Command {
 
     // yController.setSetpoint(isRightScore ? Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT : -Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT);
     yController.setTolerance(Constants.VisionConstants.Y_TOLERANCE_REEF_ALIGNMENT);
+
+    new SetAprilTagFilter(drivebase, limelight);
 
     tagID = LimelightHelpers.getFiducialID(limelight);
   }

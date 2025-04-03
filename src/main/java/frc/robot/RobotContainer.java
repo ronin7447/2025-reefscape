@@ -196,6 +196,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
+    NamedCommands.registerCommand("ResetGyro", Commands.runOnce(() -> drivebase.zeroGyro()));
+
     NamedCommands.registerCommand("ShootCoral", shooterSubsystem.ShootCoral());
 
     NamedCommands.registerCommand("RemoveAlgae", shooterSubsystem.RemoveAlgae());
@@ -428,6 +430,8 @@ public class RobotContainer {
         }).until(() -> 
           elevatorSubsystem.getElevatorSpeed() == 0
         )));
+
+    
 
       // driverXbox.leftBumper()
       // .onTrue((Commands.run(() -> {

@@ -25,8 +25,8 @@ public final class Constants
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
 
   public static boolean isReducedSpeed = false; // Flag to toggle reduced speed
-  public static final double MAX_SPEED_NORMAL = Units.feetToMeters(3); // Normal max speed
-  public static final double MAX_SPEED_REDUCED = Units.feetToMeters(1.5); // Reduced max speed
+  public static final double MAX_SPEED_NORMAL = Units.feetToMeters(10); // Normal max speed
+  public static final double MAX_SPEED_REDUCED = Units.feetToMeters(7.5); // Reduced max speed
 
   public static double getMaxSpeed() {
     return isReducedSpeed ? MAX_SPEED_REDUCED : MAX_SPEED_NORMAL;

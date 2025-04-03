@@ -41,6 +41,7 @@ public class AlignToReefTagRelative extends Command {
   }
 
 
+
   @Override
   public void initialize() {
     rotController.setSetpoint(Constants.VisionConstants.ROT_SETPOINT_REEF_ALIGNMENT);

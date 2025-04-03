@@ -63,7 +63,7 @@ public class AlignToReefTagRelative extends Command {
     // yController.setSetpoint(isRightScore ? Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT : -Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT);
     yController.setTolerance(Constants.VisionConstants.Y_TOLERANCE_REEF_ALIGNMENT);
 
-    new SetAprilTagFilter(drivebase, limelight);
+    new SetAprilTagFilter(drivebase, limelight, -1);
 
     tagID = LimelightHelpers.getFiducialID(limelight);
   }

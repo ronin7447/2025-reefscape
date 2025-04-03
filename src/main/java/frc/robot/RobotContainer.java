@@ -671,10 +671,10 @@ public class RobotContainer {
           Constants.isReducedSpeed = false;
         })));
 
-      driverXbox.b().onTrue(new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL));
+      driverXbox.b().onTrue(new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL, -1));
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
         .onTrue(
-          new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL)
+          new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL, -1)
         );
 
       // Drag code

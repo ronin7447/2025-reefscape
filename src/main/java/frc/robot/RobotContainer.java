@@ -14,6 +14,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -29,7 +30,10 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ShootCoral;
 import frc.robot.commands.swervedrive.auto.AutoAlignCommand;
+import frc.robot.commands.swervedrive.drivebase.AlignToCoralStationTagRelative;
 import frc.robot.commands.swervedrive.drivebase.AlignToReefTagRelative;
+import frc.robot.commands.swervedrive.drivebase.MoveALittle;
+import frc.robot.commands.swervedrive.drivebase.SetAprilTagFilter;
 import frc.robot.commands.swervedrive.drivebase.SlowDrive;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -68,10 +72,10 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
       "swerve/neo"));
 
-      PIDController aling = new PIDController(.1, 0, 0);
-      ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
-      PIDController close = new PIDController(.1, 0.0, 2);
-      ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
+      // PIDController aling = new PIDController(.1, 0, 0);
+      // ProfiledPIDController align = new ProfiledPIDController(.1, 0, 10, new Constraints(0.2, 2));
+      // PIDController close = new PIDController(.1, 0.0, 2);
+      // ProfiledPIDController translationalign = new ProfiledPIDController(0.6, 0, 0, new Constraints(0.2, 2));
 
       ProfiledPIDController rotationalign = new ProfiledPIDController(0.1, 0, 2, new Constraints(0.2, 0.2));
 
@@ -82,7 +86,15 @@ public class RobotContainer {
   private final Vision visionSubsystem = new Vision();
 
   // private final AutoAlignCommand autoAlignCommand = new AutoAlignCommand(drivebase, visionSubsystem, close);
-  private final AlignToReefTagRelative alignToReefTagRelative = new AlignToReefTagRelative(false, drivebase);
+  private final AlignToReefTagRelative alignToReefTagRelativeLeft = new AlignToReefTagRelative(0, drivebase, Constants.LimelightConstants.FRONTLL);
+  private final AlignToReefTagRelative alignToReefTagRelativeCenter = new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.FRONTLL);
+  private final AlignToReefTagRelative alignToReefTagRelativeRight = new AlignToReefTagRelative(2, drivebase, Constants.LimelightConstants.FRONTLL);
+
+  private final AlignToCoralStationTagRelative alignToCoral = new AlignToCoralStationTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL);
+
+  private final MoveALittle goLeftALittle = new MoveALittle(drivebase, 0);
+  private final MoveALittle goRightALittle = new MoveALittle(drivebase, 1);
+
   
 
 
@@ -124,14 +136,6 @@ public class RobotContainer {
         .scaleTranslation(0.8)
         .allianceRelativeControl(false);
 
-        SwerveInputStream autoAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-        () -> 0,
-        () -> 0
-        )
-        .withControllerRotationAxis(() -> -1 * aling.calculate(visionSubsystem.getTX(), 0)) // rotation is inverted so we inverted the input :)
-        .deadband(OperatorConstants.DEADBAND)
-        .scaleTranslation(0.8)
-        .allianceRelativeControl(false);
 
   // if (decrease_held) { // do later kaden decrease speed
   //   driveAngularVelocity = Swer1veInputStream.of(drivebase.getSwerveDrive(),
@@ -189,12 +193,14 @@ public class RobotContainer {
     configureBindings();
 
     rotationalign.reset(0.0, 0.0);
-    
+
     DriverStation.silenceJoystickConnectionWarning(true);
 
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
     NamedCommands.registerCommand("ShootCoral", shooterSubsystem.ShootCoral());
+
+    NamedCommands.registerCommand("RemoveAlgae", shooterSubsystem.RemoveAlgae());
 
     NamedCommands.registerCommand("MoveToL1",
       (Commands.run(() -> {
@@ -217,6 +223,38 @@ public class RobotContainer {
         elevatorSubsystem.getElevatorSpeed() == 0
       )));
 
+    
+    NamedCommands.registerCommand("AlgaeOut",
+      (Commands.run(() -> {
+       algaeSubsystem.algaeOut();
+       System.out.println(algaeSubsystem.getAlgaeMotor() < -45);
+      }).until(() -> 
+        algaeSubsystem.getAlgaeMotor() == 0
+      )));
+
+    NamedCommands.registerCommand("AlgaeIn",
+      (Commands.run(() -> {
+       algaeSubsystem.algaeIn();
+       System.out.println(algaeSubsystem.getAlgaeMotor() > 0);
+      }).until(() -> 
+        algaeSubsystem.getAlgaeMotor() == 0
+      )));
+      
+    NamedCommands.registerCommand("GoLeftALittle", goLeftALittle.until(() -> goLeftALittle.isFinished()));
+    
+    NamedCommands.registerCommand("GoRightALittle", goRightALittle.until(() -> goRightALittle.isFinished()));
+
+    NamedCommands.registerCommand("LimeLightAlignLeft", alignToReefTagRelativeLeft.until(() -> alignToReefTagRelativeLeft.isFinished()));
+
+    NamedCommands.registerCommand("LimeLightAlignCenter", alignToReefTagRelativeCenter.until(() -> alignToReefTagRelativeCenter.isFinished()));
+
+    NamedCommands.registerCommand("LimeLightAlignRight", alignToReefTagRelativeRight.until(() -> alignToReefTagRelativeRight.isFinished()));
+
+    NamedCommands.registerCommand("LimeLightAlignCoral", alignToCoral.until(() -> alignToCoral.isFinished()));
+
+
+   
+=======
     NamedCommands.registerCommand("AlgaeUp", algaeSubsystem.AlgaeUp());
 
     NamedCommands.registerCommand("AlgaeDown", algaeSubsystem.AlgaeDown());
@@ -225,9 +263,12 @@ public class RobotContainer {
     new AlignToReefTagRelative(() -> visionSubsystem.getTX() > 0, drivebase));
     
     // NamedCommands.registerCommand("LimeLightAlign", autoAlignCommand);
+
   }
 
-  
+  public double robotGetElevatorSpeed() {
+    return elevatorSubsystem.getElevatorSpeed();
+  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
@@ -252,7 +293,6 @@ public class RobotContainer {
     Command driveSetpointGenSim = drivebase.driveWithSetpointGeneratorFieldRelative(
         driveDirectAngleSim);
 
-    Command driveAutoAngularVelocity = drivebase.driveFieldOriented(autoAngularVelocity);
 
     if (RobotBase.isSimulation()) {
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleSim);
@@ -359,6 +399,9 @@ public class RobotContainer {
 
 
 
+      driverXbox.button(9).onTrue((Commands.runOnce(() -> {
+        algaeSubsystem.resetAlgaeMotor();
+      })));
 
       driverXbox.povRight().onTrue((Commands.runOnce(() -> {
         // System.out.println("L1: " + elevatorSubsystem.positions[0]);
@@ -367,6 +410,7 @@ public class RobotContainer {
         // System.out.println(elevatorSubsystem.getElevatorPosition());
         // System.out.println("Current level: " + elevatorSubsystem.getLevel());
         System.out.println("Rotations: " + elevatorSubsystem.getElevatorHeight());
+        System.out.println("Algae Position:" +  algaeSubsystem.getAlgaeDebug());
       })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
@@ -375,7 +419,7 @@ public class RobotContainer {
         }).until(() -> 
           elevatorSubsystem.getElevatorSpeed() == 0
         )));
-      
+
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL1();
@@ -397,16 +441,21 @@ public class RobotContainer {
           elevatorSubsystem.getElevatorSpeed() == 0
         )));
 
+      // driverXbox.leftBumper()
+      // .onTrue((Commands.run(() -> {
+      //   elevatorSubsystem.goToL1();
+      // }).until(() -> 
+      //   elevatorSubsystem.getElevatorSpeed() == 0
+      // )));
+
       driverXbox.leftBumper()
-      .onTrue((Commands.run(() -> {
-        elevatorSubsystem.goToL1();
-      }).until(() -> 
-        elevatorSubsystem.getElevatorSpeed() == 0
-      )));
+        .whileTrue(new AlignToReefTagRelative(0, drivebase, Constants.LimelightConstants.FRONTLL));
+      driverXbox.rightBumper()
+        .whileTrue(new AlignToReefTagRelative(2, drivebase, Constants.LimelightConstants.FRONTLL));
 
-      driverXbox.leftTrigger()
-        .whileTrue(new AlignToReefTagRelative(visionSubsystem.getTX() > 0, drivebase));
-
+      driverXbox.y()
+        .whileTrue(new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL));
+      
       driverXbox.x()
         .onTrue((Commands.runOnce(() -> {
           elevatorSubsystem.setEncoderPos(1.0 - Math.abs(elevatorSubsystem.getElevatorHeight()));
@@ -468,9 +517,6 @@ public class RobotContainer {
         elevatorSubsystem.stopElevatorMotor();
       })));
 
-      driverXbox.y().onTrue((Commands.runOnce(() -> {
-        // elevatorSubsystem.showPosition();
-      })));
 
 
       // KADENS DEBUG STUFF
@@ -512,8 +558,8 @@ public class RobotContainer {
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_1)
         .whileTrue(new ShootCoral(-1, shooterSubsystem));
 
-      driverXbox.rightBumper()
-        .whileTrue(new ShootCoral(-1, shooterSubsystem));
+      // driverXbox.rightBumper()
+      //   .whileTrue(new ShootCoral(-1, shooterSubsystem));
 
 
 
@@ -610,6 +656,12 @@ public class RobotContainer {
           Constants.isReducedSpeed = false;
         })));
 
+      driverXbox.b().onTrue(new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL));
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_2)
+        .onTrue(
+          new SetAprilTagFilter(drivebase, Constants.LimelightConstants.FRONTLL)
+        );
+
       // Drag code
       // new Trigger(() -> 
       //   elevatorSubsystem.getElevatorPosition() - Constants.ElevatorConstants.distanceToEncoder[0] < 0 &&
@@ -629,7 +681,7 @@ public class RobotContainer {
       //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_9) &&
       //   !driverPXN.getRawButton(Constants.OperatorConstants.BUTTON_10) &&
       //   XboxInfo.getPOV() == -1)
-      //     .whileTrue((Commands.runOnce(() -> { 
+      //     .whileTrue((Commands.runOnce(() -> {
       //       elevatorSubsystem.runElevatorMotor(Constants.ElevatorConstants.ELEVATOR_UP_SPEED / 4);
       //     })));
 
@@ -675,7 +727,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("AVRtestpath");
+    return drivebase.getAutonomousCommand("AVRL2AlgaeRemover");
+
   }
 
   // public Command getAutoAlignCommand() {

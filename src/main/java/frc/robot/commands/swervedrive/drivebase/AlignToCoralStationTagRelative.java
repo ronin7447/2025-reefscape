@@ -10,9 +10,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotLogger;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
-public class AlignToReefTagRelative extends Command {
+public class AlignToCoralStationTagRelative extends Command {
   private PIDController xController, yController, rotController;
   private int side;
   private SwerveSubsystem drivebase;
@@ -24,7 +25,7 @@ public class AlignToReefTagRelative extends Command {
 
   private String limelight;
 
-  public AlignToReefTagRelative(int side, SwerveSubsystem drivebase, String limelight) {
+  public AlignToCoralStationTagRelative(int side, SwerveSubsystem drivebase, String limelight) {
     xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0.04);  // Vertical movement
     yController = new PIDController(Constants.VisionConstants.Y_REEF_ALIGNMENT_P, 0.0, 0.04);  // Horitontal movement
     rotController = new PIDController(Constants.VisionConstants.ROT_REEF_ALIGNMENT_P, 0, 0);  // Rotation
@@ -41,7 +42,6 @@ public class AlignToReefTagRelative extends Command {
   }
 
 
-
   @Override
   public void initialize() {
     rotController.setSetpoint(Constants.VisionConstants.ROT_SETPOINT_REEF_ALIGNMENT);
@@ -51,13 +51,8 @@ public class AlignToReefTagRelative extends Command {
     xController.setTolerance(Constants.VisionConstants.X_TOLERANCE_REEF_ALIGNMENT);
 
 
-    if (side == 0) {
-      yController.setSetpoint(Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT_LEFT);
-    } else if (side == 1) {
-      yController.setSetpoint(Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT_CENTER);
-    } else if (side == 2) {
-      yController.setSetpoint(Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT_RIGHT);
-    }
+    // side is only 1
+    yController.setSetpoint(Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT_CENTER);
 
     // yController.setSetpoint(isRightScore ? Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT : -Constants.VisionConstants.Y_SETPOINT_REEF_ALIGNMENT);
     yController.setTolerance(Constants.VisionConstants.Y_TOLERANCE_REEF_ALIGNMENT);
@@ -68,14 +63,14 @@ public class AlignToReefTagRelative extends Command {
   @Override
   public void execute() {
     if (LimelightHelpers.getTV(limelight) && LimelightHelpers.getFiducialID(limelight) == tagID) {
-      System.out.println("sees smth");
+      RobotLogger.log("Tag ID: " + tagID);
 
       double[] postions = LimelightHelpers.getBotPose_TargetSpace(limelight);
       SmartDashboard.putNumber("x", postions[2]);
 
-      xSpeed = xController.calculate(postions[2]) / 2;
+      xSpeed = -1 * xController.calculate(postions[2]) / 2; // multiply by -1 because we're using the back camera
       SmartDashboard.putNumber("xspeed", xSpeed);
-      ySpeed = -yController.calculate(postions[0]) / 2;
+      ySpeed = yController.calculate(postions[0]) / 2; // not multiply by -1 because we're using the back camera
       rotSpeed = -rotController.calculate(postions[4]);
 
       drivebase.drive(new Translation2d(xSpeed, ySpeed), rotSpeed, false, true);

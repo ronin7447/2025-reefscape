@@ -57,6 +57,19 @@ public class ShooterSubsystem extends SubsystemBase {
 
     }
 
+    public void removeAlgae() {
+
+        runShooterMotor(Constants.ShooterConstants.SHOOTER_REVERSE_SPEED);
+        Timer.delay(1);
+        stopShooterMotor();
+
+    }
+
+    public Command RemoveAlgae() {
+
+        return runOnce(() -> removeAlgae());
+    }
+
     public Command ShootCoral() {
 
         return runOnce(() -> shootCoral());

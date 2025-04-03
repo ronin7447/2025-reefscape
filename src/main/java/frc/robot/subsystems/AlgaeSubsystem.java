@@ -13,6 +13,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj2.command.Command; //importd command
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -41,6 +42,10 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     }
 
+    public void resetAlgaeMotor() {
+        AlgaeEncoder.setPosition(0);
+    }
+
     public double getAlgaeDebug() {
         return AlgaeEncoder.getPosition();
     }
@@ -51,31 +56,39 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     }
 
-    public void algaeUp() {
-
-        runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
-        Timer.delay(0.8);
-        stopAlgaeMotor();
-
+    public double getAlgaeMotor(){
+        return AlgaeMotor.get();
     }
 
-    public Command AlgaeUp() {
-
-        return runOnce(() -> algaeUp());
-
+    public void algaeOut() {
+        System.out.println(getAlgaeDebug());
+        if (getAlgaeDebug() > -45) {
+            runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+        } else {
+            stopAlgaeMotor();
+        }
     }
 
-    public void algaeDown() {
-
-        runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
-        Timer.delay(0.8);
-        stopAlgaeMotor();
-
+    public void algaeIn() {
+        if (getAlgaeDebug() < 0) {
+            runAlgaeMotor(Constants.AlgaeConstants.ALGAE_REVERSE_SPEED);
+        } else {
+            stopAlgaeMotor();
+        }
     }
 
-    public Command AlgaeDown() {
+    public Command AlgaeOut() {
+        return runOnce(() -> {
+            if (getAlgaeDebug() > -45) {
+                runAlgaeMotor(Constants.AlgaeConstants.ALGAE_SPEED);
+            } else {
+                stopAlgaeMotor();
+            }
 
-        return runOnce(() -> algaeDown());
+        });
+    }
 
+    public Command AlgaeIn() {
+        return run(() -> algaeIn());
     }
 }

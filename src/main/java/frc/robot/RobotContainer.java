@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -519,6 +520,10 @@ public class RobotContainer {
 
       driverXbox.povDown().onFalse((Commands.runOnce(() -> {
         elevatorSubsystem.stopElevatorMotor();
+      })));
+
+      driverXbox.leftTrigger().onTrue((Commands.runOnce(() -> {
+        drivebase.drive(new Translation2d(0.0, 0.0), 90, true);
       })));
 
 

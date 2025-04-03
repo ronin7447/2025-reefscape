@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "AVRtest1"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "LimeLightAlignRight"
@@ -25,26 +31,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ResetGyro"
+            "name": "MoveToL2"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "MoveToL2"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "GoLeftALittle"
-                }
-              }
-            ]
+            "pathName": "GoBackALittle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLightAlignCenter"
           }
         },
         {
@@ -73,22 +72,15 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "MoveToL1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AlgaeIn"
-                }
-              }
-            ]
+            "name": "MoveToL1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeIn"
           }
         }
       ]

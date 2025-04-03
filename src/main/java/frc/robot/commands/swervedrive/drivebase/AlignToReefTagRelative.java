@@ -26,9 +26,9 @@ public class AlignToReefTagRelative extends Command {
   private String limelight;
 
   public AlignToReefTagRelative(int side, SwerveSubsystem drivebase, String limelight) {
-    xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0.04);  // Vertical movement
-    yController = new PIDController(Constants.VisionConstants.Y_REEF_ALIGNMENT_P, 0.0, 0.04);  // Horitontal movement
-    rotController = new PIDController(Constants.VisionConstants.ROT_REEF_ALIGNMENT_P, 0, 0);  // Rotation
+    xController = new PIDController(Constants.VisionConstants.X_REEF_ALIGNMENT_P, 0.0, 0.02);  // Vertical movement
+    yController = new PIDController(Constants.VisionConstants.Y_REEF_ALIGNMENT_P, 0.0, 0.02);  // Horitontal movement
+    rotController = new PIDController(Constants.VisionConstants.ROT_REEF_ALIGNMENT_P, 0.001, 0);  // Rotation
     this.side = side;
     this.drivebase = drivebase;
     this.limelight = limelight;

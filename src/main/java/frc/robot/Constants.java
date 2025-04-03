@@ -144,9 +144,9 @@ public final class Constants
   public static final class VisionConstants {
 
     //public static final double TAG_TO_CAMERA_DIFF = 10.00;
-    public static final double X_REEF_ALIGNMENT_P = 3.0;
+    public static final double X_REEF_ALIGNMENT_P = 3.35;
     public static final double Y_REEF_ALIGNMENT_P = 2.875;
-    public static final double ROT_REEF_ALIGNMENT_P = 0.035;
+    public static final double ROT_REEF_ALIGNMENT_P = 0.012;
 
     public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0;  // Rotation
     public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 0.05;

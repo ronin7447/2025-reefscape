@@ -509,7 +509,11 @@ public class RobotContainer {
         elevatorSubsystem.stopElevatorMotor();
       })));
 
-      driverXbox.povDown().onTrue((Commands.runOnce(() -> {
+      // driverXbox.povDown().onTrue((Commands.runOnce(() -> {
+      //   elevatorSubsystem.runElevatorMotor(-1 * Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
+      // })));
+
+      driverXbox.povDown().whileTrue((Commands.run(() -> {
         elevatorSubsystem.runElevatorMotor(-1 * Constants.ElevatorConstants.ELEVATOR_SLOW_SPEED, true);
       })));
 

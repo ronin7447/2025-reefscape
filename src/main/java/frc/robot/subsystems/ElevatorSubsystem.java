@@ -223,4 +223,13 @@ public class ElevatorSubsystem extends SubsystemBase {
             stopElevatorMotor();
         }
     }
+
+    public void goToL0() {
+
+        goToL1();
+        
+        if (ElevatorLimitSwitch.get()) {
+            runElevatorMotor(-0.2);
+        }
+    }
 }

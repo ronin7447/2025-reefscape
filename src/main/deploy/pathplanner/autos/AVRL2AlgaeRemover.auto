@@ -23,6 +23,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ResetGyro"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -37,14 +43,14 @@
                 "data": {
                   "pathName": "GoLeftALittle"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AlgaeOut"
-                }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeOut"
           }
         },
         {
@@ -52,22 +58,22 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "GoBackALittle"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "RemoveAlgae"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "GoBackALittle"
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {

@@ -191,7 +191,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS > 0.01) {
             runElevatorMotor(getPIDElevatorSpeed(Constants.ElevatorConstants.L3_ABS, Constants.ElevatorConstants.L1_ABS, getElevatorHeight()));
         } else if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS < -0.01) {
-            runElevatorMotor(0.2);
+            runElevatorMotor(0.4);
         } else {
             stopElevatorMotor();
         }
@@ -212,11 +212,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void goToL3() {
 
         if (getElevatorHeight() - Constants.ElevatorConstants.L3_ABS > 0.025) {
-            runElevatorMotor(-0.2);
+            runElevatorMotor(-0.4);
         } else if (getElevatorHeight() - Constants.ElevatorConstants.L3_ABS < -0.025) {
             runElevatorMotor(getPIDElevatorSpeed(Constants.ElevatorConstants.L1_ABS, Constants.ElevatorConstants.L3_ABS, getElevatorHeight()));
         } else {
             stopElevatorMotor();
+        }
+    }
+
+    public void goToL0() {
+
+        goToL1();
+        
+        if (ElevatorLimitSwitch.get()) {
+            runElevatorMotor(-0.2);
         }
     }
 }

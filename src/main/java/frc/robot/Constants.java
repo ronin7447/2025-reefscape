@@ -53,6 +53,8 @@ public final class Constants
 
     public static final String FRONTLL = "limelight-front";
     public static final String BACKLL = "limelight-back";
+
+    public static final int[] CORAL_IDS = {};
   }
 
   public static class OperatorConstants

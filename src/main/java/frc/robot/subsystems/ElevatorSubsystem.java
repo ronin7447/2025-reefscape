@@ -136,7 +136,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
 
-        if (ElevatorLimitSwitch.get()) {
+        if (!ElevatorLimitSwitch.get()) {
             if (speed < 0) {
                 ElevatorMotor.set(0.0);
             } else {

@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVRtest1"
+            "pathName": "AVRendto17"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bettergoback"
+            "pathName": "AVR17goback"
           }
         },
         {
@@ -65,7 +65,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Bettergoback"
+                  "pathName": "AVR17goback"
                 }
               }
             ]
@@ -93,7 +93,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVRtoAlgae"
+            "pathName": "AVR17toAlgae"
           }
         },
         {

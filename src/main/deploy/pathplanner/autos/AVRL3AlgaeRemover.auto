@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "AVRendto22"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "LimeLightAlignRight"
@@ -13,7 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "MoveToL2"
+            "name": "MoveToL3"
           }
         },
         {
@@ -23,22 +29,21 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "MoveToL3"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "GoLeftALittle"
-                }
-              }
-            ]
+            "name": "MoveToL2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVR22goback"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLightAlignCenter"
           }
         },
         {
@@ -60,7 +65,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "GoBackALittle"
+                  "pathName": "AVR22goback"
                 }
               }
             ]
@@ -83,6 +88,42 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVR22toAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVRback2reef"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLightAlignLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCoral"
           }
         }
       ]

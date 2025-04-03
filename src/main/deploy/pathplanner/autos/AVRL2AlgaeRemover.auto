@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "GoBackALittle"
+            "pathName": "Bettergoback"
           }
         },
         {
@@ -65,22 +65,65 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "GoBackALittle"
+                  "pathName": "Bettergoback"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "MoveToL1"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveToL1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AlgaeIn"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVRtoAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVRback2reef"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AlgaeIn"
+            "name": "LimeLightAlignLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCoral"
           }
         }
       ]

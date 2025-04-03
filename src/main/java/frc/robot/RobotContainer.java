@@ -199,6 +199,12 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
 
+
+    // NamedCommands.registerCommand("setTag", alignToCoral);
+    // limelightTable.getEntry("pipeline").setNumber(8);
+    //             limelightTable.getEntry("tidx").setNumber(largestId);
+
+
     NamedCommands.registerCommand("ResetGyro", Commands.runOnce(() -> drivebase.zeroGyro()));
 
     NamedCommands.registerCommand("ShootCoral", shooterSubsystem.ShootCoral());

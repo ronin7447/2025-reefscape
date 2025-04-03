@@ -22,7 +22,6 @@ public class SetAprilTagFilter extends Command {
 
         addRequirements(drivebase);
     }
-
     @Override
     public void initialize() {
         // This method is called once when the command is scheduled

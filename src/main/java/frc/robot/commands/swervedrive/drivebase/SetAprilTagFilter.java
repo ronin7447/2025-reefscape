@@ -35,7 +35,7 @@ public class SetAprilTagFilter extends Command {
             SmartDashboard.putNumber("Target AprilTag ID", largestId);
             System.out.println("Target AprilTag ID set to: " + largestId);
             limelightTable.getEntry("pipeline").setNumber(0);
-            limelightTable.getEntry("tidx").setNumber(largestId);
+            limelightTable.getEntry("priorityid").setNumber(largestId);
         }
 
         if (tagIds.length > 0) {
@@ -46,7 +46,7 @@ public class SetAprilTagFilter extends Command {
             if (largestId != -1) {
                 // Assuming pipeline 8 is configured for AprilTag targeting
                 limelightTable.getEntry("pipeline").setNumber(0);
-                limelightTable.getEntry("tidx").setNumber(largestId);
+                limelightTable.getEntry("priorityid").setNumber(largestId);
                 SmartDashboard.putNumber("Limelight Target ID Set To", largestId);
                 System.out.println("Limelight filter set to target AprilTag ID: " + largestId);
             } else {

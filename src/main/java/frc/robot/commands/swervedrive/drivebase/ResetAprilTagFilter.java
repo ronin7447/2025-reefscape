@@ -23,7 +23,7 @@ public class ResetAprilTagFilter extends Command {
     }
     @Override
     public void initialize() {
-        limelightTable.getEntry("tidx").setNumber(-1);
+        limelightTable.getEntry("priorityid").setNumber(-1);
         limelightTable.getEntry("pipeline").setNumber(0);
         RobotLogger.log("Limelight AprilTag filter reset (no specific ID target).");
     }
@@ -39,7 +39,7 @@ public class ResetAprilTagFilter extends Command {
     public void end(boolean interrupted) {
         // This method is called once when the command ends or is interrupted
         if (interrupted) {
-            System.out.println("ResetReefAprilTag command was interrupted.");
+            RobotLogger.warning("ResetReefAprilTag command was interrupted.");
         }
     }
 

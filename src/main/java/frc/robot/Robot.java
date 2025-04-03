@@ -129,40 +129,40 @@ public class Robot extends TimedRobot {
 
     // ----- USB CAMERA (SHOOTER CAMERA) -----
     // Start the USB camera capture and processing on a separate thread.
-    m_visionThread = new Thread(() -> {
-      try {
-        // Start capture from the USB camera.
-        UsbCamera usbCamera = CameraServer.startAutomaticCapture("Shooter USB Camera", 0);
-        usbCamera.setResolution(640, 480);
+  //   m_visionThread = new Thread(() -> {
+  //     try {
+  //       // Start capture from the USB camera.
+  //       // UsbCamera usbCamera = CameraServer.startAutomaticCapture("Shooter USB Camera", 0);
+  //       // usbCamera.setResolution(640, 480);
 
-        // Get a CvSink to capture frames and a CvSource to output processed frames.
-        CvSink cvSink = CameraServer.getVideo("Shooter USB Camera");
-        CvSource outputStream = CameraServer.putVideo("Shooter Camera", 640, 480);
+  //       // Get a CvSink to capture frames and a CvSource to output processed frames.
+  //       // CvSink cvSink = CameraServer.getVideo("Shooter USB Camera");
+  //       // CvSource outputStream = CameraServer.putVideo("Shooter Camera", 640, 480);
 
-        // Reuse a single Mat to reduce repeated memory allocation.
-        Mat frame = new Mat();
+  //       // Reuse a single Mat to reduce repeated memory allocation.
+  //       // Mat frame = new Mat();
 
-        while (!Thread.interrupted()) {
-          // Grab a frame from the USB camera.
-          if (cvSink.grabFrame(frame) == 0) {
-            outputStream.notifyError(cvSink.getError());
-            continue;
-          }
+  //       // while (!Thread.interrupted()) {
+  //       //   // Grab a frame from the USB camera.
+  //       //   if (cvSink.grabFrame(frame) == 0) {
+  //       //     outputStream.notifyError(cvSink.getError());
+  //       //     continue;
+  //       //   }
 
-          // Draw a rectangle on the image for visualization.
-          Imgproc.rectangle(frame, new Point(370, 0), new Point(370, 480), new Scalar(0, 0, 255), 2);
+  //       //   // Draw a rectangle on the image for visualization.
+  //       //   Imgproc.rectangle(frame, new Point(370, 0), new Point(370, 480), new Scalar(0, 0, 255), 2);
 
-          outputStream.putFrame(frame);
+  //       //   outputStream.putFrame(frame);
 
-          // Small delay to reduce CPU load and allow native resources to breathe.
-          Timer.delay(0.01);
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    });
-    m_visionThread.setDaemon(true);
-    m_visionThread.start();
+  //         // Small delay to reduce CPU load and allow native resources to breathe.
+  //         // Timer.delay(0.01);
+  //       }
+  //     } catch (Exception e) {
+  //       e.printStackTrace();
+  //     }
+  //   });
+  //   m_visionThread.setDaemon(true);
+  //   m_visionThread.start();
 
     // Create a timer to manage disabling motor brake after a delay.
     disabledTimer = new Timer();

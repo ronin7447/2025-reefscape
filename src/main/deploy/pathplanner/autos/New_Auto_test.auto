@@ -9,6 +9,30 @@
           "data": {
             "pathName": "MoveOverLine"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLightAlignRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCoral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL1"
+          }
         }
       ]
     }

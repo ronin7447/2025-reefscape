@@ -579,9 +579,8 @@ public class RobotContainer {
       })));
 
       driverXbox.back().onTrue((Commands.runOnce(() -> {
-        elevatorSubsystem.setEncoderPos(0.86572265625);
-        System.out.println("ELEVATOR HAS BEEN SET TO L1!");
-        RobotLogger.warning("Elevator has been set to L1!");
+        elevatorSubsystem.setEncoderPos(0.0);
+        RobotLogger.warning("Elevator has been set to L0!");
       })));
 
       

@@ -19,21 +19,21 @@ public class RobotLogger {
         String logMessage = "[" + getTimestamp() + "] [INFO] " + message;
         System.out.println(logMessage);
         writeToDashboard(message);
-        // writeToFile(logMessage);
+        writeToFile(logMessage);
     }
 
     public static void warning(String message) {
         String logMessage = "[" + getTimestamp() + "] [WARNING] " + message;
         System.out.println(logMessage);
         writeToDashboard(message);
-        // writeToFile(logMessage);
+        writeToFile(logMessage);
     }
 
     public static void error(String message) {
         String logMessage = "[" + getTimestamp() + "] [ERROR] " + message;
         System.err.println(logMessage);
         writeToDashboard(message);
-        // writeToFile(logMessage);
+        writeToFile(logMessage);
     }
 
 
@@ -41,7 +41,7 @@ public class RobotLogger {
         String logMessage = "[" + getTimestamp() + "] [DASHBOARD] " + title + ": " + message;
         System.out.println(logMessage);
         SmartDashboard.putString(title, message);
-        // writeToFile(logMessage);
+        writeToFile(logMessage);
     }
 
 

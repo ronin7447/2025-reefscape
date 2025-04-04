@@ -409,6 +409,7 @@ public class RobotContainer {
 
 
       driverXbox.button(9).onTrue((Commands.runOnce(() -> {
+        RobotLogger.warning("Algae motor has been reset!");
         algaeSubsystem.resetAlgaeMotor();
       })));
 
@@ -424,21 +425,25 @@ public class RobotContainer {
       
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
         .onTrue((Commands.runOnce(() -> {
+          RobotLogger.log("Driver pressed Level 0 Button");
           elevatorSubsystem.setMostRecentLevel(0);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
         .onTrue((Commands.runOnce(() -> {
+          RobotLogger.log("Driver pressed Level 1 Button");
           elevatorSubsystem.setMostRecentLevel(1);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
         .onTrue((Commands.runOnce(() -> {
+          RobotLogger.log("Driver pressed Level 2 Button");
           elevatorSubsystem.setMostRecentLevel(2);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
         .onTrue((Commands.runOnce(() -> {
+          RobotLogger.log("Driver pressed Level 3 Button");
           elevatorSubsystem.setMostRecentLevel(3);
         })));
 
@@ -552,10 +557,6 @@ public class RobotContainer {
         elevatorSubsystem.stopElevatorMotor();
       })));
 
-      driverXbox.leftTrigger().onTrue((Commands.runOnce(() -> {
-        drivebase.drive(new Translation2d(0.0, 0.0), 90, true);
-      })));
-
 
 
       // KADENS DEBUG STUFF
@@ -574,11 +575,13 @@ public class RobotContainer {
       driverXbox.start().onTrue((Commands.runOnce(() -> {
         drivebase.zeroGyro(); 
         System.out.println("GYRO HAS BEEN RESET!");
+        RobotLogger.warning("Gyro has been reset!");
       })));
 
       driverXbox.back().onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setEncoderPos(0.86572265625);
         System.out.println("ELEVATOR HAS BEEN SET TO L1!");
+        RobotLogger.warning("Elevator has been set to L1!");
       })));
 
       
@@ -651,7 +654,7 @@ public class RobotContainer {
       })));
     
     
-      //SLOW MOVEMENT
+      // SLOW MOVEMENT
 
       new POVButton(driverPXN, 0)
         .whileTrue(new SlowDrive(drivebase, 0, true));
@@ -684,15 +687,17 @@ public class RobotContainer {
 
       new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
         .whileTrue((Commands.run(() -> {
-          RobotLogger.log("Elevator 0 has been reset!");
+          RobotLogger.warning("Elevator 0 has been reset!");
           elevatorSubsystem.setEncoderPos(0.0);
         })).repeatedly());
 
       new Trigger(() -> elevatorSubsystem.getIsElevatorMoving())
         .onTrue((Commands.runOnce(() -> {
+          RobotLogger.log("isReducedSpeed is true");
           Constants.isReducedSpeed = true;
         })))
         .onFalse((Commands.runOnce(() -> {
+          RobotLogger.log("isReducedSpeed is false");
           Constants.isReducedSpeed = false;
         })));
 
@@ -767,7 +772,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("AVRL2AlgaeRemover_Right");
+    final String pathName = "AVRL2AlgaeRemover_Right";
+    RobotLogger.log("Autonomous command is running " + pathName);
+    return drivebase.getAutonomousCommand(pathName);
 
   }
 

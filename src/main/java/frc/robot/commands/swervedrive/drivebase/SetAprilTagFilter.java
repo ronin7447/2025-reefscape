@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotLogger;
 
 public class SetAprilTagFilter extends Command {
     // private SwerveSubsystem drivebase;
@@ -20,7 +21,7 @@ public class SetAprilTagFilter extends Command {
         this.limelightTable = NetworkTableInstance.getDefault().getTable(limelight);
         this.tagID = tagID;
     }
-    
+
     @Override
     public void initialize() {
         // This method is called once when the command is scheduled
@@ -31,7 +32,7 @@ public class SetAprilTagFilter extends Command {
             // the target id is already set
             largestId = tagID;
             SmartDashboard.putNumber("Target AprilTag ID", largestId);
-            System.out.println("Target AprilTag ID set to: " + largestId);
+            RobotLogger.log("Target AprilTag ID set to: " + largestId);
             limelightTable.getEntry("pipeline").setNumber(0);
             limelightTable.getEntry("priorityid").setNumber(largestId);
         }
@@ -39,20 +40,20 @@ public class SetAprilTagFilter extends Command {
         if (tagIds.length > 0) {
             largestId = Arrays.stream(tagIds).max().orElse(-1);
             SmartDashboard.putNumber("Largest AprilTag ID Found", largestId);
-            System.out.println("Largest AprilTag ID found: " + largestId);
+            RobotLogger.log("Largest AprilTag ID found: " + largestId);
 
             if (largestId != -1) {
                 // Assuming pipeline 8 is configured for AprilTag targeting
                 limelightTable.getEntry("pipeline").setNumber(0);
                 limelightTable.getEntry("priorityid").setNumber(largestId);
                 SmartDashboard.putNumber("Limelight Target ID Set To", largestId);
-                System.out.println("Limelight filter set to target AprilTag ID: " + largestId);
+                RobotLogger.log("Limelight filter set to target AprilTag ID: " + largestId);
             } else {
-                System.out.println("No valid AprilTag ID found to set the filter.");
+                RobotLogger.log("No valid AprilTag ID found to set the filter.");
                 SmartDashboard.putString("Limelight Status", "No valid AprilTag ID found");
             }
         } else {
-            System.out.println("No AprilTags detected.");
+            RobotLogger.log("No AprilTags detected.");
             SmartDashboard.putString("Limelight Status", "No AprilTags detected");
         }
     }
@@ -68,7 +69,7 @@ public class SetAprilTagFilter extends Command {
     public void end(boolean interrupted) {
         // This method is called once when the command ends or is interrupted
         if (interrupted) {
-            System.out.println("SetReefAprilTag command was interrupted.");
+            RobotLogger.log("SetReefAprilTag command was interrupted.");
         }
     }
 

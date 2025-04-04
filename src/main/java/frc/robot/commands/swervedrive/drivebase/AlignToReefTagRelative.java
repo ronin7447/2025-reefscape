@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.RobotLogger;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.commands.swervedrive.drivebase.SetAprilTagFilter;
 
@@ -71,7 +72,6 @@ public class AlignToReefTagRelative extends Command {
   @Override
   public void execute() {
     if (LimelightHelpers.getTV(limelight) && LimelightHelpers.getFiducialID(limelight) == tagID) {
-      System.out.println("sees smth");
 
       double[] postions = LimelightHelpers.getBotPose_TargetSpace(limelight);
       SmartDashboard.putNumber("x", postions[2]);
@@ -81,6 +81,8 @@ public class AlignToReefTagRelative extends Command {
       ySpeed = -yController.calculate(postions[0]) / 2;
       rotSpeed = -rotController.calculate(postions[4]);
 
+      RobotLogger.log("The AprilTag ID: " + tagID + ", X Speed: " + xSpeed + ", Y Speed: " + ySpeed + ", Rot Speed: " + rotSpeed);
+
       drivebase.drive(new Translation2d(xSpeed, ySpeed), rotSpeed, false, true);
 
     } else {
@@ -88,7 +90,7 @@ public class AlignToReefTagRelative extends Command {
       xSpeed = 0.0;
       ySpeed = 0.0;
       
-      System.out.println("no sees smth");
+      RobotLogger.log("We want AprilTag ID to be " + tagID + ", but current is: " + LimelightHelpers.getFiducialID(limelight) + ", X Speed: " + xSpeed + ", Y Speed: " + ySpeed + ", Rot Speed: " + rotSpeed);
       System.out.println("SPEEDS ARE: " + xSpeed + "," + ySpeed);
     }
   }

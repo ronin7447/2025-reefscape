@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotLogger;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -50,7 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void shootCoral() {
-
+        RobotLogger.log("Shooting Coral");
         runShooterMotor(Constants.ShooterConstants.SHOOTER_SPEED_HIGH);
         Timer.delay(0.8);
         stopShooterMotor();
@@ -58,7 +59,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void removeAlgae() {
-
+        RobotLogger.log("Removing Algae");
         runShooterMotor(Constants.ShooterConstants.SHOOTER_REVERSE_SPEED);
         Timer.delay(1);
         stopShooterMotor();

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -62,6 +63,7 @@ public class RobotContainer {
 
   // Secondary Operator Controller
   final Joystick driverPXN = new Joystick(1);
+
 
 
   
@@ -426,25 +428,25 @@ public class RobotContainer {
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
         .onTrue((Commands.runOnce(() -> {
           RobotLogger.log("Driver pressed Level 0 Button");
-          elevatorSubsystem.setMostRecentLevel(0);
+          // elevatorSubsystem.setMostRecentLevel(0);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
         .onTrue((Commands.runOnce(() -> {
           RobotLogger.log("Driver pressed Level 1 Button");
-          elevatorSubsystem.setMostRecentLevel(1);
+          // elevatorSubsystem.setMostRecentLevel(1);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
         .onTrue((Commands.runOnce(() -> {
           RobotLogger.log("Driver pressed Level 2 Button");
-          elevatorSubsystem.setMostRecentLevel(2);
+          // elevatorSubsystem.setMostRecentLevel(2);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
         .onTrue((Commands.runOnce(() -> {
           RobotLogger.log("Driver pressed Level 3 Button");
-          elevatorSubsystem.setMostRecentLevel(3);
+          // elevatorSubsystem.setMostRecentLevel(3);
         })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
@@ -458,21 +460,21 @@ public class RobotContainer {
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL1();
         }).until(() -> 
-          elevatorSubsystem.getElevatorSpeed() == 0 || elevatorSubsystem.getElevatorHeight() > Constants.ElevatorConstants.L1_ABS
+          elevatorSubsystem.getElevatorSpeed() == 0
         )));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL2();
         }).until(() -> 
-          elevatorSubsystem.getElevatorSpeed() == 0 || elevatorSubsystem.getElevatorHeight() > Constants.ElevatorConstants.L2_ABS
+          elevatorSubsystem.getElevatorSpeed() == 0
         )));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL3();
         }).until(() -> 
-          elevatorSubsystem.getElevatorSpeed() == 0 || elevatorSubsystem.getElevatorHeight() > Constants.ElevatorConstants.L3_ABS
+          elevatorSubsystem.getElevatorSpeed() == 0
         )));
 
     
@@ -578,9 +580,10 @@ public class RobotContainer {
         RobotLogger.warning("Gyro has been reset!");
       })));
 
-      driverXbox.back().onTrue((Commands.runOnce(() -> {
+      driverXbox.back().and(driverXbox.button(10)).onTrue((Commands.runOnce(() -> {
         elevatorSubsystem.setEncoderPos(0.0);
         RobotLogger.warning("Elevator has been set to L0!");
+        System.out.println("elevaotor reset 0");
       })));
 
       
@@ -600,7 +603,11 @@ public class RobotContainer {
         .whileTrue(new ShootCoral(-1, shooterSubsystem));
 
       // driverXbox.rightBumper()
-      //   .whileTrue(new ShootCoral(-1, shooterSubsystem));
+      //   .whileTrue(new ShootCoral(-1, shooterSubsystem));4
+
+      driverXbox.x().and(driverXbox.y()).onTrue(
+        Commands.runOnce(() -> {CommandScheduler.getInstance().cancelAll();})
+      );
 
 
 
@@ -686,6 +693,7 @@ public class RobotContainer {
 
       new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
         .whileTrue((Commands.run(() -> {
+          System.out.println("Elevator 0 has been reset!");
           RobotLogger.warning("Elevator 0 has been reset!");
           elevatorSubsystem.setEncoderPos(0.0);
         })).repeatedly());
@@ -771,7 +779,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    final String pathName = "AVRL2AlgaeRemover_Right";
+    final String pathName = "AVRMiddleAuto2";
     RobotLogger.log("Autonomous command is running " + pathName);
     return drivebase.getAutonomousCommand(pathName);
 

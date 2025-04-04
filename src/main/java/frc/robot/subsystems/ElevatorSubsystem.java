@@ -79,13 +79,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         AbsEncoder.setPosition(pos);
     }
 
-    public void setMostRecentLevel(int level) {
-        MostRecentLevel = level;
-    }
+    // public void setMostRecentLevel(int level) {
+    //     MostRecentLevel = level;
+    // }
 
-    public int getMostRecentLevel() {
-        return MostRecentLevel;
-    }
+    // public int getMostRecentLevel() {
+    //     return MostRecentLevel;
+    // }
 
     public void printElevatorPos() {
         System.out.println(AbsEncoder.getPosition().getValue().in(Rotations));
@@ -188,7 +188,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
     public void goToL0() {
-        if (MostRecentLevel == 0) {
+        // if (MostRecentLevel == 0) {
             RobotLogger.log("Elevator is moving to L0 (0.0) with location " + getElevatorHeight() + "and speed " + getElevatorSpeed());
             
             if (getElevatorHeight() > 0.1 && ElevatorLimitSwitch.get()) {
@@ -198,31 +198,36 @@ public class ElevatorSubsystem extends SubsystemBase {
 
                 stopElevatorMotor();
             }
-        } else {
-            RobotLogger.error("Elevator attempted to move to L0 but most recently pressed command is " + MostRecentLevel);
-        }
+        // } else {
+        //     RobotLogger.error("Elevator attempted to move to L0 but most recently pressed command is " + MostRecentLevel);
+        // }
     }
 
     public void goToL1() {
-        if (MostRecentLevel == 1) {
+        // if (MostRecentLevel == 1) {
             RobotLogger.log("Elevator is moving to L1 (" + Constants.ElevatorConstants.L1_ABS + ") with location " + getElevatorHeight() + "and speed " + getElevatorSpeed());
+            System.out.println("Elevator is moving to L1 (" + Constants.ElevatorConstants.L1_ABS + ") with location " + getElevatorHeight() + "and speed " + getElevatorSpeed());
 
             if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS > 0.01) {
+                System.out.println("moving from up to down");
                 runElevatorMotor(getPIDElevatorSpeed(Constants.ElevatorConstants.L3_ABS, Constants.ElevatorConstants.L1_ABS, getElevatorHeight()));
             } else if (getElevatorHeight() - Constants.ElevatorConstants.L1_ABS < -0.01) {
+                System.out.println("moving from 0 to l1");
                 runElevatorMotor(getPIDElevatorSpeed(0, Constants.ElevatorConstants.L1_ABS, getElevatorHeight()));
             } else {
                 stopElevatorMotor();
             }
-        } else {
-            RobotLogger.error("Elevator attempted to move to L1 but most recently pressed command is " + MostRecentLevel);
-        }
+        // } else {
+        //     RobotLogger.error("Elevator attempted to move to L1 but most recently pressed command is " + MostRecentLevel);
+        // }
     }
 
     public void goToL2() {
-        if (MostRecentLevel == 2) {
+        // if (MostRecentLevel == 2) {
 
             RobotLogger.log("Elevator is moving to L2 (" + Constants.ElevatorConstants.L2_ABS + ") with location " + getElevatorHeight() + "and speed " + getElevatorSpeed());
+
+            System.out.println("Elevator is moving to L2 (" + Constants.ElevatorConstants.L2_ABS + ") with location " + getElevatorHeight() + "and speed " + getElevatorSpeed());
 
             if (getElevatorHeight() - Constants.ElevatorConstants.L2_ABS > 0.025) {
                 runElevatorMotor(getPIDElevatorSpeed(Constants.ElevatorConstants.L3_ABS, Constants.ElevatorConstants.L2_ABS, getElevatorHeight()));
@@ -235,15 +240,17 @@ public class ElevatorSubsystem extends SubsystemBase {
             } else {
                 stopElevatorMotor();
             }
-        } else {
-            RobotLogger.error("Elevator attempted to move to L2 but most recently pressed command is " + MostRecentLevel);
-        }
+        // } else {
+        //     RobotLogger.error("Elevator attempted to move to L2 but most recently pressed command is " + MostRecentLevel);
+        // }
     }
 
     public void goToL3() {
 
-        if (MostRecentLevel == 3) {
+        // if (MostRecentLevel == 3) {
             RobotLogger.log("Elevator is moving to L3 (" + Constants.ElevatorConstants.L3_ABS + ") with location " + getElevatorHeight() + "and speed " + getElevatorSpeed());
+
+            System.out.println("Elevator is moving to L2 (" + Constants.ElevatorConstants.L2_ABS + ") with location " + getElevatorHeight() + "and speed " + getElevatorSpeed());
 
             if (getElevatorHeight() - Constants.ElevatorConstants.L3_ABS > 0.025) {
                 runElevatorMotor(-1.0);
@@ -256,8 +263,8 @@ public class ElevatorSubsystem extends SubsystemBase {
             } else {
                 stopElevatorMotor();
             }
-        } else {
-            RobotLogger.error("Elevator attempted to move to L3 but most recently pressed command is " + MostRecentLevel);
-        }
+        // } else {
+        //     RobotLogger.error("Elevator attempted to move to L3 but most recently pressed command is " + MostRecentLevel);
+        // }
     }
 }

@@ -421,33 +421,53 @@ public class RobotContainer {
         System.out.println("Rotations: " + elevatorSubsystem.getElevatorHeight());
         System.out.println("Algae Position:" +  algaeSubsystem.getAlgaeDebug());
       })));
+      
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.setMostRecentLevel(0);
+        })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.setMostRecentLevel(1);
+        })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.setMostRecentLevel(2);
+        })));
+
+      new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
+        .onTrue((Commands.runOnce(() -> {
+          elevatorSubsystem.setMostRecentLevel(3);
+        })));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_7)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL0();
         }).until(() -> 
-          elevatorSubsystem.getElevatorSpeed() == 0
+          elevatorSubsystem.getElevatorSpeed() == 0 || !elevatorSubsystem.getLimitSwitch()
         )));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_8)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL1();
         }).until(() -> 
-          elevatorSubsystem.getElevatorSpeed() == 0
+          elevatorSubsystem.getElevatorSpeed() == 0 || elevatorSubsystem.getElevatorHeight() > Constants.ElevatorConstants.L1_ABS
         )));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_9)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL2();
         }).until(() -> 
-          elevatorSubsystem.getElevatorSpeed() == 0
+          elevatorSubsystem.getElevatorSpeed() == 0 || elevatorSubsystem.getElevatorHeight() > Constants.ElevatorConstants.L2_ABS
         )));
 
       new JoystickButton(driverPXN, Constants.OperatorConstants.BUTTON_10)
         .onTrue((Commands.run(() -> {
           elevatorSubsystem.goToL3();
         }).until(() -> 
-          elevatorSubsystem.getElevatorSpeed() == 0
+          elevatorSubsystem.getElevatorSpeed() == 0 || elevatorSubsystem.getElevatorHeight() > Constants.ElevatorConstants.L3_ABS
         )));
 
     
@@ -467,10 +487,10 @@ public class RobotContainer {
       // driverXbox.y()
       //   .whileTrue(new AlignToReefTagRelative(1, drivebase, Constants.LimelightConstants.BACKLL));
       
-      driverXbox.x()
-        .onTrue((Commands.runOnce(() -> {
-          elevatorSubsystem.setEncoderPos(1.0 - Math.abs(elevatorSubsystem.getElevatorHeight()));
-        })));
+      // driverXbox.x()
+      //   .onTrue((Commands.runOnce(() -> {
+      //     elevatorSubsystem.setEncoderPos(1.0 - Math.abs(elevatorSubsystem.getElevatorHeight()));
+      //   })));
 
 
       // Shoot Coral
@@ -663,9 +683,10 @@ public class RobotContainer {
 
 
       new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
-        .whileTrue((Commands.runOnce(() -> {
+        .whileTrue((Commands.run(() -> {
+          RobotLogger.log("Elevator 0 has been reset!");
           elevatorSubsystem.setEncoderPos(0.0);
-        })));
+        })).repeatedly());
 
       new Trigger(() -> elevatorSubsystem.getIsElevatorMoving())
         .onTrue((Commands.runOnce(() -> {
@@ -746,7 +767,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    return drivebase.getAutonomousCommand("AVRL2AlgaeRemover");
+    return drivebase.getAutonomousCommand("AVRL2AlgaeRemover_Right");
 
   }
 

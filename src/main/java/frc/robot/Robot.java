@@ -233,6 +233,7 @@ public class Robot extends TimedRobot {
     } else {
       CommandScheduler.getInstance().cancelAll();
     }
+    CommandScheduler.getInstance().cancelAll();
   }
 
   @Override

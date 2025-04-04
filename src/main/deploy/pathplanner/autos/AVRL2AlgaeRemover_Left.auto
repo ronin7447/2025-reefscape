@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVRendto22"
+            "pathName": "AVRRendto19"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVR22goback"
+            "pathName": "AVR19goback"
           }
         },
         {
@@ -65,7 +65,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "AVR22goback"
+                  "pathName": "AVR19goback"
                 }
               }
             ]
@@ -93,7 +93,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVR22toAlgae"
+            "pathName": "AVR19toAlgae"
           }
         },
         {
@@ -105,7 +105,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVRback2reef17"
+            "pathName": "AVRBackToReef19"
           }
         },
         {
@@ -118,6 +118,48 @@
           "type": "named",
           "data": {
             "name": "MoveToL3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCoral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVR19toAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AVRBackToReef19"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LimeLightAlignLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "MoveToL2"
           }
         },
         {

@@ -105,13 +105,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVRback2reef"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "LimeLightAlignLeft"
+            "pathName": "AVRback2reef17"
           }
         },
         {
@@ -153,7 +147,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AVRback2reef"
+            "pathName": "AVRback2reef17"
           }
         },
         {

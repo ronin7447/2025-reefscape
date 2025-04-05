@@ -690,13 +690,14 @@ public class RobotContainer {
         .whileTrue(new SlowDrive(drivebase, 180, true));
 
 
+      // Limit switch has been removed during AVR
 
-      new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
-        .whileTrue((Commands.run(() -> {
-          System.out.println("Elevator 0 has been reset!");
-          RobotLogger.warning("Elevator 0 has been reset!");
-          elevatorSubsystem.setEncoderPos(0.0);
-        })).repeatedly());
+      // new Trigger(() -> !elevatorSubsystem.getLimitSwitch())
+      //   .whileTrue((Commands.run(() -> {
+      //     System.out.println("Elevator 0 has been reset!");
+      //     RobotLogger.warning("Elevator 0 has been reset!");
+      //     elevatorSubsystem.setEncoderPos(0.0);
+      //   })).repeatedly());
 
       new Trigger(() -> elevatorSubsystem.getIsElevatorMoving())
         .onTrue((Commands.runOnce(() -> {

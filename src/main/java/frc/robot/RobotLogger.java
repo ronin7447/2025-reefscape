@@ -18,22 +18,22 @@ public class RobotLogger {
     public static void log(String message) {
         String logMessage = "[" + getTimestamp() + "] [INFO] " + message;
         System.out.println(logMessage);
-        writeToDashboard(message);
-        writeToFile(logMessage);
+        // writeToDashboard(message);
+        // writeToFile(logMessage);
     }
 
     public static void warning(String message) {
         String logMessage = "[" + getTimestamp() + "] [WARNING] " + message;
         System.out.println(logMessage);
-        writeToDashboard(message);
-        writeToFile(logMessage);
+        // writeToDashboard(message);
+        // writeToFile(logMessage);
     }
 
     public static void error(String message) {
         String logMessage = "[" + getTimestamp() + "] [ERROR] " + message;
         System.err.println(logMessage);
-        writeToDashboard(message);
-        writeToFile(logMessage);
+        // writeToDashboard(message);
+        // writeToFile(logMessage);
     }
 
 
@@ -41,20 +41,20 @@ public class RobotLogger {
         String logMessage = "[" + getTimestamp() + "] [DASHBOARD] " + title + ": " + message;
         System.out.println(logMessage);
         SmartDashboard.putString(title, message);
-        writeToFile(logMessage);
+        // writeToFile(logMessage);
     }
 
 
-    private static void writeToFile(String message) {
-        try (FileWriter writer = new FileWriter(LOG_FILE_PATH, true)) {
-            writer.write(message + "\n");
-        } catch (IOException e) {
-            System.err.println("[ERROR] Failed to write to log file: " + e.getMessage());
-        }
-    }
+    // private static void writeToFile(String message) {
+    //     try (FileWriter writer = new FileWriter(LOG_FILE_PATH, true)) {
+    //         writer.write(message + "\n");
+    //     } catch (IOException e) {
+    //         System.err.println("[ERROR] Failed to write to log file: " + e.getMessage());
+    //     }
+    // }
 
-    private static void writeToDashboard(String message) {
-        SmartDashboard.putString("Log", SmartDashboard.getString("Log", "") + message + "\n");
-    }
+    // private static void writeToDashboard(String message) {
+    //     SmartDashboard.putString("Log", SmartDashboard.getString("Log", "") + message + "\n");
+    // }
 }
 

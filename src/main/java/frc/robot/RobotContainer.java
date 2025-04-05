@@ -779,10 +779,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Run autonomous command that made by PathPlanner
-    final String pathName = "AVRMiddleAuto2";
+    final String pathName = "MoveOverLineAuto";
     RobotLogger.log("Autonomous command is running " + pathName);
     return drivebase.getAutonomousCommand(pathName);
-
   }
 
   // public Command getAutoAlignCommand() {
@@ -792,5 +791,9 @@ public class RobotContainer {
 
   public void setMotorBrake(boolean brake) {
     drivebase.setMotorBrake(brake);
+  }
+
+  public void resetElevatorforRC() {
+    elevatorSubsystem.setEncoderPos(0);
   }
 }

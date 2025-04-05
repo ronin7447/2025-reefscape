@@ -104,28 +104,28 @@ public class Robot extends TimedRobot {
 
     // ----- FRONT NETWORK CAMERA -----
     // Check if the front camera stream is reachable before starting capture.
-    try {
-      URL cameraUrl = new URL("http://172.28.0.1:5801/stream.mjpg");
-      HttpURLConnection connection = (HttpURLConnection) cameraUrl.openConnection();
-      connection.setRequestMethod("HEAD");
-      connection.setConnectTimeout(1000); // 1 second timeout
-      connection.connect();
+    // try {
+    //   URL cameraUrl = new URL("http://172.28.0.1:5801/stream.mjpg");
+    //   HttpURLConnection connection = (HttpURLConnection) cameraUrl.openConnection();
+    //   connection.setRequestMethod("HEAD");
+    //   connection.setConnectTimeout(1000); // 1 second timeout
+    //   connection.connect();
 
-      if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-        // Start automatic capture for the front camera using its URL.
-        CameraServer.startAutomaticCapture("front", "http://172.28.0.1:5801/stream.mjpg");
-      } else {
-        System.out.println("Front camera not reachable: " + connection.getResponseCode());
-      }
-    } catch (IOException e) {
-      System.out.println("Failed to connect to front camera: " + e.getMessage());
-    }
+    //   if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+    //     // Start automatic capture for the front camera using its URL.
+    //     CameraServer.startAutomaticCapture("front", "http://172.28.0.1:5801/stream.mjpg");
+    //   } else {
+    //     System.out.println("Front camera not reachable: " + connection.getResponseCode());
+    //   }
+    // } catch (IOException e) {
+    //   System.out.println("Failed to connect to front camera: " + e.getMessage());
+    // }
 
-    // ----- BACK LIMELIGHT CAMERA -----
+    // // ----- BACK LIMELIGHT CAMERA -----
 
-    PortForwarder.add(5801, "limelight-back.local", 5801);
-    PortForwarder.add(5800, "limelight-back.local", 5800);
-    java.util.logging.Logger.getLogger("edu.wpi.first.cameraserver.CameraServer").setLevel(java.util.logging.Level.SEVERE);
+    // PortForwarder.add(5801, "limelight-back.local", 5801);
+    // PortForwarder.add(5800, "limelight-back.local", 5800);
+    // java.util.logging.Logger.getLogger("edu.wpi.first.cameraserver.CameraServer").setLevel(java.util.logging.Level.SEVERE);
 
     // ----- USB CAMERA (SHOOTER CAMERA) -----
     // Start the USB camera capture and processing on a separate thread.
@@ -166,6 +166,10 @@ public class Robot extends TimedRobot {
 
     // Create a timer to manage disabling motor brake after a delay.
     disabledTimer = new Timer();
+
+    // very dangerous for test!!
+    // make sure to remove
+    m_robotContainer.resetElevatorforRC();
 
     if (isSimulation()) {
       DriverStation.silenceJoystickConnectionWarning(true);

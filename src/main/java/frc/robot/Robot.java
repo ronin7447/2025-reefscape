@@ -169,7 +169,7 @@ public class Robot extends TimedRobot {
 
     // very dangerous for test!!
     // make sure to remove
-    m_robotContainer.resetElevatorforRC();
+    // m_robotContainer.resetElevatorforRC();
 
     if (isSimulation()) {
       DriverStation.silenceJoystickConnectionWarning(true);
